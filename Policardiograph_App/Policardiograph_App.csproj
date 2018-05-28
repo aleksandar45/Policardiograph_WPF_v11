@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8D981716-BF43-4905-AE6C-6835E1422AF3}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Policardiograph_App</RootNamespace>
+    <AssemblyName>Policardiograph_App</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>C:\Users\Aleksandar\Desktop\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>4CEE3042C8C7568060166B33DE906B62210E6B32</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Policardiograph_App_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MvvmDialogs, Version=4.1.1.0, Culture=neutral, PublicKeyToken=3d3b9708589bc73e, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmDialogs.4.1.1\lib\net40\MvvmDialogs.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpGL, Version=2.4.0.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpGL.2.4.0.0\lib\net40\SharpGL.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpGL.SceneGraph, Version=2.4.0.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpGL.2.4.0.0\lib\net40\SharpGL.SceneGraph.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpGL.WPF, Version=2.0.0.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\SharpGL.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Device" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Expression.Blend.Sdk.1.0.2\lib\net40-client\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="DeviceModel\Device.cs" />
+    <Compile Include="DeviceModel\Modules\ACC_PPGModule.cs" />
+    <Compile Include="DeviceModel\Modules\ECGModule.cs" />
+    <Compile Include="DeviceModel\Modules\FBGAModule.cs" />
+    <Compile Include="DeviceModel\Modules\MICModule.cs" />
+    <Compile Include="DeviceModel\Modules\Module.cs" />
+    <Compile Include="DeviceModel\Modules\MWLSModule.cs" />
+    <Compile Include="DeviceModel\Modules\TCPMessages\ACC_PPGMessage.cs" />
+    <Compile Include="DeviceModel\Modules\TCPMessages\ECGMessage.cs" />
+    <Compile Include="DeviceModel\Modules\TCPMessages\IdleTCPMessage.cs" />
+    <Compile Include="DeviceModel\Modules\TCPMessages\MICMessage.cs" />
+    <Compile Include="DeviceModel\Modules\TCPMessages\SendSettingACC_PPGMessage.cs" />
+    <Compile Include="DeviceModel\Modules\TCPMessages\SendSettingECGMessage.cs" />
+    <Compile Include="DeviceModel\Modules\TCPMessages\SendSettingMICMessage.cs" />
+    <Compile Include="DeviceModel\Modules\TCPMessages\StartAcqTCPMessage.cs" />
+    <Compile Include="DeviceModel\Modules\TCPMessages\StartFullAcqMICMessage.cs" />
+    <Compile Include="DeviceModel\Modules\TCPMessages\StartSyncRecMICMessage.cs" />
+    <Compile Include="DeviceModel\Modules\TCPMessages\StopAcqTCPMessage.cs" />
+    <Compile Include="DeviceModel\Modules\TCPMessages\TCPMessage.cs" />
+    <Compile Include="DeviceModel\Modules\TCPModule.cs" />
+    <Compile Include="DeviceModel\Modules\USBModule.cs" />
+    <Compile Include="DeviceModel\RingBuffers\RingBufferByte.cs" />
+    <Compile Include="DeviceModel\RingBuffers\RingBufferDouble.cs" />
+    <Compile Include="DeviceModel\Services\RecordingService.cs" />
+    <Compile Include="DeviceModel\Services\TCPService.cs" />
+    <Compile Include="DeviceModel\TCPDeviceStateEnum.cs" />
+    <Compile Include="DeviceModel\USBDeviceStateEnum.cs" />
+    <Compile Include="Dialogs\DialogMessage\DialogImageTypeEnum.cs" />
+    <Compile Include="Dialogs\DialogMessage\DialogMessageView.xaml.cs">
+      <DependentUpon>DialogMessageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DialogMessage\DialogMessageViewModel.cs" />
+    <Compile Include="Dialogs\DialogMessage\DialogResultMessage.cs" />
+    <Compile Include="Dialogs\DialogService\DialogResult.cs" />
+    <Compile Include="Dialogs\DialogService\DialogService.cs" />
+    <Compile Include="Dialogs\DialogService\DialogViewModelBase .cs" />
+    <Compile Include="Dialogs\DialogService\DialogWindow.xaml.cs">
+      <DependentUpon>DialogWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DialogSetting\DialogResultSetting.cs" />
+    <Compile Include="Dialogs\DialogSetting\DialogSettingView.xaml.cs">
+      <DependentUpon>DialogSettingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DialogSetting\DialogSettingViewModel.cs" />
+    <Compile Include="Dialogs\DialogYesNo\DialogResultYesNo.cs" />
+    <Compile Include="Dialogs\DialogYesNo\DialogResultYesNoEnum.cs" />
+    <Compile Include="Dialogs\DialogYesNo\DialogYesNoView.xaml.cs">
+      <DependentUpon>DialogYesNoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DialogYesNo\DialogYesNoViewModel.cs" />
+    <Compile Include="Exceptions\FBGAException.cs" />
+    <Compile Include="Exceptions\InitMWLSException.cs" />
+    <Compile Include="Exceptions\MException.cs" />
+    <Compile Include="Exceptions\MWLSException.cs" />
+    <Compile Include="Exceptions\TurnOnMWLSException.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\ModuleChannel.cs" />
+    <Compile Include="Settings\SettingBase.cs" />
+    <Compile Include="Settings\SettingACC.cs" />
+    <Compile Include="Settings\SettingECG.cs" />
+    <Compile Include="Settings\SettingFBGA.cs" />
+    <Compile Include="Settings\SettingMIC.cs" />
+    <Compile Include="Settings\SettingPPG.cs" />
+    <Compile Include="Settings\SettingProgram.cs" />
+    <Compile Include="Settings\SettingService.cs" />
+    <Compile Include="Settings\SettingWindow.cs" />
+    <Compile Include="ViewModel\OpenGLRender\IntArray.cs" />
+    <Compile Include="ViewModel\OpenGLRender\OpenGLDispatcher.cs" />
+    <Compile Include="ViewModel\OpenGLRender\OpenGlDisplay.cs" />
+    <Compile Include="ViewModel\TreeViewViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="View\TreeView.xaml.cs">
+      <DependentUpon>TreeView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Dialogs\DialogMessage\DialogMessageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\DialogService\DialogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\DialogSetting\DialogSettingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\DialogYesNo\DialogYesNoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainWindowView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="View\MainWindowView.xaml.cs">
+      <DependentUpon>MainWindowView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="View\TreeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Policardiograph_App_TemporaryKey.pfx" />
+    <None Include="View\app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dependencies\SharpGL.dll" />
+    <None Include="Dependencies\SharpGL.SceneGraph.dll" />
+    <None Include="Dependencies\SharpGL.WPF.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Play.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\PlayHovered.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\StopRecordingHovered.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\StopRecording.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\StopPlayingHovered.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\StopPlaying.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SettingsHovered.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\RefreshConnectionHovered.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\RefreshConnection.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\RecordHovered.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Record.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Error.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Info.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Policardiograph_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\LightBulbOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\LightBulbOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\LightBulbOnHovered.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\LightBulbOffHovered.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

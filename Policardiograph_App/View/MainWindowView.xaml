@@ -1,0 +1,434 @@
+﻿<Window x:Class="Policardiograph_App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SharpGL WPF Application" Height="939" Width="1152" 
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:viewModel="clr-namespace:Policardiograph_App.ViewModel"
+        xmlns:views="clr-namespace:Policardiograph_App.View"
+        xmlns:sharpGL="clr-namespace:SharpGL.WPF;assembly=SharpGL.WPF" WindowState="Maximized"  Name="mainWindow" 
+        Icon="/Policardiograph_App;component/Images/Policardiograph_icon.ico">
+        
+    <Window.InputBindings>
+        <KeyBinding Key="D" Modifiers="Control" Command="{Binding DebugEnableCommand}"/>               
+    </Window.InputBindings>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding WindowClosing}" CommandParameter="{Binding}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Window.Resources>
+        <Image x:Key="Play" Height="40" Width="40" Opacity="{Binding PlayImageOpacity}" Name="imageButtonPlay" >
+            <Image.Style>
+                <Style TargetType="{x:Type Image}">                    
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Playing}" Value="False"/>
+                                <Condition Binding="{Binding ElementName= buttonPlay_toolbar, Path=IsMouseOver}" Value="True" />                                           
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/PlayHovered.png" />                            
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Playing}" Value="False"/>
+                                <Condition Binding="{Binding ElementName= buttonPlay_toolbar, Path=IsMouseOver}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/Play.png" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Playing}" Value="True"/>
+                                <Condition Binding="{Binding ElementName= buttonPlay_toolbar, Path=IsMouseOver}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/StopPlayingHovered.png" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Playing}" Value="True"/>
+                                <Condition Binding="{Binding ElementName= buttonPlay_toolbar, Path=IsMouseOver}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/StopPlaying.png" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Playing}" Value="True"/>
+                                <Condition Binding="{Binding ElementName= buttonPlay_toolbar, Path=IsReleased}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/StopPlaying.png" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Playing}" Value="False"/>
+                                <Condition Binding="{Binding ElementName= buttonPlay_toolbar, Path=IsReleased}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/Play.png" />
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
+        <Image x:Key="Record" Height="40" Width="40" Opacity="{Binding RecordImageOpacity}" Name="imageButtonRecord" >
+            <Image.Style>
+                <Style TargetType="{x:Type Image}">
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Recording}" Value="False"/>
+                                <Condition Binding="{Binding ElementName= buttonRecord_toolbar, Path=IsMouseOver}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/RecordHovered.png" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Recording}" Value="False"/>
+                                <Condition Binding="{Binding ElementName= buttonRecord_toolbar, Path=IsMouseOver}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/Record.png" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Recording}" Value="True"/>
+                                <Condition Binding="{Binding ElementName= buttonRecord_toolbar, Path=IsMouseOver}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/StopRecordingHovered.png" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Recording}" Value="True"/>
+                                <Condition Binding="{Binding ElementName= buttonRecord_toolbar, Path=IsMouseOver}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/StopRecording.png" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Recording}" Value="True"/>
+                                <Condition Binding="{Binding ElementName= buttonRecord_toolbar, Path=IsReleased}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/StopRecording.png" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Recording}" Value="False"/>
+                                <Condition Binding="{Binding ElementName= buttonRecord_toolbar, Path=IsReleased}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/Record.png" />
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
+        <Image x:Key="RefreshConnection" Height="40" Width="40" Opacity="{Binding RefreshConnectionImageOpacity}" Name="imageButtonRefreshConnection" >
+            <Image.Style>
+                <Style TargetType="{x:Type Image}">
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>                                
+                                <Condition Binding="{Binding ElementName= buttonRefreshConnection_toolbar, Path=IsMouseOver}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/RefreshConnectionHovered.png" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>                                
+                                <Condition Binding="{Binding ElementName= buttonRefreshConnection_toolbar, Path=IsMouseOver}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/RefreshConnection.png" />
+                        </MultiDataTrigger>                                                                      
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
+        <Image x:Key="Settings" Height="40" Width="40" Opacity="{Binding SettingImageOpacity}" Name="imageSettings" >
+            <Image.Style>
+                <Style TargetType="{x:Type Image}">
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding ElementName= buttonSettings_toolbar, Path=IsMouseOver}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/SettingsHovered.png" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding ElementName= buttonSettings_toolbar, Path=IsMouseOver}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/Settings.png" />
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
+        <Image x:Key="MWLSTurnOn" Height="40" Width="40" Opacity="{Binding MWLSTurnOnImageOpacity}" >
+            <Image.Style>
+                <Style TargetType="{x:Type Image}">
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding MWLSTurnedOn}" Value="False"/>
+                                <Condition Binding="{Binding ElementName= buttonMWLSTurnOn_toolbar, Path=IsMouseOver}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/LightBulbOffHovered.png" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding MWLSTurnedOn}" Value="False"/>
+                                <Condition Binding="{Binding ElementName= buttonMWLSTurnOn_toolbar, Path=IsMouseOver}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/LightBulbOff.png" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding MWLSTurnedOn}" Value="True"/>
+                                <Condition Binding="{Binding ElementName= buttonMWLSTurnOn_toolbar, Path=IsMouseOver}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/LightBulbOnHovered.png" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding MWLSTurnedOn}" Value="True"/>
+                                <Condition Binding="{Binding ElementName= buttonMWLSTurnOn_toolbar, Path=IsMouseOver}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/LightBulbOn.png" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding MWLSTurnedOn}" Value="True"/>
+                                <Condition Binding="{Binding ElementName= buttonMWLSTurnOn_toolbar, Path=IsReleased}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/LightBulbOn.png" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding MWLSTurnedOn}" Value="False"/>
+                                <Condition Binding="{Binding ElementName= buttonMWLSTurnOn_toolbar, Path=IsReleased}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/LightBulbOff.png" />
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+    </Window.Resources>
+    
+    <Grid>
+        <StackPanel>
+            <!-- The OpenGL control provides a OpenGL drawing surface. -->
+
+            <!--Menu HorizontalAlignment="Stretch" Name="menu1" VerticalAlignment="Top" Height="23">
+
+                <MenuItem Header="File" />
+                <MenuItem Header="Edit" />
+                <MenuItem Header="Settings" />
+            </Menu-->
+            <ToolBar Height="Auto" Name="mtoolBar" IsEnabled="True">
+                <ToolBar.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Foreground" Value="Red"/>
+                        <Setter Property="IsEnabled" Value="True"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="#FFADADAD"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ToolBar.Resources>
+                <Button  Height="45" Name="buttonPlay_toolbar" Command="{Binding PlayCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Width="45" ToolTip="{Binding ButtonPlayTooltip}" IsEnabled="{Binding ButtonPlayIsEnabled}"  >
+                    <Button.Content>
+                        <DynamicResource ResourceKey="Play"/>
+                    </Button.Content>                    
+                </Button>
+                <Button  Height="45" Name="buttonRecord_toolbar" Width="45" ToolTip="{Binding ButtonRecordTooltip}" IsEnabled="{Binding ButtonRecordIsEnabled}" Command="{Binding RecordCommand}">
+                    <Button.Content>
+                        <DynamicResource ResourceKey="Record"/>
+                    </Button.Content>
+                </Button>
+                <Separator></Separator>
+                <Button  Height="45" Name="buttonRefreshConnection_toolbar" Width="45" ToolTip="Refresh Connection" Command="{Binding RefreshConnectionCommand}" IsEnabled="{Binding ButtonRefreshConnectionIsEnabled}" >
+                    <DynamicResource ResourceKey="RefreshConnection"/>
+                </Button>
+                <Button  Height="45" Name="buttonSettings_toolbar" Width="45"  SnapsToDevicePixels="True" ToolTip="Settings" Command="{Binding SettingCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" IsEnabled="{Binding ButtonSettingIsEnabled}">
+                    <DynamicResource ResourceKey="Settings"/>
+                </Button>
+                
+                <Button  Height="45" Name="buttonMWLSTurnOn_toolbar" Width="45" ToolTip="{Binding ButtonMWLSTurnOnTooltip}" IsEnabled="{Binding ButtonMWLSTurnOnIsEnabled}" Command="{Binding MWLSTurnOnCommand}">
+                    <Button.Content>
+                        <DynamicResource ResourceKey="MWLSTurnOn"/>
+                    </Button.Content>
+                </Button>
+                <Separator></Separator>
+                <ComboBox  ItemsSource="{Binding ComboBoxProfiles}" SelectedItem="{Binding ComboboxSelectedItem}" IsSynchronizedWithCurrentItem="True" Name="comboboxProfile_toolbar" Height="10" Width="150" BorderThickness="1" BorderBrush="Black"  ToolTip="Device profile" >
+                   
+
+                </ComboBox>
+                <Separator></Separator>
+                <Label  Visibility="{Binding Path=RecordingTimerLabelIsVisible, Converter={StaticResource BoolToVisConverter}}" Width="40" Height="40" Content="{Binding RecordingTimerLabelText}" FontSize="20" HorizontalContentAlignment="Center" Foreground="#FFFF4E00" VerticalContentAlignment="Center" FontWeight="Bold" FontStretch="Normal" Background="#FFFEFF0A" />
+                <ProgressBar Width="150"  Height="20" Value="{Binding ProgressBarValue}" Visibility="{Binding Path=ProgressBarIsVisible, Converter={StaticResource BoolToVisConverter}}"/>
+                <Button Name="buttonSaveFileTest"  Height="45" Width="55" IsEnabled="True" Command="{Binding SaveFileTestCommand}" Visibility="{Binding Path=SaveFileButtonIsVisible, Converter={StaticResource BoolToVisConverter}}">
+                    <Button.Content>
+                        SaveFile
+                    </Button.Content>
+                </Button>
+                
+            </ToolBar>
+
+            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="550" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="160" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <ContentControl Grid.Column="0" >
+                    <views:TreeView x:Name="Tree"/>
+                </ContentControl>
+                <StatusBar Grid.Row="1" Grid.ColumnSpan="2" >
+                    
+                    <StatusBar.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="140"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+                        </ItemsPanelTemplate>
+                    </StatusBar.ItemsPanel>
+                    <StatusBarItem Grid.Column="1">
+                        <TextBlock Width="140" Text="{Binding BatteryVoltageLabelText}" Visibility="{Binding Path=BatteryVoltageLabelIsVisible, Converter={StaticResource BoolToVisConverter}}"/>
+                    </StatusBarItem>
+
+                    <Separator Grid.Column="2"/>
+
+                    <StatusBarItem Grid.Column="3" Background="{Binding Path=BatteryPercentageLabelColor}">
+                        <TextBlock Width="100" Text="{Binding BatteryPercentageLabelText}" Foreground="White" Visibility="{Binding Path=BatteryPercentageLabelIsVisible, Converter={StaticResource BoolToVisConverter}}"/>
+                    </StatusBarItem>
+                    
+                    
+                    
+                </StatusBar>
+                <DataGrid ItemsSource="{Binding ModuleDescriptions}" Visibility="{Binding Path=DataGridIsVisible, Converter={StaticResource BoolToVisConverter}}" CanUserResizeColumns="False" AutoGenerateColumns="False" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Module name" Binding="{Binding ModuleName}" Width="150"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto"/>
+                        <DataGridTextColumn Header="Number of channels" Binding="{Binding NumberOfChannels}" Width="Auto"/>
+                        <DataGridTextColumn Header="Sample rate (Hz)" Binding="{Binding SampleRate}" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="530"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <ToggleButton Width="50" Content="User" IsChecked="{Binding ToogleButtonUserIsChecked}"></ToggleButton>
+                        <ToggleButton Width="50" Content="FBGA" IsChecked="{Binding ToogleButtonFBGAIsChecked}"></ToggleButton>
+                        <ToggleButton Width="50" Content="MIC"  IsChecked="{Binding ToogleButtonMICIsChecked}"></ToggleButton>
+                        <ToggleButton Width="50" Content="ECG1" IsChecked="{Binding ToogleButtonECG1IsChecked}"></ToggleButton>
+                        <ToggleButton Width="50" Content="ECG2" IsChecked="{Binding ToogleButtonECG2IsChecked}"></ToggleButton>
+                        <ToggleButton Width="50" Content="ACC"  IsChecked="{Binding ToogleButtonACCIsChecked}"></ToggleButton>
+                        <ToggleButton Width="50" Content="PPG"  IsChecked="{Binding ToogleButtonPPGIsChecked}"></ToggleButton>
+                    </StackPanel>
+
+                    <ScrollViewer Grid.Row="1">
+                        <Grid>
+                            <Grid.RowDefinitions>                                
+                                <RowDefinition Height="20"/>
+                                <RowDefinition Height="150"/>
+                                <RowDefinition Height="20"/>
+                                <RowDefinition Height="20"/>
+                                <RowDefinition Height="150"/>
+                                <RowDefinition Height="20"/>
+                                <RowDefinition Height="20"/>
+                                <RowDefinition Height="150"/>
+                                <RowDefinition Height="20"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" Height="Auto" FontWeight="Bold" FontFamily="Segoe UI" Name="textBlockTittleDisplay1" Text="{Binding LabelDisplay1Tittle}"/>
+                            <TextBlock Text="{Binding LabelDisplay1YAxis}" VerticalAlignment="Center" Grid.Row="1" Width="Auto" Name="textBlockYAxisDisplay1">
+                                    <TextBlock.LayoutTransform>
+                                        <RotateTransform Angle="-90"></RotateTransform>
+                                    </TextBlock.LayoutTransform>
+                            </TextBlock>
+                            <TextBlock HorizontalAlignment="Center" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Height="Auto" Name="textBlockXAxisDisplay1" Text="{Binding LabelDisplay1XAxis}" />
+                            <sharpGL:OpenGLControl  Grid.Column="1" Grid.Row="1"  HorizontalAlignment="Stretch" Name="openGLControl1"  Resized="openGLControl1_Resized" OpenGLInitialized="openGLControl1_Initialized" IsEnabled="True" Visibility="Visible" />
+
+                            <TextBlock HorizontalAlignment="Center" Grid.Row="0" Grid.Column="3" VerticalAlignment="Top" Height="Auto" FontWeight="Bold" FontFamily="Segoe UI" Name="textBlockTittleDisplay2" Text="{Binding LabelDisplay2Tittle}"/>
+                            <TextBlock Text="{Binding LabelDisplay2YAxis}" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" Width="Auto" Name="textBlockYAxisDisplay2">
+                                    <TextBlock.LayoutTransform>
+                                        <RotateTransform Angle="-90"></RotateTransform>
+                                    </TextBlock.LayoutTransform>
+                            </TextBlock>
+                            <TextBlock HorizontalAlignment="Center" Grid.Column="3" Grid.Row="2" VerticalAlignment="Top" Height="Auto" Name="textBlockXAxisDisplay2" Text="{Binding LabelDisplay2XAxis}"/>
+                            <sharpGL:OpenGLControl Grid.Column="3" Grid.Row="1"  HorizontalAlignment="Stretch" Name="openGLControl2"  Resized="openGLControl2_Resized" OpenGLInitialized="openGLControl2_Initialized"/>
+
+                            <TextBlock HorizontalAlignment="Center" Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" Height="Auto" FontWeight="Bold" FontFamily="Segoe UI" Name="textBlockTittleDisplay3" Text="{Binding LabelDisplay3Tittle}"/>
+                            <TextBlock Text="{Binding LabelDisplay3YAxis}" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0" Width="Auto" Name="textBlockYAxisDisplay3">
+                                    <TextBlock.LayoutTransform>
+                                        <RotateTransform Angle="-90"></RotateTransform>
+                                    </TextBlock.LayoutTransform>
+                            </TextBlock>
+                            <TextBlock HorizontalAlignment="Center" Grid.Column="1" Grid.Row="5" VerticalAlignment="Top" Height="Auto" Name="textBlockXAxisDisplay3" Text="{Binding LabelDisplay3XAxis}"/>
+                            <sharpGL:OpenGLControl Grid.Column="1" Grid.Row="4"  HorizontalAlignment="Stretch" Name="openGLControl3"  Resized="openGLControl3_Resized" OpenGLInitialized="openGLControl3_Initialized"/>
+
+                            <TextBlock HorizontalAlignment="Center" Grid.Row="3" Grid.Column="3" VerticalAlignment="Top" Height="Auto" FontWeight="Bold" FontFamily="Segoe UI" Name="textBlockTittleDisplay4" Text="{Binding LabelDisplay4Tittle}"/>
+                            <TextBlock Text="{Binding LabelDisplay4YAxis}" VerticalAlignment="Center" Grid.Row="4" Grid.Column="2" Width="Auto" Name="textBlockYAxisDisplay4">
+                                    <TextBlock.LayoutTransform>
+                                        <RotateTransform Angle="-90"></RotateTransform>
+                                    </TextBlock.LayoutTransform>
+                            </TextBlock>
+                            <TextBlock HorizontalAlignment="Center" Grid.Column="3" Grid.Row="5" VerticalAlignment="Top" Height="Auto" Name="textBlockXAxisDisplay4" Text="{Binding LabelDisplay4XAxis}"/>
+                            <sharpGL:OpenGLControl Grid.Column="3" Grid.Row="4"  HorizontalAlignment="Stretch" Name="openGLControl4"  Resized="openGLControl4_Resized" OpenGLInitialized="openGLControl4_Initialized"/>
+
+
+                            <TextBlock HorizontalAlignment="Center" Grid.Row="6" Grid.Column="1" VerticalAlignment="Top" Height="Auto" FontWeight="Bold" FontFamily="Segoe UI" Name="textBlockTittleDisplay5" Text="{Binding LabelDisplay5Tittle}"/>
+                            <TextBlock Text="{Binding LabelDisplay5YAxis}" VerticalAlignment="Center" Grid.Row="7" Grid.Column="0" Width="Auto" Name="textBlockYAxisDisplay5">
+                                    <TextBlock.LayoutTransform>
+                                        <RotateTransform Angle="-90"></RotateTransform>
+                                    </TextBlock.LayoutTransform>
+                            </TextBlock>
+                            <TextBlock HorizontalAlignment="Center" Grid.Column="1" Grid.Row="8" VerticalAlignment="Top" Height="Auto" Name="textBlockXAxisDisplay5" Text="{Binding LabelDisplay5XAxis}"/>
+                            <sharpGL:OpenGLControl Grid.Column="1" Grid.Row="7"  HorizontalAlignment="Stretch" Name="openGLControl5"  Resized="openGLControl5_Resized" OpenGLInitialized="openGLControl5_Initialized"/>
+
+                            <TextBlock HorizontalAlignment="Center" Grid.Row="6" Grid.Column="3" VerticalAlignment="Top" Height="Auto" FontWeight="Bold" FontFamily="Segoe UI" Name="textBlockTittleDisplay6" Text="{Binding LabelDisplay6Tittle}"/>
+                            <TextBlock Text="{Binding LabelDisplay6YAxis}" VerticalAlignment="Center" Grid.Row="7" Grid.Column="2" Width="Auto" Name="textBlockYAxisDisplay6">
+                                    <TextBlock.LayoutTransform>
+                                        <RotateTransform Angle="-90"></RotateTransform>
+                                    </TextBlock.LayoutTransform>
+                            </TextBlock>
+                            <TextBlock HorizontalAlignment="Center" Grid.Column="3" Grid.Row="8" 
+                                       VerticalAlignment="Top" Height="Auto" Name="textBlockXAxisDisplay6" Text="{Binding LabelDisplay6XAxis}" />
+                            <sharpGL:OpenGLControl Grid.Column="3" Grid.Row="7"  HorizontalAlignment="Stretch" Name="openGLControl6"  Resized="openGLControl6_Resized" OpenGLInitialized="openGLControl6_Initialized"/>
+
+                        </Grid>
+
+                    </ScrollViewer>
+                </Grid>
+                
+                    
+                    
+
+
+
+            </Grid>
+        </StackPanel>
+        <!-- The OpenGL control provides a OpenGL drawing surface. -->
+        <!--sharpGL:OpenGLControl 
+            Name="openGLControl" OpenGLDraw="openGLControl_OpenGLDraw" 
+            OpenGLInitialized="openGLControl_OpenGLInitialized" Resized="openGLControl_Resized"
+            DrawFPS="True" RenderContextType="FBO" FrameRate="20"-->
+        
+    </Grid>
+</Window>

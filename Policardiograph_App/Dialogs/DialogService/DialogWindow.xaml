@@ -1,0 +1,7 @@
+﻿<Window x:Class="Policardiograph_App.Dialogs.DialogService.DialogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding DialogTittle}" Height="300" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+        SizeToContent="WidthAndHeight">
+    <ContentPresenter x:Name="ContentPresenter" Content="{Binding}"></ContentPresenter>
+</Window>

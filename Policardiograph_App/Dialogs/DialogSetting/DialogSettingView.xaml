@@ -1,0 +1,249 @@
+﻿<UserControl x:Class="Policardiograph_App.Dialogs.DialogSetting.DialogSettingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="500">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="500" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="500"/>
+            <RowDefinition Height="50"/>                
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="0">
+            <TabItem Header="Window" IsEnabled="{Binding TabWindowEnabled}" IsSelected="{Binding TabWindowSelected}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>                        
+                        <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="20"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="1" Grid.Column="1" Content="Time axis duration" HorizontalAlignment="Right" />
+                    <ComboBox Grid.Row="1" Grid.Column="3"  ItemsSource="{Binding TimeAxis}" SelectedItem="{Binding TimeAxisSelectedItem}" IsSynchronizedWithCurrentItem="True" Height="20" Width="50" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Right" />
+                    <Label Grid.Row="2" Grid.Column="1" Content="USER Tab Display1" HorizontalAlignment="Right"  />
+                    <ComboBox Grid.Row="2" Grid.Column="3"  ItemsSource="{Binding UserTabDisplay1}" SelectedItem="{Binding UserTabDisplay1SelectedItem}" IsSynchronizedWithCurrentItem="True" Height="20" Width="150" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Right" />
+                    <Label Grid.Row="3" Grid.Column="1" Content="USER Tab Display2" HorizontalAlignment="Right"  />
+                    <ComboBox Grid.Row="3" Grid.Column="3"  ItemsSource="{Binding UserTabDisplay2}" SelectedItem="{Binding UserTabDisplay2SelectedItem}" IsSynchronizedWithCurrentItem="True" Height="20" Width="150" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Right" />
+                    <Label Grid.Row="4" Grid.Column="1" Content="USER Tab Display3" HorizontalAlignment="Right" />
+                    <ComboBox Grid.Row="4" Grid.Column="3"  ItemsSource="{Binding UserTabDisplay3}" SelectedItem="{Binding UserTabDisplay3SelectedItem}" IsSynchronizedWithCurrentItem="True" Height="20" Width="150" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Right" />
+                    <Label Grid.Row="5" Grid.Column="1" Content="USER Tab Display4" HorizontalAlignment="Right" />
+                    <ComboBox Grid.Row="5" Grid.Column="3"  ItemsSource="{Binding UserTabDisplay4}" SelectedItem="{Binding UserTabDisplay4SelectedItem}" IsSynchronizedWithCurrentItem="True" Height="20" Width="150" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Right" />
+                    <Label Grid.Row="6" Grid.Column="1" Content="USER Tab Display5" HorizontalAlignment="Right" />
+                    <ComboBox Grid.Row="6" Grid.Column="3"  ItemsSource="{Binding UserTabDisplay5}" SelectedItem="{Binding UserTabDisplay5SelectedItem}" IsSynchronizedWithCurrentItem="True" Height="20" Width="150" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Right" />
+                    <Label Grid.Row="7" Grid.Column="1" Content="USER Tab Display6" HorizontalAlignment="Right" />
+                    <ComboBox Grid.Row="7" Grid.Column="3"  ItemsSource="{Binding UserTabDisplay6}" SelectedItem="{Binding UserTabDisplay6SelectedItem}" IsSynchronizedWithCurrentItem="True" Height="20" Width="150" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Right" />
+                </Grid>
+                
+            </TabItem>
+            <TabItem Header="FBGA" IsEnabled="{Binding TabFBGAEnabled}" IsSelected="{Binding TabFBGASelected}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="20"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="1" Grid.Column="1" Content="Integration time" HorizontalAlignment="Right" />
+                    <ComboBox Grid.Row="1" Grid.Column="3"  ItemsSource="{Binding FbgaIntegrationTime}" SelectedItem="{Binding FbgaIntegrationTimeSelectedItem}" IsSynchronizedWithCurrentItem="True" Height="20" Width="70" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Right" />
+                    <Label Grid.Row="1" Grid.Column="4" Content="us"/>
+                    <Label Grid.Row="2" Grid.Column="1" Content="SLED Power" HorizontalAlignment="Right" />
+                    <ComboBox Grid.Row="2" Grid.Column="3"  ItemsSource="{Binding SLEDPower}" SelectedItem="{Binding SLEDPowerSelectedItem}" IsSynchronizedWithCurrentItem="True" Height="20" Width="70" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Right" />
+                    <Label Grid.Row="2" Grid.Column="4" Content="mW"/>
+                    <Grid Grid.Row="3" Grid.ColumnSpan="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="240"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="High Dynamic Range Mode" HorizontalAlignment="Right"/>
+                        <RadioButton GroupName="FBGA_Mode" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding HighDynamicRangeModeChecked}"/>
+                        <Label Grid.Column="2" Content="High Sensitivity Mode" HorizontalAlignment="Right"/>
+                        <RadioButton GroupName="FBGA_Mode" Grid.Column="3"  HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding HighSensitivityModeChecked}"/>
+                        
+                    </Grid>
+                    
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="MIC" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="20"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="1" Grid.ColumnSpan="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="240"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="MIC1 Mute" HorizontalAlignment="Right"/>
+                        <CheckBox Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding MIC1MuteSelected}"/>
+                        <Label Content="MIC2 Mute" HorizontalAlignment="Right" Grid.Column="2"/>
+                        <CheckBox Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding MIC2MuteSelected}"/>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.ColumnSpan="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="240"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="MIC3 Mute" HorizontalAlignment="Right"/>
+                        <CheckBox Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding MIC3MuteSelected}"/>
+                        <Label Content="MIC4 Mute" HorizontalAlignment="Right" Grid.Column="2"/>
+                        <CheckBox Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding MIC4MuteSelected}"/>
+                    </Grid>
+                    <Label Visibility="Hidden" Content="High pass filter" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right"/>
+                    <CheckBox Visibility="Hidden" Grid.Column="2" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding HighPassFilterSelected}"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="ECG" >
+                <Grid Grid.Row="1" Grid.ColumnSpan="6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="20"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Content="Gain"/>
+                    <ComboBox Grid.Row="1" Grid.Column="3"  ItemsSource="{Binding EcgGain}" SelectedItem="{Binding EcgGainSelectedItem}" IsSynchronizedWithCurrentItem="True" Height="20" Width="70" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Right" />
+                    <Label Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" Content="CH4 mode"/>
+                    <ComboBox Grid.Row="2" Grid.Column="3"  ItemsSource="{Binding ECGCH4mode}" SelectedItem="{Binding ECGCH4modeSelectedItem}" IsSynchronizedWithCurrentItem="True" Height="20" Width="150" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Right" />
+                    <Label Grid.Column="1" Grid.Row="4" HorizontalAlignment="Right" Content="RLD SENSP"/>
+                    <Label Grid.Column="1" Grid.Row="6" HorizontalAlignment="Right" Content="RLD SENSN"/>
+                    <Grid Grid.Row="3" Grid.Column="3" Grid.RowSpan="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="20"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Content="8" HorizontalAlignment="Center"/>
+                        <Label Grid.Column="1" Content="7" HorizontalAlignment="Center"/>
+                        <Label Grid.Column="2" Content="6" HorizontalAlignment="Center"/>
+                        <Label Grid.Column="3" Content="5" HorizontalAlignment="Center"/>
+                        <Label Grid.Column="4" Content="4" HorizontalAlignment="Center"/>
+                        <Label Grid.Column="5" Content="3" HorizontalAlignment="Center"/>
+                        <Label Grid.Column="6" Content="2" HorizontalAlignment="Center"/>
+                        <Label Grid.Column="7" Content="1" HorizontalAlignment="Center"/>
+                        <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding SensP8Selected}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="1" Grid.Row="1" IsChecked="{Binding SensP7Selected}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="2" Grid.Row="1" IsChecked="{Binding SensP6Selected}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="3" Grid.Row="1" IsChecked="{Binding SensP5Selected}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="4" Grid.Row="1" IsChecked="{Binding SensP4Selected}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="5" Grid.Row="1" IsChecked="{Binding SensP3Selected}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="6" Grid.Row="1" IsChecked="{Binding SensP2Selected}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="7" Grid.Row="1" IsChecked="{Binding SensP1Selected}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                        <Label Grid.Row="2" Grid.Column="0" Content="8" HorizontalAlignment="Center"/>
+                        <Label Grid.Row="2" Grid.Column="1" Content="7" HorizontalAlignment="Center"/>
+                        <Label Grid.Row="2" Grid.Column="2" Content="6" HorizontalAlignment="Center"/>
+                        <Label Grid.Row="2" Grid.Column="3" Content="5" HorizontalAlignment="Center"/>
+                        <Label Grid.Row="2" Grid.Column="4" Content="4" HorizontalAlignment="Center"/>
+                        <Label Grid.Row="2" Grid.Column="5" Content="3" HorizontalAlignment="Center"/>
+                        <Label Grid.Row="2" Grid.Column="6" Content="2" HorizontalAlignment="Center"/>
+                        <Label Grid.Row="2" Grid.Column="7" Content="1" HorizontalAlignment="Center"/>
+                        <CheckBox Grid.Column="0" Grid.Row="3" IsChecked="{Binding SensN8Selected}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="1" Grid.Row="3" IsChecked="{Binding SensN7Selected}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="2" Grid.Row="3" IsChecked="{Binding SensN6Selected}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="3" Grid.Row="3" IsChecked="{Binding SensN5Selected}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="4" Grid.Row="3" IsChecked="{Binding SensN4Selected}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="5" Grid.Row="3" IsChecked="{Binding SensN3Selected}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="6" Grid.Row="3" IsChecked="{Binding SensN2Selected}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="7" Grid.Row="3" IsChecked="{Binding SensN1Selected}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                </Grid>
+                
+            </TabItem>
+            <TabItem Header="ACC" >
+                
+            </TabItem>
+            <TabItem Header="PPG" >
+                <Label Content="ACA"/>
+            </TabItem>
+        </TabControl>
+        <DockPanel Grid.Row="1" Background="WhiteSmoke">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <Button Command="{Binding OKCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="2" Height="30" Width="80" Content="OK" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Button Command="{Binding CancelCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Height="30" Width="80" Content="Cancel" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Grid>
+                                              
+        </DockPanel>
+            
+    </Grid>
+</UserControl>

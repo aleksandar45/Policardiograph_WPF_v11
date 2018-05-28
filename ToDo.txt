@@ -1,0 +1,8 @@
+1. Proveriti u App zasto se desava nekad da prikom sinhronog snimanja (recording-a) se ne otvori fajl za cuvanje podataka, recimo ECG.dat. 
+To se manifestuje bacanjem exception-a Null Reference Object kada se poziva binaryWriter.Close odnosno binaryWriter.Flush prilikom poziva funkcije stopRecording.
+2. Proveriti zasto se ECG modul zaglupi nekad pa nece da se konektuje na Ethernet
+3. Proveriti zasto ACC_PPG modul ponekad vise nije moguce startovati, osnosno nije moguce pokrenuti citanje podataka.
+4. Resiti problem slanja podataka sa dva kanala oba PPG senzora. Problem se sastoji u tome sto je trenutno moguce slati ukupno samo tri kanala.
+5. Proveriti zasto se prilikom maksimalnog opterecenja sistema openGl controle ne ponasaju kako bi trebalo, odnosno zoom na ACC i PPG openGL controli ne funkcionise bas najbolje.
+6. Prilikom logovanja exception-a u fajl navesti u kom delu koda je bacen exception.
+ 

@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="Policardiograph_App.View.TreeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewModel="clr-namespace:Policardiograph_App.ViewModel"
+             xmlns:p ="clr-namespace:Policardiograph_App.Properties"             
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    
+    <Grid>
+        <TreeView ItemsSource="{Binding Modules}" Height="{Binding Width, ElementName=Root_Grid, Mode=Default}" Name="treeView1" HorizontalAlignment="Stretch">
+            <TreeView.ItemContainerStyle>                
+                <Style TargetType="{x:Type TreeViewItem}">
+                    
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                    <Setter Property="IsEnabled" Value="{Binding IsEnabled, Mode=TwoWay}" />
+                    <Setter Property="Focusable" Value="{Binding Focusable, Mode=TwoWay}" />
+                    <Setter Property="FontWeight" Value="Normal" />
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="FontWeight" Value="Bold" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TreeView.ItemContainerStyle>
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Channels}" DataType="{x:Type viewModel:Module}">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="12" Height="12" BorderBrush="#00000000" Background="{Binding ModuleStatusColor}"></Border>
+                        <Label Content="{Binding ModuleName}"/>
+                    </StackPanel>
+                    <HierarchicalDataTemplate.ItemTemplate>                        
+                        <HierarchicalDataTemplate ><!--ItemsSource="{Binding ChannelDescriptions}" DataType="{x:Type viewModel:Channel}"-->
+                            <Label Content="{Binding ChannelName}"/>
+                            <!--HierarchicalDataTemplate.ItemTemplate>
+                                <HierarchicalDataTemplate ItemsSource="{Binding ChannelDescriptions}" DataType="{x:Type viewModel:Description}">
+                                </HierarchicalDataTemplate>
+                            </HierarchicalDataTemplate.ItemTemplate-->
+                        </HierarchicalDataTemplate>
+                    </HierarchicalDataTemplate.ItemTemplate>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+    </Grid>
+</UserControl>

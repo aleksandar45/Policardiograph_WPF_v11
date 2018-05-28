@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="Policardiograph_App.Dialogs.DialogMessage.DialogMessageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"             
+             mc:Ignorable="d" 
+             d:DesignHeight="180" d:DesignWidth="500">
+    <UserControl.Resources>
+        <Image x:Key="Play" Height="16" Width="16" Opacity="1" >
+            <Image.Style>                
+                <Style TargetType="{x:Type Image}" >
+                    <Setter Property="Source" Value="/Policardiograph_App;component/Images/Record.png"/>
+                </Style>
+            </Image.Style>
+        </Image>
+        <BitmapImage x:Key="Record" UriSource="/Policardiograph_App;component/Images/cancel.png">
+            
+        </BitmapImage>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="30"/>            
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+            <Image Source="{Binding ImageSource}" VerticalAlignment="Center" Height="30" Width="30"/>
+            <Label Width="10"/>
+            <TextBlock FontSize="12"  HorizontalAlignment="Center" Text="{Binding Message}" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="400" />
+        </StackPanel>
+        <DockPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Background="WhiteSmoke" >
+            <Button VerticalAlignment="Bottom"  Width="80" Height="30" Content="OK" Command="{Binding OKCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">                
+            </Button>
+        </DockPanel>
+        <DockPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Background="WhiteSmoke">
+            
+        </DockPanel>
+        
+    </Grid>
+</UserControl>
