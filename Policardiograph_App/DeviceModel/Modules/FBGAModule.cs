@@ -429,7 +429,17 @@ namespace Policardiograph_App.DeviceModel.Modules
                     dwLineCount = DLL_Get_TotalSpectrumCount();
                     if (dwPreviousLineCount > dwLineCount)
                     {
-                        dwLineIndex = 0;
+                        DLL_Stop_Continuously_Acquire_Spectra();
+                        if (DLL_Start_Continuously_Acquire_Spectra(false))
+                        {
+                            wPeakCount[0] = 0;
+                            wProcessCode = 0;
+                            dwLineIndex = 0;
+                            dwLineCount = 0;
+                            dwPreviousLineCount = 0;
+                        }
+                        else break;
+                           
                     }
                     dwPreviousLineCount = dwLineCount;
                     while (dwLineIndex < dwLineCount)
