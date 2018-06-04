@@ -23,6 +23,7 @@ namespace Policardiograph_App.DeviceModel.Modules.TCPMessages
             if (micSetting.MuteMIC3) temp_byte |= 0x04;
             if (micSetting.MuteMIC4) temp_byte |= 0x08;
             if (micSetting.HighPassFilter) temp_byte |= 0x10;
+            if (micSetting.SyncTest) temp_byte |= 0x20;
             StringBuilder sb = new StringBuilder(2);
             sb.Append(byte2ascii[(temp_byte >> 4) & 0x0F]);
             sb.Append(byte2ascii[temp_byte & 0x0F]);

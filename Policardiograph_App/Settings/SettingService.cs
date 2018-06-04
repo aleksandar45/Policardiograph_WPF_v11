@@ -169,6 +169,7 @@ namespace Policardiograph_App.Settings
                 bool mic3Mute = false;
                 bool mic4Mute = false;
                 bool highPassFilter = false;
+                bool syncTest = false;
                 string moduleString = "";
                 string moduleAxis = "";
                 string moduleDescription = "";
@@ -185,6 +186,7 @@ namespace Policardiograph_App.Settings
                         if (String.Compare(line, 0, "MICSetting_MIC3Mute=True", 0, 24) == 0) mic3Mute = true;
                         if (String.Compare(line, 0, "MICSetting_MIC4Mute=True", 0, 24) == 0) mic4Mute = true;
                         if (String.Compare(line, 0, "MICSetting_HighPassFilter=True", 0, 30) == 0) highPassFilter = true;
+                        if (String.Compare(line, 0, "MICSetting_SyncTest=True", 0, 24) == 0) syncTest = true;
                         if (String.Compare(line, 0, "MICSetting_NoChannel=", 0, 21) == 0) chNumber = Int32.Parse(line.Substring(21));
                         if (String.Compare(line, 0, "MICSetting_DisplayAxis", 0, 22) == 0) moduleAxis = line.Substring(24);
                         if (String.Compare(line, 0, "MICSetting_DisplayDescription", 0, 29) == 0) moduleDescription = line.Substring(31);
@@ -206,7 +208,7 @@ namespace Policardiograph_App.Settings
 
                 sr.Close();
 
-                return new SettingMIC(chNumber,mic1Mute,mic2Mute,mic3Mute,mic4Mute,highPassFilter, selectedMICDisplays);
+                return new SettingMIC(chNumber,mic1Mute,mic2Mute,mic3Mute,mic4Mute,highPassFilter,syncTest, selectedMICDisplays);
 
 
             }
@@ -528,7 +530,9 @@ namespace Policardiograph_App.Settings
                 line = String.Format("MICSetting_MIC4Mute={0}", settingMIC.MuteMIC4);
                 sw.WriteLine(line);
                 line = String.Format("MICSetting_HighPassFilter={0}", settingMIC.HighPassFilter);
-                sw.WriteLine(line+newline); 
+                sw.WriteLine(line);
+                line = String.Format("MICSetting_SyncTest={0}", settingMIC.SyncTest);
+                sw.WriteLine(line+newline);               
 
                 line = String.Format("//ECGSetting");
                 sw.WriteLine(line);

@@ -105,7 +105,7 @@ namespace Policardiograph_App.Dialogs.DialogSetting
             if (String.Compare("ACC", display6Selection.ModuleName) == 0) UserTabDisplay6SelectedItem = "ACC_CH" + display6Selection.ChannelNumber.ToString() + display6Selection.Axis;
             if (String.Compare("PPG", display6Selection.ModuleName) == 0) UserTabDisplay6SelectedItem = "PPG_CH" + display6Selection.ChannelNumber.ToString() + display6Selection.Axis;
             #endregion       
-            this.settingWindow = settingWindow;            
+            this.settingWindow = settingWindow;               
             TabWindowEnabled = settingWindow.TabEnabled;
             if (!TabWindowEnabled) TabFBGASelected = true;
 
@@ -120,6 +120,7 @@ namespace Policardiograph_App.Dialogs.DialogSetting
             MIC3MuteSelected = settingMIC.MuteMIC3;
             MIC4MuteSelected = settingMIC.MuteMIC4;
             HighPassFilterSelected = settingMIC.HighPassFilter;
+            MICSyncSelected = settingMIC.SyncTest;
 
             this.settingECG = settingECG;
             EcgGainSelectedItem = settingECG.Gain.ToString();
@@ -787,6 +788,20 @@ namespace Policardiograph_App.Dialogs.DialogSetting
                 OnPropertyChanged("HighPassFilterSelected");
             }
         }
+        private bool _micSyncSelected;
+        public bool MICSyncSelected
+        {
+            get
+            {
+                return _micSyncSelected;
+            }
+            set
+            {
+                _micSyncSelected = value;
+                OnPropertyChanged("MICSyncSelected");
+
+            }
+        }
 
         #endregion
 
@@ -1107,7 +1122,7 @@ namespace Policardiograph_App.Dialogs.DialogSetting
             SettingWindow windowResult = new SettingWindow(Int32.Parse(TimeAxisSelectedItem), settingWindow.UserTabDisplays, displaySelection, settingWindow.TabEnabled);
 
             SettingFBGA fbgaResult = new SettingFBGA(settingFBGA.NumberOfChannels, integrationTime, sledPower, _highDynamicRangeMode, settingFBGA.SelectedDisplays);
-            SettingMIC micResult = new SettingMIC(settingMIC.NumberOfChannels, MIC1MuteSelected, MIC2MuteSelected, MIC3MuteSelected, MIC4MuteSelected, HighPassFilterSelected, settingMIC.SelectedDisplays);
+            SettingMIC micResult = new SettingMIC(settingMIC.NumberOfChannels, MIC1MuteSelected, MIC2MuteSelected, MIC3MuteSelected, MIC4MuteSelected, HighPassFilterSelected, MICSyncSelected, settingMIC.SelectedDisplays);
             SettingECG ecgResult = new SettingECG(settingECG.NumberOfChannels, false, ecgGain, ECGCH4modeSelectedItem, sensP, sensN,settingECG.SelectedDisplays);
             this.CloseDialogWithResult(parameter as Window, new DialogResultSetting(windowResult, fbgaResult,micResult,ecgResult));
 

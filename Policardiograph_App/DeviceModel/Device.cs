@@ -655,7 +655,7 @@ namespace Policardiograph_App.DeviceModel
             {
                 if (fbgaStateUpdated)
                 {
-                    if(mainWindowVeiwModel.FBGAModuleStatus != USBModuleStatusEnumType.TRANSFERING);
+                    if(mainWindowVeiwModel.FBGAModuleStatus != USBModuleStatusEnumType.TRANSFERING)
                         mainWindowVeiwModel.FBGAModuleStatus = USBModuleStatusEnumType.TRANSFERING;
                     fbgaModule.fbgaMwlsStatus = USBDeviceStateEnum.TRANSFERING;
                 }
@@ -832,8 +832,7 @@ namespace Policardiograph_App.DeviceModel
             FileStream binaryReader;
            
 
-            byte[] byte_array = new byte[500];
-            string idle_string = "|HEAD|IDLE_PACKETxxx";
+            byte[] byte_array = new byte[500];         
             string data_string = "|HEAD|DATA_PACKETxxx";
             string line;
 
@@ -1540,6 +1539,8 @@ namespace Policardiograph_App.DeviceModel
                             else mainWindowVeiwModel.SettingMICData.MuteMIC4 = false;
                             if ((tmpBuffer[5] & 0x01) == 0x01) mainWindowVeiwModel.SettingMICData.HighPassFilter = true;
                             else mainWindowVeiwModel.SettingMICData.HighPassFilter = false;
+                            if ((tmpBuffer[5] & 0x02) == 0x02) mainWindowVeiwModel.SettingMICData.SyncTest = true;
+                            else mainWindowVeiwModel.SettingMICData.SyncTest = false;
 
                             micRingBuffer.Read(tmpBuffer, 40);
                             batteryValueUint = (uint)(tmpBuffer[0] * 256 + tmpBuffer[1]);
