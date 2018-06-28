@@ -915,7 +915,7 @@ namespace Policardiograph_App.DeviceModel
                                 current_block_num = byte_array[22] * 256 + byte_array[23];
                                 if ((previous_block_num != current_block_num) && mic_data_read_started)
                                 {
-                                    if (((previous_block_num + 1) % 16) != current_block_num)
+                                    if (((previous_block_num + 1) % 8) != current_block_num)
                                     {
                                         mic_error = 2;
                                         break;
@@ -1014,7 +1014,7 @@ namespace Policardiograph_App.DeviceModel
                                 current_block_num = byte_array[22] * 256 + byte_array[23];
                                 if ((previous_block_num != current_block_num) && ecg_data_read_started)
                                 {
-                                    if (((previous_block_num + 1) % 16) != current_block_num)
+                                    if (((previous_block_num + 1) % 8) != current_block_num)
                                     {
                                         ecg_error = 2;
                                         break;
@@ -1182,7 +1182,7 @@ namespace Policardiograph_App.DeviceModel
                                 current_block_num = byte_array[22] * 256 + byte_array[23];
                                 if ((previous_block_num != current_block_num) && acc_ppg_data_read_started)
                                 {
-                                    if (((previous_block_num + 1) % 16) != current_block_num)
+                                    if (((previous_block_num + 1) % 8) != current_block_num)
                                     {
                                         acc_ppg_error = 2;
                                         break;
