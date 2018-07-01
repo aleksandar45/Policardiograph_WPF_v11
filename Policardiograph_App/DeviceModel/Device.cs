@@ -175,8 +175,15 @@ namespace Policardiograph_App.DeviceModel
                 this.mainWindowVeiwModel.deviceSettingUpdate += UpdateSettings;
                 this.mainWindowVeiwModel.deviceMWLSTurnOnExecute += TurnOnOffMWLS;
 
-                path = System.IO.Directory.GetCurrentDirectory();
+                path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 if (!path.EndsWith("\\")) path += "\\";
+                if (!Directory.Exists(path + "PolicardiographApp"))
+                {
+                    Directory.CreateDirectory(path + "PolicardiographApp");
+                }
+                path += "PolicardiographApp\\";
+
+
                 savePath = mainWindowVeiwModel.SettingProgramData.SavePath;
                 if (!savePath.EndsWith("\\")) savePath += "\\";
                 directoryName = string.Format("{0:yyyy-MM-dd}", DateTime.Now);
@@ -246,6 +253,7 @@ namespace Policardiograph_App.DeviceModel
                 Log log = new Log();
                 log.LogMessageToFile(TAG + "Device:" + ex.Message);
             }
+            finally { }
             
         }
         public bool TurnOnOffMWLS(string profile, bool vmMWLSTurnedOn) {
