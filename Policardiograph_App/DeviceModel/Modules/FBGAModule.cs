@@ -14,7 +14,8 @@ namespace Policardiograph_App.DeviceModel.Modules
     public class FBGAModule: USBModule
     {
         #region DLL_Import
-        const string dllRelativePath = "..\\..\\Dependencies\\Sense2020Dll.dll";
+        const string dllRelativePath = "Sense2020Dll.dll";
+        //const string dllRelativePath = "..\\..\\Dependencies\\Sense2020Dll.dll";
         //C:\\Users\\Djole\\Documents\\Visual Studio 2010\\Projects\\Policardiograph_WPF\\Policardiograph_WPF\\Dependencies\\Sense2020Dll.dll"
         [DllImport(dllRelativePath, CallingConvention = CallingConvention.StdCall)]
         [return: MarshalAs(UnmanagedType.I4)]
