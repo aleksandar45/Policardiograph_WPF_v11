@@ -1741,7 +1741,7 @@ namespace Policardiograph_App.DeviceModel
                                         glD.accChannels.ElementAt(5).intArray[glD.accIndex] = int16_temp;
 
                                         // acc3x
-                                        int16_temp = (Int16)(dataBuffer[i + 6 * acc_ppg_no_data / 12] * 256 + dataBuffer[i + 6 * acc_ppg_no_data / 12 + 1]);
+                                       /* int16_temp = (Int16)(dataBuffer[i + 6 * acc_ppg_no_data / 12] * 256 + dataBuffer[i + 6 * acc_ppg_no_data / 12 + 1]);
                                         glD.accChannels.ElementAt(6).intArray[glD.accIndex] = int16_temp;
 
                                         //acc3y
@@ -1750,7 +1750,7 @@ namespace Policardiograph_App.DeviceModel
 
                                         //acc3z
                                         int16_temp = (Int16)(dataBuffer[i + 8 * acc_ppg_no_data / 12] * 256 + dataBuffer[i + 8 * acc_ppg_no_data / 12 + 1]);
-                                        glD.accChannels.ElementAt(8).intArray[glD.accIndex] = int16_temp;
+                                        glD.accChannels.ElementAt(8).intArray[glD.accIndex] = int16_temp;*/
 
                                         glD.accIndex++;
 
