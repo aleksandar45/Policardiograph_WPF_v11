@@ -1007,7 +1007,7 @@ namespace Policardiograph_App.DeviceModel
 
                         while (binaryReader.Position < binaryReader.Length)
                         {
-                            binaryReader.Read(byte_array, 0, 151);
+                            binaryReader.Read(byte_array, 0, 152);
                             if (compareByteArrayAndString(byte_array, data_string, 20))
                             {
                                 //==========================Check number of data=======================//
@@ -1174,7 +1174,7 @@ namespace Policardiograph_App.DeviceModel
 
                         while (binaryReader.Position < binaryReader.Length)
                         {
-                            binaryReader.Read(byte_array, 0, 151);
+                            binaryReader.Read(byte_array, 0, 152);
 
                             if (compareByteArrayAndString(byte_array, data_string, 20))
                             {
