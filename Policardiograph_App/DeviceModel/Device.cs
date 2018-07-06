@@ -1261,7 +1261,7 @@ namespace Policardiograph_App.DeviceModel
                                                 int16_temp = (Int16)(byte_array[120] * 256 + byte_array[121]);      //PPG2g
                                                 acc_ppg_data[acc_ppg_data_index++] = int16_temp;
                                                 int16_temp = (Int16)(byte_array[122] * 256 + byte_array[123]);      //PPG2r
-                                                acc_ppg_data[acc_ppg_data_index++] = int16_temp;
+                                                acc_ppg_data[acc_ppg_data_index++] =  int16_temp;
                                             }
 
 
