@@ -29,8 +29,14 @@ namespace Policardiograph_App.DeviceModel.Modules
             this.clientSocket = clientSocket;
             this.ringBuffer = ringBuffer;
             this.fileName = fileName;
-            path = System.IO.Directory.GetCurrentDirectory();
+
+            path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (!path.EndsWith("\\")) path += "\\";
+            if (!Directory.Exists(path + "PolicardiographApp"))
+            {
+                Directory.CreateDirectory(path + "PolicardiographApp");
+            }
+            path += "PolicardiographApp\\";            
 
             thread = new Thread(doProcessing);
             thread.IsBackground = true;

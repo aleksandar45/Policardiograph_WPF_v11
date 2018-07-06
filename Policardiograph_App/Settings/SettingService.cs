@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Globalization;
 using Policardiograph_App.Settings;
 
@@ -10,12 +11,11 @@ namespace Policardiograph_App.Settings
     public static class SettingService
     {
         public static SettingProgram LoadSettingProgram() {
-            string path = System.IO.Directory.GetCurrentDirectory();
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (!path.EndsWith("\\")) path += "\\";
-
+            path += "PolicardiographApp\\";
             try
             {
-                System.IO.StreamReader sr = System.IO.File.OpenText(path + "Settings.dat");
                 string savePath = "";
                 float battMax = 0.0f;
                 float battMin = 0.0f;
@@ -23,6 +23,16 @@ namespace Policardiograph_App.Settings
                 int battLastTime = 0;
 
                 string line;
+
+                if (!File.Exists(path + "Settings.dat")) {                    
+                    savePath = path + "Sync_Capture";
+                    if (!Directory.Exists(savePath)) {
+                        Directory.CreateDirectory(path);
+                    }
+                    return new SettingProgram(savePath, 6.2f, 5.0f, 5.2f, 0);
+                }
+                StreamReader sr = File.OpenText(path + "Settings.dat");
+
                 while (!sr.EndOfStream)
                 {
                     line = sr.ReadLine();
@@ -34,32 +44,51 @@ namespace Policardiograph_App.Settings
                         if (String.Compare(line, 0, "ProgramSetting_BattAlert", 0, 24) == 0) battAlert = (float)Double.Parse(line.Substring(25), CultureInfo.InvariantCulture);
                         if (String.Compare(line, 0, "ProgramSetting_BattLastTime", 0, 27) == 0) battLastTime = Int32.Parse(line.Substring(28));
                     }
-                   
+
                 }
                 sr.Close();
-                if (!System.IO.Directory.Exists(savePath)) throw new Exception("Save directory declared in Setting.dat does not exist. Create it manualy or change save path!!!");
-                return new SettingProgram(savePath,battMax,battMin,battAlert,battLastTime);
+                if (!Directory.Exists(savePath))
+                {
+                    Directory.CreateDirectory(path + "Sync_Capture");
+                    savePath = path + "Sync_Capture";
+                }
+                // if (!System.IO.Directory.Exists(savePath)) throw new Exception("Save directory declared in Setting.dat does not exist. Create it manualy or change save path!!!");
+                return new SettingProgram(savePath, battMax, battMin, battAlert, battLastTime);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 throw ex;
             }
+            finally { }
         }
         public static SettingWindow LoadSettingWindow() {
-            string path = System.IO.Directory.GetCurrentDirectory();
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (!path.EndsWith("\\")) path += "\\";
-
+            path += "PolicardiographApp\\";
             try
             {
-                System.IO.StreamReader sr = System.IO.File.OpenText(path + "Settings.dat");
-                int timeAxis=0;
-                int moduleChannel=0;
-                string moduleString="";
+                int timeAxis = 0;
+                int moduleChannel = 0;
+                string moduleString = "";
                 string moduleAxis = "";
-                string moduleDescription= "";
+                string moduleDescription = "";
                 List<ModuleChannel> selectedUserDisplays = new List<ModuleChannel>();
                 List<ModuleChannel> selectedFBGADisplays = new List<ModuleChannel>();
+                List<int> channelNumbers = new List<int>() { 2, 1, 12, 2, 2 };
 
                 string line;
+                if (!File.Exists(path + "Settings.dat"))
+                {
+                    selectedUserDisplays.Add(new ModuleChannel("MIC", 1, "", ""));
+                    selectedUserDisplays.Add(new ModuleChannel("ECG", 1, "", ""));
+                    selectedUserDisplays.Add(new ModuleChannel("FBGA", 1, "", ""));
+                    selectedUserDisplays.Add(new ModuleChannel("ACC", 1, "", "z"));
+                    selectedUserDisplays.Add(new ModuleChannel("PPG", 1, "", ""));
+                    selectedUserDisplays.Add(new ModuleChannel("PPG", 2, "", ""));
+                    return new SettingWindow(4, channelNumbers, selectedUserDisplays, true);
+                }
+                StreamReader sr = File.OpenText(path + "Settings.dat");
+               
                 while (!sr.EndOfStream)
                 {
                     line = sr.ReadLine();
@@ -84,8 +113,7 @@ namespace Policardiograph_App.Settings
                 }
 
 
-                sr.Close();
-                List<int> channelNumbers = new List<int>() { 2, 1, 12, 2, 2 };
+                sr.Close();                
                 return new SettingWindow(timeAxis, channelNumbers, selectedUserDisplays, true);
 
 
@@ -97,23 +125,29 @@ namespace Policardiograph_App.Settings
         }
         public static SettingFBGA LoadSettingFBGA()
         {
-            string path = System.IO.Directory.GetCurrentDirectory();
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (!path.EndsWith("\\")) path += "\\";
-
+            path += "PolicardiographApp\\";
             try
             {
-                System.IO.StreamReader sr = System.IO.File.OpenText(path + "Settings.dat");
                 int chNumber = 0;
-                int integrationTime = 0;                
+                int integrationTime = 0;
                 int moduleChannel = 0;
                 double sledPower = 0;
                 bool highDynamicRange = false;
                 string moduleString = "";
                 string moduleAxis = "";
-                string moduleDescription = "";                
+                string moduleDescription = "";
                 List<ModuleChannel> selectedFBGADisplays = new List<ModuleChannel>();
 
                 string line;
+                if (!File.Exists(path + "Settings.dat"))
+                {
+                    selectedFBGADisplays.Add(new ModuleChannel("MIC", 1, "", ""));
+                    return new SettingFBGA(1, 500, 2.0, true, selectedFBGADisplays);
+                }
+                StreamReader sr = File.OpenText(path + "Settings.dat");
+                
                 while (!sr.EndOfStream)
                 {
                     line = sr.ReadLine();                    
@@ -156,12 +190,11 @@ namespace Policardiograph_App.Settings
         }
         public static SettingMIC LoadSettingMIC()
         {
-            string path = System.IO.Directory.GetCurrentDirectory();
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (!path.EndsWith("\\")) path += "\\";
-
+            path += "PolicardiographApp\\";
             try
             {
-                System.IO.StreamReader sr = System.IO.File.OpenText(path + "Settings.dat");
                 int chNumber = 0;
                 int moduleChannel = 0;
                 bool mic1Mute = false;
@@ -169,12 +202,21 @@ namespace Policardiograph_App.Settings
                 bool mic3Mute = false;
                 bool mic4Mute = false;
                 bool highPassFilter = false;
+                bool syncTest = false;
                 string moduleString = "";
                 string moduleAxis = "";
                 string moduleDescription = "";
                 List<ModuleChannel> selectedMICDisplays = new List<ModuleChannel>();
 
                 string line;
+                if (!File.Exists(path + "Settings.dat"))
+                {
+                    selectedMICDisplays.Add(new ModuleChannel("MIC", 1, "", ""));
+                    selectedMICDisplays.Add(new ModuleChannel("MIC", 2, "", ""));
+                    return new SettingMIC(2, false, false, true, false, false, false, selectedMICDisplays);
+                }
+                System.IO.StreamReader sr = System.IO.File.OpenText(path + "Settings.dat");
+               
                 while (!sr.EndOfStream)
                 {
                     line = sr.ReadLine();
@@ -185,6 +227,7 @@ namespace Policardiograph_App.Settings
                         if (String.Compare(line, 0, "MICSetting_MIC3Mute=True", 0, 24) == 0) mic3Mute = true;
                         if (String.Compare(line, 0, "MICSetting_MIC4Mute=True", 0, 24) == 0) mic4Mute = true;
                         if (String.Compare(line, 0, "MICSetting_HighPassFilter=True", 0, 30) == 0) highPassFilter = true;
+                        if (String.Compare(line, 0, "MICSetting_SyncTest=True", 0, 24) == 0) syncTest = true;
                         if (String.Compare(line, 0, "MICSetting_NoChannel=", 0, 21) == 0) chNumber = Int32.Parse(line.Substring(21));
                         if (String.Compare(line, 0, "MICSetting_DisplayAxis", 0, 22) == 0) moduleAxis = line.Substring(24);
                         if (String.Compare(line, 0, "MICSetting_DisplayDescription", 0, 29) == 0) moduleDescription = line.Substring(31);
@@ -206,7 +249,7 @@ namespace Policardiograph_App.Settings
 
                 sr.Close();
 
-                return new SettingMIC(chNumber,mic1Mute,mic2Mute,mic3Mute,mic4Mute,highPassFilter, selectedMICDisplays);
+                return new SettingMIC(chNumber,mic1Mute,mic2Mute,mic3Mute,mic4Mute,highPassFilter,syncTest, selectedMICDisplays);
 
 
             }
@@ -218,12 +261,11 @@ namespace Policardiograph_App.Settings
         }
         public static SettingECG LoadSettingECG()
         {
-            string path = System.IO.Directory.GetCurrentDirectory();
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (!path.EndsWith("\\")) path += "\\";
-
+            path += "PolicardiographApp\\";
             try
             {
-                System.IO.StreamReader sr = System.IO.File.OpenText(path + "Settings.dat");
                 int chNumber = 0;
                 int moduleChannel = 0;
                 int gain = 0;
@@ -237,6 +279,20 @@ namespace Policardiograph_App.Settings
                 List<ModuleChannel> selectedECGDisplays = new List<ModuleChannel>();
 
                 string line;
+                if (!File.Exists(path + "Settings.dat"))
+                {
+                    selectedECGDisplays.Add(new ModuleChannel("ECG", 1, "LA-RA", ""));
+                    selectedECGDisplays.Add(new ModuleChannel("ECG", 2, "LA-LL", ""));
+                    selectedECGDisplays.Add(new ModuleChannel("ECG", 3, "V1", ""));
+                    selectedECGDisplays.Add(new ModuleChannel("ECG", 4, "V2", ""));
+                    selectedECGDisplays.Add(new ModuleChannel("ECG", 5, "V3", ""));
+                    selectedECGDisplays.Add(new ModuleChannel("ECG", 6, "V4", ""));
+                    selectedECGDisplays.Add(new ModuleChannel("ECG", 7, "V5", ""));
+                    selectedECGDisplays.Add(new ModuleChannel("ECG", 8, "V6", ""));
+                    return new SettingECG(8, false, 2, "NORMAL", 3, 3, selectedECGDisplays);
+                }
+                StreamReader sr = File.OpenText(path + "Settings.dat");
+                
                 while (!sr.EndOfStream)
                 {
                     line = sr.ReadLine();
@@ -284,20 +340,27 @@ namespace Policardiograph_App.Settings
         }
         public static SettingACC LoadSettingACC()
         {
-            string path = System.IO.Directory.GetCurrentDirectory();
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (!path.EndsWith("\\")) path += "\\";
-
+            path += "PolicardiographApp\\";
             try
             {
-                System.IO.StreamReader sr = System.IO.File.OpenText(path + "Settings.dat");
                 int chNumber = 0;
                 int moduleChannel = 0;
                 string moduleString = "";
                 string moduleAxis = "";
-                string moduleDescription = "";                
+                string moduleDescription = "";
                 List<ModuleChannel> selectedACCDisplays = new List<ModuleChannel>();
 
                 string line;
+                if (!File.Exists(path + "Settings.dat"))
+                {
+                    selectedACCDisplays.Add(new ModuleChannel("ACC", 1, "", "z"));
+                    selectedACCDisplays.Add(new ModuleChannel("ACC", 2, "", "z"));
+                    return new SettingACC(2, selectedACCDisplays);
+                }
+                StreamReader sr = File.OpenText(path + "Settings.dat");
+               
                 while (!sr.EndOfStream)
                 {
                     line = sr.ReadLine();
@@ -336,12 +399,11 @@ namespace Policardiograph_App.Settings
         }
         public static SettingPPG LoadSettingPPG()
         {
-            string path = System.IO.Directory.GetCurrentDirectory();
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (!path.EndsWith("\\")) path += "\\";
-
+            path += "PolicardiographApp\\";
             try
             {
-                System.IO.StreamReader sr = System.IO.File.OpenText(path + "Settings.dat");
                 int chNumber = 0;
                 int moduleChannel = 0;
                 string moduleString = "";
@@ -350,6 +412,16 @@ namespace Policardiograph_App.Settings
                 List<ModuleChannel> selectedPPGDisplays = new List<ModuleChannel>();
 
                 string line;
+                if (!File.Exists(path + "Settings.dat"))
+                {
+                    selectedPPGDisplays.Add(new ModuleChannel("PPG", 1, "", "P1-green"));
+                    selectedPPGDisplays.Add(new ModuleChannel("PPG", 2, "", "P1-red"));
+                    selectedPPGDisplays.Add(new ModuleChannel("PPG", 3, "", "P2-green"));
+                    selectedPPGDisplays.Add(new ModuleChannel("PPG", 4, "", "P2-red"));
+                    return new SettingPPG(4, selectedPPGDisplays);
+                }
+                StreamReader sr = File.OpenText(path + "Settings.dat");
+               
                 while (!sr.EndOfStream)
                 {
                     line = sr.ReadLine();
@@ -389,9 +461,10 @@ namespace Policardiograph_App.Settings
         public static void StoreSetting(SettingProgram settingProgram, SettingWindow settingWindow, SettingFBGA settingFBGA, 
             SettingMIC settingMIC, SettingECG settingECG, SettingACC settingACC, SettingPPG settingPPG) {
 
-            string path = System.IO.Directory.GetCurrentDirectory();
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (!path.EndsWith("\\")) path += "\\";
-            System.IO.StreamWriter sw = System.IO.File.CreateText(path + "Settings.dat");
+            path += "PolicardiographApp\\";
+            StreamWriter sw = File.CreateText(path + "Settings.dat");
 
             try
             {
@@ -528,7 +601,9 @@ namespace Policardiograph_App.Settings
                 line = String.Format("MICSetting_MIC4Mute={0}", settingMIC.MuteMIC4);
                 sw.WriteLine(line);
                 line = String.Format("MICSetting_HighPassFilter={0}", settingMIC.HighPassFilter);
-                sw.WriteLine(line+newline); 
+                sw.WriteLine(line);
+                line = String.Format("MICSetting_SyncTest={0}", settingMIC.SyncTest);
+                sw.WriteLine(line+newline);               
 
                 line = String.Format("//ECGSetting");
                 sw.WriteLine(line);

@@ -175,8 +175,15 @@ namespace Policardiograph_App.DeviceModel
                 this.mainWindowVeiwModel.deviceSettingUpdate += UpdateSettings;
                 this.mainWindowVeiwModel.deviceMWLSTurnOnExecute += TurnOnOffMWLS;
 
-                path = System.IO.Directory.GetCurrentDirectory();
+                path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 if (!path.EndsWith("\\")) path += "\\";
+                if (!Directory.Exists(path + "PolicardiographApp"))
+                {
+                    Directory.CreateDirectory(path + "PolicardiographApp");
+                }
+                path += "PolicardiographApp\\";
+
+
                 savePath = mainWindowVeiwModel.SettingProgramData.SavePath;
                 if (!savePath.EndsWith("\\")) savePath += "\\";
                 directoryName = string.Format("{0:yyyy-MM-dd}", DateTime.Now);
@@ -246,6 +253,7 @@ namespace Policardiograph_App.DeviceModel
                 Log log = new Log();
                 log.LogMessageToFile(TAG + "Device:" + ex.Message);
             }
+            finally { }
             
         }
         public bool TurnOnOffMWLS(string profile, bool vmMWLSTurnedOn) {
@@ -655,7 +663,7 @@ namespace Policardiograph_App.DeviceModel
             {
                 if (fbgaStateUpdated)
                 {
-                    if(mainWindowVeiwModel.FBGAModuleStatus != USBModuleStatusEnumType.TRANSFERING);
+                    if(mainWindowVeiwModel.FBGAModuleStatus != USBModuleStatusEnumType.TRANSFERING)
                         mainWindowVeiwModel.FBGAModuleStatus = USBModuleStatusEnumType.TRANSFERING;
                     fbgaModule.fbgaMwlsStatus = USBDeviceStateEnum.TRANSFERING;
                 }
@@ -832,8 +840,7 @@ namespace Policardiograph_App.DeviceModel
             FileStream binaryReader;
            
 
-            byte[] byte_array = new byte[500];
-            string idle_string = "|HEAD|IDLE_PACKETxxx";
+            byte[] byte_array = new byte[500];         
             string data_string = "|HEAD|DATA_PACKETxxx";
             string line;
 
@@ -916,7 +923,7 @@ namespace Policardiograph_App.DeviceModel
                                 current_block_num = byte_array[22] * 256 + byte_array[23];
                                 if ((previous_block_num != current_block_num) && mic_data_read_started)
                                 {
-                                    if (((previous_block_num + 1) % 16) != current_block_num)
+                                    if (((previous_block_num + 1) % 8) != current_block_num)
                                     {
                                         mic_error = 2;
                                         break;
@@ -1015,7 +1022,7 @@ namespace Policardiograph_App.DeviceModel
                                 current_block_num = byte_array[22] * 256 + byte_array[23];
                                 if ((previous_block_num != current_block_num) && ecg_data_read_started)
                                 {
-                                    if (((previous_block_num + 1) % 16) != current_block_num)
+                                    if (((previous_block_num + 1) % 8) != current_block_num)
                                     {
                                         ecg_error = 2;
                                         break;
@@ -1183,7 +1190,7 @@ namespace Policardiograph_App.DeviceModel
                                 current_block_num = byte_array[22] * 256 + byte_array[23];
                                 if ((previous_block_num != current_block_num) && acc_ppg_data_read_started)
                                 {
-                                    if (((previous_block_num + 1) % 16) != current_block_num)
+                                    if (((previous_block_num + 1) % 8) != current_block_num)
                                     {
                                         acc_ppg_error = 2;
                                         break;
@@ -1540,9 +1547,12 @@ namespace Policardiograph_App.DeviceModel
                             else mainWindowVeiwModel.SettingMICData.MuteMIC4 = false;
                             if ((tmpBuffer[5] & 0x01) == 0x01) mainWindowVeiwModel.SettingMICData.HighPassFilter = true;
                             else mainWindowVeiwModel.SettingMICData.HighPassFilter = false;
+                           
 
                             micRingBuffer.Read(tmpBuffer, 40);
                             batteryValueUint = (uint)(tmpBuffer[0] * 256 + tmpBuffer[1]);
+                            if ((tmpBuffer[2] & 0x02) == 0x02) mainWindowVeiwModel.SettingMICData.SyncTest = true;
+                            else mainWindowVeiwModel.SettingMICData.SyncTest = false;
 
 
                             micRingBuffer.Read(tmpBuffer, 5);
@@ -1731,7 +1741,7 @@ namespace Policardiograph_App.DeviceModel
                                         glD.accChannels.ElementAt(5).intArray[glD.accIndex] = int16_temp;
 
                                         // acc3x
-                                        int16_temp = (Int16)(dataBuffer[i + 6 * acc_ppg_no_data / 12] * 256 + dataBuffer[i + 6 * acc_ppg_no_data / 12 + 1]);
+                                       /* int16_temp = (Int16)(dataBuffer[i + 6 * acc_ppg_no_data / 12] * 256 + dataBuffer[i + 6 * acc_ppg_no_data / 12 + 1]);
                                         glD.accChannels.ElementAt(6).intArray[glD.accIndex] = int16_temp;
 
                                         //acc3y
@@ -1740,7 +1750,7 @@ namespace Policardiograph_App.DeviceModel
 
                                         //acc3z
                                         int16_temp = (Int16)(dataBuffer[i + 8 * acc_ppg_no_data / 12] * 256 + dataBuffer[i + 8 * acc_ppg_no_data / 12 + 1]);
-                                        glD.accChannels.ElementAt(8).intArray[glD.accIndex] = int16_temp;
+                                        glD.accChannels.ElementAt(8).intArray[glD.accIndex] = int16_temp;*/
 
                                         glD.accIndex++;
 

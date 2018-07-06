@@ -32,7 +32,6 @@ namespace Policardiograph_App
         /// </summary>
         /// 
         Device device;
-
         public MainWindow()
         {
             try

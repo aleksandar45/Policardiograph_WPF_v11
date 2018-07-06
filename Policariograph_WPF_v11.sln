@@ -1,7 +1,11 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2000
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Policardiograph_App", "Policardiograph_App\Policardiograph_App.csproj", "{8D981716-BF43-4905-AE6C-6835E1422AF3}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupApp", "SetupApp\SetupApp.vdproj", "{6041BD7C-13E8-46A8-8196-9BD6E333E9A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,8 +17,13 @@ Global
 		{8D981716-BF43-4905-AE6C-6835E1422AF3}.Debug|x86.Build.0 = Debug|x86
 		{8D981716-BF43-4905-AE6C-6835E1422AF3}.Release|x86.ActiveCfg = Release|x86
 		{8D981716-BF43-4905-AE6C-6835E1422AF3}.Release|x86.Build.0 = Release|x86
+		{6041BD7C-13E8-46A8-8196-9BD6E333E9A5}.Debug|x86.ActiveCfg = Debug
+		{6041BD7C-13E8-46A8-8196-9BD6E333E9A5}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {16D874A2-F82C-426B-AF81-4091807EAE66}
 	EndGlobalSection
 EndGlobal

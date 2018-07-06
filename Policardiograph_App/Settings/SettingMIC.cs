@@ -7,7 +7,7 @@ namespace Policardiograph_App.Settings
 {
     public class SettingMIC: SettingBase
     {
-        public SettingMIC(int noOfChannels,bool mic1Mute, bool mic2Mute, bool mic3Mute, bool mic4Mute, bool highPassFilter, List<ModuleChannel> selectedDisplays) {
+        public SettingMIC(int noOfChannels,bool mic1Mute, bool mic2Mute, bool mic3Mute, bool mic4Mute, bool highPassFilter,bool syncTest, List<ModuleChannel> selectedDisplays) {
             SelectedDisplays = selectedDisplays;
             NumberOfChannels = noOfChannels;
             MuteMIC1 = mic1Mute;
@@ -15,6 +15,7 @@ namespace Policardiograph_App.Settings
             MuteMIC3 = mic3Mute;
             MuteMIC4 = mic4Mute;
             HighPassFilter = highPassFilter;
+            SyncTest = syncTest;
         }
         public int NumberOfChannels
         {
@@ -47,6 +48,11 @@ namespace Policardiograph_App.Settings
             set;
         }
         public bool HighPassFilter
+        {
+            get;
+            set;
+        }
+        public bool SyncTest
         {
             get;
             set;

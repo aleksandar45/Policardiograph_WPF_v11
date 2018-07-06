@@ -15,6 +15,22 @@ namespace Policardiograph_App
             if (!path.EndsWith("\\")) path += "\\";
             return path;
         }
+        public string GetMyDocumentsPath() {
+            string myDocumentsPath =  Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (!myDocumentsPath.EndsWith("\\")) myDocumentsPath += "\\";
+            try
+            {
+                if (!Directory.Exists(myDocumentsPath + "PolicardiographApp"))
+                {
+
+                    Directory.CreateDirectory(myDocumentsPath + "PolicardiographApp");
+                }
+            }
+            catch (Exception ex) {}
+            finally{}
+            myDocumentsPath += "PolicardiographApp\\";
+            return myDocumentsPath;
+        }
 
         [Conditional("DEBUG")]
         public void LogMessageToFile(string msg)
@@ -22,7 +38,7 @@ namespace Policardiograph_App
             try
             {
                 System.IO.StreamWriter sw = System.IO.File.AppendText(
-                    GetTempPath() + "Log.txt");
+                    GetMyDocumentsPath() + "Log.txt");
                 try
                 {
 
