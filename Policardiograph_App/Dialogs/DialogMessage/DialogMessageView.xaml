@@ -7,15 +7,12 @@
              d:DesignHeight="180" d:DesignWidth="500">
     <UserControl.Resources>
         <Image x:Key="Play" Height="16" Width="16" Opacity="1" >
-            <Image.Style>                
+            <Image.Style>
                 <Style TargetType="{x:Type Image}" >
                     <Setter Property="Source" Value="/Policardiograph_App;component/Images/Record.png"/>
                 </Style>
             </Image.Style>
         </Image>
-        <BitmapImage x:Key="Record" UriSource="/Policardiograph_App;component/Images/cancel.png">
-            
-        </BitmapImage>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

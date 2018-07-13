@@ -846,6 +846,7 @@ namespace Policardiograph_App.DeviceModel
 
             int seq_num = 0, previous_seq_num = 0; 
             int current_block_num = 0, previous_block_num = 0;
+            int previous_block_samples_num = 0, current_block_samples_num = 0;
             int num_of_data;
 
             int mic_data_counter = 0, mic_i = 0;                        
@@ -859,6 +860,7 @@ namespace Policardiograph_App.DeviceModel
             int[] ecg_block_lengths = new int[70];
             int[] ecg_block_numbers = new int[70];
             int[] ecg_data = new int[10000];
+            int[] ecg_previousData = new int[40];
             int ecg_error = 0;
             double syncEcgTime = 0;
             bool ecg_data_read_started = false;
@@ -908,7 +910,7 @@ namespace Policardiograph_App.DeviceModel
                         streamWriter.WriteLine(line);
                         while (binaryReader.Position < binaryReader.Length)
                         {
-                            binaryReader.Read(byte_array, 0, 71);
+                            binaryReader.Read(byte_array, 0, 72);
                             if (compareByteArrayAndString(byte_array, data_string, 20))
                             {
                                 //==========================Check number of data=======================//
@@ -977,6 +979,8 @@ namespace Policardiograph_App.DeviceModel
                 previous_seq_num = 0;
                 current_block_num = 0;
                 previous_block_num = 0;
+                previous_block_samples_num = 0;
+                current_block_samples_num = 0;
 
                 if ((syncRecordingStatus & 0x04) != 0x04)
                 {
@@ -1019,7 +1023,7 @@ namespace Policardiograph_App.DeviceModel
                                 }
 
                                 //==========================Check end of block=======================//
-                                current_block_num = byte_array[22] * 256 + byte_array[23];
+                                current_block_num = byte_array[22] * 256 + byte_array[23];                                
                                 if ((previous_block_num != current_block_num) && ecg_data_read_started)
                                 {
                                     if (((previous_block_num + 1) % 8) != current_block_num)
@@ -1029,7 +1033,38 @@ namespace Policardiograph_App.DeviceModel
                                     }
                                     if (previous_block_num == mic_block_numbers[ecg_i])
                                     {
-                                        double dt = (double)(mic_block_lengths[ecg_i] + 1) / (double)(seq_num + 1);
+                                        double dt;
+
+                                        if (current_block_samples_num!=0)
+                                        {
+                                            dt = (double)((mic_block_lengths[ecg_i] + 1) * 10.0) / (double)((seq_num * 5 + current_block_samples_num + previous_block_samples_num) * 2.0);                                            
+                                            for (int i = 0; i < previous_block_samples_num; i++)
+                                            {
+                                                syncEcgTime = syncEcgTime + 2.0 * dt;
+                                                line = System.String.Format(CultureInfo.CreateSpecificCulture("en-GB"), "{0:0.00}", syncEcgTime);
+                                                line = line + "\t\t\t" + ecg_previousData[i * 8].ToString();
+                                                line = line + "\t\t\t" + ecg_previousData[i * 8 + 1].ToString();
+                                                line = line + "\t\t\t" + ecg_previousData[i * 8 + 2].ToString();
+                                                line = line + "\t\t\t" + ecg_previousData[i * 8 + 3].ToString();
+                                                line = line + "\t\t\t" + ecg_previousData[i * 8 + 4].ToString();
+                                                line = line + "\t\t\t" + ecg_previousData[i * 8 + 5].ToString();
+                                                line = line + "\t\t\t" + ecg_previousData[i * 8 + 6].ToString();
+                                                line = line + "\t\t\t" + ecg_previousData[i * 8 + 7].ToString();
+                                                streamWriter.WriteLine(line);
+                                            }
+
+                                            previous_block_samples_num = 5 - current_block_samples_num;
+                                            ecg_data_index = ecg_data_index - 8 * previous_block_samples_num;
+                                            for(int i=0;i< previous_block_samples_num * 8; i++)
+                                            {
+                                                ecg_previousData[i] = ecg_data[ecg_data_index + i];
+                                            }
+                                        }
+                                        else
+                                        {
+                                            dt = (double)((mic_block_lengths[ecg_i] + 1) * 10.0) / (double)(((seq_num + 1) * 5 + previous_block_samples_num) * 2.0);
+                                            previous_block_samples_num = 0;
+                                        }
 
                                         for (int i = 0; i < ecg_data_index / 8; i++)
                                         {
@@ -1056,6 +1091,9 @@ namespace Policardiograph_App.DeviceModel
                                     ecg_block_numbers[ecg_i++] = previous_block_num;
                                     ecg_data_index = 0;
                                 }
+
+                                //=====================Store samples number when reset occured=========//
+                                current_block_samples_num = byte_array[146];
 
                                 //==========================Check sequence numbers=====================//
                                 seq_num = byte_array[24] * 256 + byte_array[25];
@@ -1105,7 +1143,7 @@ namespace Policardiograph_App.DeviceModel
                         }
                         if (previous_block_num == mic_block_numbers[ecg_i])
                         {
-                            double dt = (double)(mic_block_lengths[ecg_i] + 1) / (double)(seq_num + 1);
+                            double dt = (double)((mic_block_lengths[ecg_i] + 1) * 10.0) / (double)(((seq_num + 1) * 5 + previous_block_samples_num) * 2.0);                            
                             for (int i = 0; i < ecg_data_index / 8; i++)
                             {
                                 syncEcgTime = syncEcgTime + 2.0 * dt;
@@ -1424,7 +1462,7 @@ namespace Policardiograph_App.DeviceModel
                     }
 
                 }
-                while (micRingBuffer.ReadSpace() >= 71)
+                while (micRingBuffer.ReadSpace() >= 72)
                 {
                     micRingBuffer.Read(tmpBuffer, 6);
                     if (compareByteArrayAndString(tmpBuffer, "|HEAD|", 6))
@@ -1466,6 +1504,7 @@ namespace Policardiograph_App.DeviceModel
                             }
                             //sinchronization block
                             micRingBuffer.Read(dataBuffer, (int)mic_no_data);
+                            micRingBuffer.Read(tmpBuffer, 1);
                             micRingBuffer.Read(tmpBuffer, 5);
                             if (compareByteArrayAndString(tmpBuffer, "|END|", 5))
                             {
@@ -1487,16 +1526,15 @@ namespace Policardiograph_App.DeviceModel
                         }
                         else if (compareByteArrayAndString(tmpBuffer, "IDLE_PACKETxxx", 14))
                         {
+                            bool resetRingBuffers = false;
+
                             if ((ecgState != TCPDeviceState.TRANSFERING) && (acc_ppgState != TCPDeviceState.TRANSFERING) && (fbgaModule.fbgaMwlsStatus != USBDeviceStateEnum.TRANSFERING)) playing = false;
                             micRingBuffer.Read(tmpBuffer, 6);
                             if ((tmpBuffer[2] == 0x0A))
                             {
                                 if (!syncRecording)
                                 {
-                                    micRingBuffer.Reset();
-                                    ecgRingBuffer.Reset();
-                                    acc_ppgRingBuffer.Reset();
-                                    fbgaRingBuffer.Reset();
+                                    resetRingBuffers = true;                                   
 
                                     try
                                     {
@@ -1554,18 +1592,30 @@ namespace Policardiograph_App.DeviceModel
                             if ((tmpBuffer[2] & 0x02) == 0x02) mainWindowVeiwModel.SettingMICData.SyncTest = true;
                             else mainWindowVeiwModel.SettingMICData.SyncTest = false;
 
-
+                            micRingBuffer.Read(tmpBuffer, 1);
                             micRingBuffer.Read(tmpBuffer, 5);
                             if (compareByteArrayAndString(tmpBuffer, "|END|", 5))
                             {
                                 micState = TCPDeviceState.IDLE;
                                 micStateUpdated = true;
                             }
+
+                            if (resetRingBuffers)
+                            {
+                                micRingBuffer.Reset();
+                                ecgRingBuffer.Reset();
+                                acc_ppgRingBuffer.Reset();
+                                fbgaRingBuffer.Reset();
+                            }
                         }
+                    }
+                    else
+                    {
+                        int error1 = 1;
                     }
                 }
 
-                while (ecgRingBuffer.ReadSpace() >= 151)
+                while (ecgRingBuffer.ReadSpace() >= 152)
                 {
                     ecgRingBuffer.Read(tmpBuffer, 6);
                     if (compareByteArrayAndString(tmpBuffer, "|HEAD|", 6))
@@ -1583,6 +1633,7 @@ namespace Policardiograph_App.DeviceModel
 
                                                     }*/
                             ecgRingBuffer.Read(dataBuffer, (int)ecg_no_data);
+                            ecgRingBuffer.Read(tmpBuffer, 1);
                             ecgRingBuffer.Read(tmpBuffer, 5);
                             if (compareByteArrayAndString(tmpBuffer, "|END|", 5))
                             {
@@ -1668,6 +1719,7 @@ namespace Policardiograph_App.DeviceModel
                             mainWindowVeiwModel.SettingECGData.SensN = tmpBuffer[5];
 
                             ecgRingBuffer.Read(tmpBuffer, 120);
+                            ecgRingBuffer.Read(tmpBuffer, 1);
                             ecgRingBuffer.Read(tmpBuffer, 5);
                             if (compareByteArrayAndString(tmpBuffer, "|END|", 5))
                             {
@@ -1688,7 +1740,7 @@ namespace Policardiograph_App.DeviceModel
                 // wptr_values[debug_index++] = acc_ppgRingBuffer.wptr;
 
 
-                while (acc_ppgRingBuffer.ReadSpace() >= 151)
+                while (acc_ppgRingBuffer.ReadSpace() >= 152)
                 {
                     acc_ppgRingBuffer.Read(tmpBuffer, 6);
                     if (compareByteArrayAndString(tmpBuffer, "|HEAD|", 6))
@@ -1706,7 +1758,7 @@ namespace Policardiograph_App.DeviceModel
                             if (acc_ppg_no_data != 120)
                                 error_code = 21;
                             acc_ppgRingBuffer.Read(dataBuffer, (int)acc_ppg_no_data);
-
+                            acc_ppgRingBuffer.Read(tmpBuffer, 1);
                             acc_ppgRingBuffer.Read(tmpBuffer, 5);
                             if (compareByteArrayAndString(tmpBuffer, "|END|", 5))
                             {
@@ -1806,6 +1858,7 @@ namespace Policardiograph_App.DeviceModel
                             if ((micState != TCPDeviceState.TRANSFERING) && (ecgState != TCPDeviceState.TRANSFERING) && (fbgaModule.fbgaMwlsStatus != USBDeviceStateEnum.TRANSFERING)) playing = false;
                             acc_ppgRingBuffer.Read(tmpBuffer, 6);
                             acc_ppgRingBuffer.Read(tmpBuffer, 120);
+                            acc_ppgRingBuffer.Read(tmpBuffer, 1);
                             acc_ppgRingBuffer.Read(tmpBuffer, 5);
                             if (compareByteArrayAndString(tmpBuffer, "|END|", 5))
                             {
