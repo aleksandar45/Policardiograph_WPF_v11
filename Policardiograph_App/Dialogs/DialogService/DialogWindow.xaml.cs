@@ -21,7 +21,14 @@ namespace Policardiograph_App.Dialogs.DialogService
     {
         public DialogWindow()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception) {
+
+            }
+            
         }
         [DllImport("user32.dll")]
         static extern uint GetWindowLong(IntPtr hWnd, int nIndex);

@@ -262,12 +262,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_670A89B75644ACA299FC00C538BFF1B7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_386A61FBEB4D48F485F1B6457D136113"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -295,6 +289,12 @@
         "OwnerKey" = "8:_2425C109FCDF71A7013F0E9909C399BE"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_670A89B75644ACA299FC00C538BFF1B7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -313,6 +313,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.3.5.SP1"
+                    {
+                    "Name" = "8:.NET Framework 3.5 SP1"
+                    "ProductCode" = "8:Microsoft.Net.Framework.3.5.SP1"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -329,6 +345,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -1312,7 +1336,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:PolicardiographApp"
         "ProductCode" = "8:{4C503A7E-7AC8-4289-9242-5C9666942B18}"
-        "PackageCode" = "8:{CCF7F7A1-9D83-456F-B693-F937ECD6AB16}"
+        "PackageCode" = "8:{F00E2EC8-E4C7-43B7-9BE7-A864E9AB5A3A}"
         "UpgradeCode" = "8:{88CBC577-74ED-4B14-822F-A15842DDD29A}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

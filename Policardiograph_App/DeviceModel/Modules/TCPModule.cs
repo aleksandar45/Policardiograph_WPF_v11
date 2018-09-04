@@ -163,14 +163,14 @@ namespace Policardiograph_App.DeviceModel.Modules
             long[] stopwatch_values = new long[1500];
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            
+
             #endregion
-           
-           try
+
+            try
             {
                 while (true)
                 {
-                    
+
                     networkStream = clientSocket.GetStream();
                     if (!networkStream.DataAvailable) Thread.Sleep(200);
                     else
@@ -191,25 +191,28 @@ namespace Policardiograph_App.DeviceModel.Modules
                         if (ringBuffer.WriteSpace() > numberOfBytesRead)
                         {
                             ringBuffer.Write(bytesFrom, numberOfBytesRead);
-                        }                        
+                        }
 
                         if (saveToFile)
                         {
-                            binaryWriter.Write(bytesFrom, 0, numberOfBytesRead);                            
-                        
+                            binaryWriter.Write(bytesFrom, 0, numberOfBytesRead);
+
                         }
                         Thread.Sleep(20);
                     }
-                    
 
-               
-                }                               
-              
-                
+
+
+                }
+
+
+            }
+            catch (Exception) {
+
             }
             finally
             {
-                if(binaryWriter!= null) binaryWriter.Close();
+                if (binaryWriter != null) binaryWriter.Close();
 
             }
             

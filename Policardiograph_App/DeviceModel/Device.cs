@@ -843,6 +843,7 @@ namespace Policardiograph_App.DeviceModel
             byte[] byte_array = new byte[500];         
             string data_string = "|HEAD|DATA_PACKETxxx";
             string line;
+            bool badFile = false;
 
             int seq_num = 0, previous_seq_num = 0; 
             int current_block_num = 0, previous_block_num = 0;
@@ -870,6 +871,7 @@ namespace Policardiograph_App.DeviceModel
             int[] acc_ppg_block_lengths = new int[70];
             int[] acc_ppg_block_numbers = new int[70];
             int[] acc_ppg_data = new int[10000];
+            int[] acc_ppg_previousData = new int[40];
             int acc_ppg_error = 0;
             double sync_acc_ppgTime = 0;
             bool acc_ppg_data_read_started = false;
@@ -910,7 +912,7 @@ namespace Policardiograph_App.DeviceModel
                         streamWriter.WriteLine(line);
                         while (binaryReader.Position < binaryReader.Length)
                         {
-                            binaryReader.Read(byte_array, 0, 72);
+                            binaryReader.Read(byte_array, 0, 74);
                             if (compareByteArrayAndString(byte_array, data_string, 20))
                             {
                                 //==========================Check number of data=======================//
@@ -968,6 +970,7 @@ namespace Policardiograph_App.DeviceModel
                     binaryReader.Close();
                     if (mic_error != 0)
                     {
+                        badFile = true;
                         File.Delete(savePath + saveFileName + ".poli");
                         using (StreamWriter streamWriter = File.CreateText(savePath + saveFileName + "-Bad" + ".poli"))
                         {
@@ -1088,6 +1091,8 @@ namespace Policardiograph_App.DeviceModel
                                     }
 
                                     ecg_block_lengths[ecg_i] = seq_num;
+                                    if (sync && ((seq_num > 110) || (seq_num < 92)))
+                                        ecg_error = 5;
                                     ecg_block_numbers[ecg_i++] = previous_block_num;
                                     ecg_data_index = 0;
                                 }
@@ -1170,6 +1175,7 @@ namespace Policardiograph_App.DeviceModel
                     binaryReader.Close();
                     if (ecg_error != 0)
                     {
+                        badFile = true;
                         File.Delete(savePath + saveFileName + ".poli");
                         using (StreamWriter streamWriter = File.CreateText(savePath + saveFileName + "-Bad" + ".poli"))
                         {
@@ -1182,13 +1188,15 @@ namespace Policardiograph_App.DeviceModel
                 previous_seq_num = 0;
                 current_block_num = 0;
                 previous_block_num = 0;
+                previous_block_samples_num = 0;
+                current_block_samples_num = 0;
 
                 if ((syncRecordingStatus & 0x08) != 0x08)
                 {
                     bool sync = false;
                     float acc_ppgTime = 0.0f;
                     if ((syncRecordingStatus & 0x01) != 0x01) sync = true;
-                    binaryReader = File.OpenRead(path + "ACC_PPG.dat");
+                    binaryReader = File.OpenRead(path + "ACC_PPG.dat");                    
                     using (StreamWriter streamWriter = File.AppendText(savePath + saveFileName + ".poli"))
                     {
                         line = "";
@@ -1235,8 +1243,37 @@ namespace Policardiograph_App.DeviceModel
 
                                     }
                                     if (previous_block_num == mic_block_numbers[acc_ppg_i])
-                                    {
-                                        double dt = (double)(mic_block_lengths[acc_ppg_i] + 1) / (double)(seq_num + 1);
+                                    {                                        
+                                        double dt;
+
+                                        if (current_block_samples_num != 0)
+                                        {
+                                            dt = (double)((mic_block_lengths[acc_ppg_i] + 1) * 10.0) / (double)((seq_num * 5 + current_block_samples_num + previous_block_samples_num) * 2.0);
+                                            for (int i = 0; i < previous_block_samples_num; i++)
+                                            {
+                                                sync_acc_ppgTime = sync_acc_ppgTime + 2.0 * dt;
+                                                line = System.String.Format(CultureInfo.CreateSpecificCulture("en-GB"), "{0:0.00}", sync_acc_ppgTime);
+                                                line = line + "\t\t\t" + acc_ppg_previousData[i * 6].ToString();
+                                                line = line + "\t\t\t" + acc_ppg_previousData[i * 6 + 1].ToString();
+                                                line = line + "\t\t\t" + acc_ppg_previousData[i * 6 + 2].ToString();
+                                                line = line + "\t\t\t" + acc_ppg_previousData[i * 6 + 3].ToString();
+                                                line = line + "\t\t\t" + acc_ppg_previousData[i * 6 + 4].ToString();
+                                                line = line + "\t\t\t" + acc_ppg_previousData[i * 6 + 5].ToString();
+                                                streamWriter.WriteLine(line);
+                                            }
+
+                                            previous_block_samples_num = 5 - current_block_samples_num;
+                                            acc_ppg_data_index = acc_ppg_data_index - 6 * previous_block_samples_num;
+                                            for (int i = 0; i < previous_block_samples_num * 6; i++)
+                                            {
+                                                acc_ppg_previousData[i] = acc_ppg_data[acc_ppg_data_index + i];
+                                            }
+                                        }
+                                        else
+                                        {
+                                            dt = (double)((mic_block_lengths[acc_ppg_i] + 1) * 10.0) / (double)(((seq_num + 1) * 5 + previous_block_samples_num) * 2.0);
+                                            previous_block_samples_num = 0;
+                                        }
                                         for (int i = 0; i < acc_ppg_data_index / 6; i++)
                                         {
                                             sync_acc_ppgTime = sync_acc_ppgTime + 2.0 * dt;
@@ -1258,9 +1295,13 @@ namespace Policardiograph_App.DeviceModel
                                     }
 
                                     acc_ppg_block_lengths[acc_ppg_i] = seq_num;
+                                    if(sync && ((seq_num > 110) || (seq_num < 92)))
+                                        acc_ppg_error = 5;
                                     acc_ppg_block_numbers[acc_ppg_i++] = previous_block_num;
                                     acc_ppg_data_index = 0;
                                 }
+                                //=====================Store samples number when reset occured=========//
+                                current_block_samples_num = byte_array[146];
 
                                 //==========================Check sequence numbers=====================//
                                 seq_num = byte_array[24] * 256 + byte_array[25];
@@ -1338,7 +1379,7 @@ namespace Policardiograph_App.DeviceModel
 
                         if (previous_block_num == mic_block_numbers[acc_ppg_i])
                         {
-                            double dt = (double)(mic_block_lengths[acc_ppg_i] + 1) / (double)(seq_num + 1);
+                            double dt = (double)((mic_block_lengths[acc_ppg_i] + 1) * 10.0) / (double)(((seq_num + 1) * 5 + previous_block_samples_num) * 2.0);                            
                             for (int i = 0; i < acc_ppg_data_index / 6; i++)
                             {
                                 sync_acc_ppgTime = sync_acc_ppgTime + 2.0 * dt;
@@ -1363,6 +1404,7 @@ namespace Policardiograph_App.DeviceModel
                     binaryReader.Close();
                     if (acc_ppg_error != 0)
                     {
+                        badFile = true;
                         File.Delete(savePath + saveFileName + ".poli");
                         using (StreamWriter streamWriter = File.CreateText(savePath + saveFileName + "-Bad" + ".poli"))
                         {
@@ -1370,6 +1412,126 @@ namespace Policardiograph_App.DeviceModel
                         }
                     }
 
+                }
+
+                if (mainWindowVeiwModel.SettingMICData.SyncTest) {
+                    string line1;
+                    string status;
+                    double timeAxis;
+                    double[] timeAxisTriggersMIC = new double[500];
+                    double[] timeAxisTriggersECG = new double[500];
+                    double[] timeAxisTriggersACC = new double[500];
+                    int timeAxisTriggersIndex = 0;
+                    int timeAxisTriggersSizeMIC = 0, timeAxisTriggersSizeECG = 0, timeAxisTriggersSizeACC = 0;
+                    double dtECG = 0, dtACC = 0;
+                    int statusNum = 0;
+                    int micSample, ecgSample, accSample;
+                    string[] words;
+                    StreamReader file = new StreamReader(savePath + saveFileName + ".poli");
+
+                    while ((line1 = file.ReadLine()) != null)
+                    {
+                        if (line1[0] == '=') {
+                            line1 = file.ReadLine();
+                            if (String.Compare(line1, "MIC") == 0) statusNum = 1;
+                            else if (String.Compare(line1, "ECG") == 0)
+                            {
+                                statusNum = 2;
+                                timeAxisTriggersIndex = 0;
+                            }
+                            else if (String.Compare(line1, "ACC_PPG") == 0)
+                            {
+                                statusNum = 3;
+                                timeAxisTriggersIndex = 0;
+                            }
+
+                            line1 = file.ReadLine();
+                            line1 = file.ReadLine();
+                            line1 = file.ReadLine();
+                        }
+                        words = line1.Split('\t');
+                        if (words.Count() >= 2) {
+                            timeAxis =  Double.Parse(words.ElementAt(0));
+                            if(statusNum == 1)
+                            {
+                                micSample = Int32.Parse(words.ElementAt(1));
+                                if(micSample == 32767)
+                                {
+                                    timeAxisTriggersMIC[timeAxisTriggersIndex++] = timeAxis;
+                                    timeAxisTriggersSizeMIC = timeAxisTriggersIndex;
+                                }
+                            }
+                            if(statusNum == 2)
+                            {
+                                ecgSample = Int32.Parse(words.ElementAt(3));
+                                if (ecgSample == 8388607)
+                                {
+                                    timeAxisTriggersECG[timeAxisTriggersIndex++] = timeAxis;
+                                    timeAxisTriggersSizeECG = timeAxisTriggersIndex;
+                                }
+                            }
+                            if (statusNum == 3)
+                            {
+                                accSample = Int32.Parse(words.ElementAt(3));
+                                if (accSample == 32767)
+                                {
+                                    timeAxisTriggersACC[timeAxisTriggersIndex++] = timeAxis;
+                                    timeAxisTriggersSizeACC = timeAxisTriggersIndex;
+                                }
+                            }
+
+                        }
+
+                    }
+
+                    using (StreamWriter streamWriter = File.CreateText(savePath + "Report" + ".txt"))
+                    {
+                        streamWriter.WriteLine("MIC - ECG\n");
+
+                        if (timeAxisTriggersSizeMIC == timeAxisTriggersSizeECG)
+                        {
+
+                            for (int i = 0; i < timeAxisTriggersSizeMIC; i++)
+                            {
+                                if (Math.Abs((timeAxisTriggersECG[i] - timeAxisTriggersMIC[i])) > dtECG)
+                                {
+                                    dtECG = Math.Abs((timeAxisTriggersECG[i] - timeAxisTriggersMIC[i]));
+                                    timeAxisTriggersIndex = i;                                    
+                                }
+                                double dT = timeAxisTriggersECG[i] - timeAxisTriggersMIC[i];
+                                streamWriter.WriteLine(timeAxisTriggersMIC[i].ToString() + "\t\t" + timeAxisTriggersECG[i].ToString() + "\t\t" + dT.ToString() + "\t\t" + mic_block_lengths[i].ToString() + "\t\t" + ecg_block_lengths[i]);
+
+                            }
+                            status = "ECG maximum deviation: " + dtECG.ToString() + " ms\nPeak time: " + timeAxisTriggersMIC[timeAxisTriggersIndex].ToString() + " ms\n";
+                        }
+                        else
+                        {
+                            status = "MIC and ECG don't have same number of peaks\n";
+                        }
+                        streamWriter.WriteLine("MIC - ACC\n");
+                        if (timeAxisTriggersSizeMIC == timeAxisTriggersSizeACC)
+                        {
+
+                            for (int i = 0; i < timeAxisTriggersSizeMIC; i++)
+                            {
+                                if (Math.Abs((timeAxisTriggersACC[i] - timeAxisTriggersMIC[i])) > dtACC)
+                                {
+                                    dtACC = Math.Abs((timeAxisTriggersACC[i] - timeAxisTriggersMIC[i]));
+                                    timeAxisTriggersIndex = i;                                    
+                                }
+                                double dT = timeAxisTriggersACC[i] - timeAxisTriggersMIC[i];
+                                streamWriter.WriteLine(timeAxisTriggersMIC[i].ToString() + "\t\t" + timeAxisTriggersACC[i].ToString() + "\t\t" + dT.ToString() + "\t\t" + mic_block_lengths[i].ToString() + "\t\t" + acc_ppg_block_lengths[i]);
+                            }
+                            status = status + "ACC maximum deviation: " + dtACC.ToString() + " ms\nPeak time: " + timeAxisTriggersMIC[timeAxisTriggersIndex].ToString() + " ms\n";
+                        }
+                        else
+                        {
+                            status = status + "MIC and ACC don't have same number of peaks\n";
+                        }
+                    }
+                    
+                    Dialogs.DialogMessage.DialogMessageViewModel dvm = new Dialogs.DialogMessage.DialogMessageViewModel(Dialogs.DialogMessage.DialogImageTypeEnum.Info, status);
+                    Dialogs.DialogService.DialogResult result = Dialogs.DialogService.DialogService.OpenDialog(dvm);
                 }
             }
             catch (Exception ex) {
@@ -1462,7 +1624,7 @@ namespace Policardiograph_App.DeviceModel
                     }
 
                 }
-                while (micRingBuffer.ReadSpace() >= 72)
+                while (micRingBuffer.ReadSpace() >= 74)
                 {
                     micRingBuffer.Read(tmpBuffer, 6);
                     if (compareByteArrayAndString(tmpBuffer, "|HEAD|", 6))
@@ -1505,6 +1667,7 @@ namespace Policardiograph_App.DeviceModel
                             //sinchronization block
                             micRingBuffer.Read(dataBuffer, (int)mic_no_data);
                             micRingBuffer.Read(tmpBuffer, 1);
+                            micRingBuffer.Read(tmpBuffer, 2);
                             micRingBuffer.Read(tmpBuffer, 5);
                             if (compareByteArrayAndString(tmpBuffer, "|END|", 5))
                             {
@@ -1593,6 +1756,7 @@ namespace Policardiograph_App.DeviceModel
                             else mainWindowVeiwModel.SettingMICData.SyncTest = false;
 
                             micRingBuffer.Read(tmpBuffer, 1);
+                            micRingBuffer.Read(tmpBuffer, 2);
                             micRingBuffer.Read(tmpBuffer, 5);
                             if (compareByteArrayAndString(tmpBuffer, "|END|", 5))
                             {
@@ -1832,11 +1996,11 @@ namespace Policardiograph_App.DeviceModel
                                     uint16_temp = (UInt16)(dataBuffer[9 * acc_ppg_no_data / 12 + 4] * 256 + dataBuffer[9 * acc_ppg_no_data / 12 + 5]);
                                     glD.ppgChannels.ElementAt(2).intArray[glD.ppgIndex] = uint16_temp;
 
-                                    /*// ppg_ch2r
+                                    // ppg_ch2r
                                     uint16_temp = (UInt16)(dataBuffer[9 * acc_ppg_no_data / 12 + 6] * 256 + dataBuffer[9 * acc_ppg_no_data / 12 + 7]);
                                     glD.ppgChannels.ElementAt(3).intArray[glD.ppgIndex] = uint16_temp;
 
-                                    //ppg_ch3g
+                                    /*//ppg_ch3g
                                     uint16_temp = (UInt16)(dataBuffer[9 * acc_ppg_no_data / 12 + 8] * 256 + dataBuffer[9 * acc_ppg_no_data / 12 + 9]);
                                     glD.ppgChannels.ElementAt(4).intArray[glD.ppgIndex] = uint16_temp;
 
