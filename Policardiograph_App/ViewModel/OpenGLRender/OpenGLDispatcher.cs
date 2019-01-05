@@ -275,71 +275,7 @@ namespace Policardiograph_App.ViewModel.OpenGLRender
             }
             return false;
         }
-        public bool linkDisplay(int displayNum, string type, int ch_no, string axis)
-        {
-            OpenGlDisplay tempDisplay;
-            switch (displayNum)
-            {
-                case 1: tempDisplay = openGlDisplay1;
-                    break;
-                case 2: tempDisplay = openGlDisplay2;
-                    break;
-                case 3: tempDisplay = openGlDisplay3;
-                    break;
-                case 4: tempDisplay = openGlDisplay4;
-                    break;
-                case 5: tempDisplay = openGlDisplay5;
-                    break;
-                case 6: tempDisplay = openGlDisplay6;
-                    break;
-                default: tempDisplay = openGlDisplay1;
-                    break;
-            }
-            if (String.Compare(type, "FBGA") == 0)
-            {
-                if (tempDisplay != null)
-                {
-                    tempDisplay.linkArray(fbgaChannels.ElementAt(ch_no - 1));
-                    return true;
-                }
-                else return false;
-            }
-            if (String.Compare(type, "MIC") == 0)
-            {
-                if (tempDisplay != null)
-                {
-                    tempDisplay.linkArray(micChannels.ElementAt(ch_no - 1));
-                }
-            }
-            if (String.Compare(type, "ECG") == 0)
-            {
-                if (tempDisplay != null)
-                {
-                    tempDisplay.linkArray(ecgChannels.ElementAt(ch_no - 1));
-                }
-            }
-            if (String.Compare(type, "ACC") == 0)
-            {
-                if (tempDisplay != null)
-                {
-                    if (String.Compare(axis, "x") == 0)
-                        tempDisplay.linkArray(accChannels.ElementAt((ch_no - 1) * 3));
-                    if (String.Compare(axis, "y") == 0)
-                        tempDisplay.linkArray(accChannels.ElementAt((ch_no - 1) * 3 + 1));
-                    if (String.Compare(axis, "z") == 0)
-                        tempDisplay.linkArray(accChannels.ElementAt((ch_no - 1) * 3 + 2));
-                }
-            }
-            if (String.Compare(type, "PPG") == 0)
-            {
-                if (tempDisplay != null)
-                {
-                    tempDisplay.linkArray(ppgChannels.ElementAt(ch_no - 1));
-                }
-            }
-            return false;
-            
-        }
+        
         public void dispose() {
             
         }

@@ -334,6 +334,7 @@
                         <ToggleButton Width="50" Content="ECG2" IsChecked="{Binding ToogleButtonECG2IsChecked}"></ToggleButton>
                         <ToggleButton Width="50" Content="ACC"  IsChecked="{Binding ToogleButtonACCIsChecked}"></ToggleButton>
                         <ToggleButton Width="50" Content="PPG"  IsChecked="{Binding ToogleButtonPPGIsChecked}"></ToggleButton>
+                        <ToggleButton Width="50" Content="Debug"  IsChecked="{Binding DebugToggleButtonIsChecked}" Visibility="{Binding Path=DebugToggleButtonIsVisible,Converter={StaticResource BoolToVisConverter}}"></ToggleButton>
                     </StackPanel>
 
                     <ScrollViewer Grid.Row="1">
@@ -364,9 +365,13 @@
                             </TextBlock>
                             <TextBlock HorizontalAlignment="Center" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Height="Auto" Name="textBlockXAxisDisplay1" Text="{Binding LabelDisplay1XAxis}" />
                             <sharpGL:OpenGLControl  Grid.Column="1" Grid.Row="1"  HorizontalAlignment="Stretch" Name="openGLControl1"  Resized="openGLControl1_Resized" OpenGLInitialized="openGLControl1_Initialized" IsEnabled="True" Visibility="Visible" />
-
+                            <ScrollViewer Grid.Column="1" Grid.Row="1"  Grid.ColumnSpan="3" Grid.RowSpan="5"  >
+                                <TextBlock ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True" Background="WhiteSmoke" Text="{Binding DebugTextBlockText}" IsEnabled="True" Visibility="{Binding Path=DebugRichTextBoxIsVisible, Converter={StaticResource BoolToVisConverter}}"/>
+                            </ScrollViewer>
+                            <Button Grid.Column="1" Grid.Row="7" Width="80" Height="30" Content="{Binding DebugStartStopButtonContent}" Visibility="{Binding Path=DebugStartStopButtonIsVisible,Converter={StaticResource BoolToVisConverter}}" Command="{Binding DebugStartStopCommand}"></Button>
+                            
                             <TextBlock HorizontalAlignment="Center" Grid.Row="0" Grid.Column="3" VerticalAlignment="Top" Height="Auto" FontWeight="Bold" FontFamily="Segoe UI" Name="textBlockTittleDisplay2" Text="{Binding LabelDisplay2Tittle}"/>
-                            <TextBlock Text="{Binding LabelDisplay2YAxis}" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" Width="Auto" Name="textBlockYAxisDisplay2">
+                            <TextBlock Text="{Binding LabelDisplay2YAxis}"  VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" Width="Auto" Name="textBlockYAxisDisplay2">
                                     <TextBlock.LayoutTransform>
                                         <RotateTransform Angle="-90"></RotateTransform>
                                     </TextBlock.LayoutTransform>

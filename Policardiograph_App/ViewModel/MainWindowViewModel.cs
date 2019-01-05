@@ -46,6 +46,7 @@ namespace Policardiograph_App.ViewModel
             this.treeViewViewModel = treeViewViewModel;
             this.OpenGLDispatcher = openGLDispatcher;
             DebugEnableCommand = new DelegateCommand(DebugEnableExecute, CanDebugEnableExecute);
+            DebugStartStopCommand = new DelegateCommand(DebugStartStopExecute);
             SaveFileTestCommand = new DelegateCommand(SaveFileTestExecute, CanSaveFileTestExecute);
             PlayCommand = new DelegateCommand(PlayExecute,CanPlayExecute);            
             RecordCommand = new DelegateCommand(RecordExecute,CanRecordExecute);
@@ -91,12 +92,83 @@ namespace Policardiograph_App.ViewModel
                 {
                     BatteryVoltageLabelIsVisible = true;
                     SaveFileButtonIsVisible = true;
+                    DebugToggleButtonIsVisible = true;
+                    DebugToggleButtonIsChecked = true;                    
                 }
                 else
                 {
                     BatteryVoltageLabelIsVisible = false;
                     SaveFileButtonIsVisible = false;
+                    DebugToggleButtonIsVisible = false;
+                    DebugToggleButtonIsChecked = false;
+                    ToogleButtonUserIsChecked = true;
+                   
                 }
+            }
+        }
+        private bool debugRichTextBoxIsVisible = false;
+        public bool DebugRichTextBoxIsVisible
+        {
+            get
+            {
+                return debugRichTextBoxIsVisible;
+            }
+            set
+            {
+                debugRichTextBoxIsVisible = value;
+                OnPropertyChanged("DebugRichTextBoxIsVisible");
+            }
+        }
+        private string debugTextBlockText = "";
+        public string DebugTextBlockText
+        {
+            get
+            {
+                return debugTextBlockText;
+            }
+            set
+            {
+                debugTextBlockText = value;
+                OnPropertyChanged("DebugTextBlockText");
+            }
+        }
+        private string debugStartStopButtonContent = "Start";
+        public string DebugStartStopButtonContent
+        {
+            get
+            {
+                return debugStartStopButtonContent;
+            }
+            set
+            {
+                debugStartStopButtonContent = value;
+                OnPropertyChanged("DebugStartStopButtonContent");             
+            }
+        }
+        private bool debugStartStopButtonIsVisible = false;
+        public bool DebugStartStopButtonIsVisible
+        {
+            get
+            {
+                return debugStartStopButtonIsVisible;
+            }
+            set
+            {
+                debugStartStopButtonIsVisible = value;
+                OnPropertyChanged("DebugStartStopButtonIsVisible");
+            }
+        }
+
+        public ICommand DebugStartStopCommand { get; set; }
+        private void DebugStartStopExecute(object obj)
+        {
+            if(String.Compare(DebugStartStopButtonContent,"Start") == 0)
+            {
+                DebugStartStopButtonContent = "Stop";
+            }
+            else
+            {
+                DebugStartStopButtonContent = "Start";
             }
         }
         public ICommand DebugEnableCommand { get; set; }
@@ -759,6 +831,78 @@ namespace Policardiograph_App.ViewModel
         #endregion
 
         #region TOGGLE_BUTTONS
+        private bool debugToggleButtonIsVisible = false;
+        public bool DebugToggleButtonIsVisible
+        {
+            get
+            {
+                return debugToggleButtonIsVisible;
+            }
+            set
+            {
+                debugToggleButtonIsVisible = value;
+                OnPropertyChanged("DebugToggleButtonIsVisible");
+            }
+        }
+
+        private bool _debugToggleButtonIsChecked = false;
+        public bool DebugToggleButtonIsChecked
+        {
+            get
+            {
+                return _debugToggleButtonIsChecked;
+            }
+            set
+            {
+                _debugToggleButtonIsChecked = value;
+                if (_debugToggleButtonIsChecked)
+                {
+                    ToogleButtonUserIsChecked = false;
+                    ToogleButtonFBGAIsChecked = false;
+                    ToogleButtonMICIsChecked = false;
+                    ToogleButtonECG1IsChecked = false;
+                    ToogleButtonECG2IsChecked = false;
+                    ToogleButtonACCIsChecked = false;
+                    ToogleButtonPPGIsChecked = false;
+
+                    DebugRichTextBoxIsVisible = true;
+                    DebugStartStopButtonIsVisible = true;
+
+                    OpenGLDispatcher.disableDisplay(1);
+                    LabelDisplay1Tittle = "";
+                    LabelDisplay1XAxis = "";
+                    LabelDisplay1YAxis = "";
+
+                    OpenGLDispatcher.disableDisplay(2);
+                    LabelDisplay2Tittle = "";
+                    LabelDisplay2XAxis = "";
+                    LabelDisplay2YAxis = "";
+
+                    OpenGLDispatcher.disableDisplay(3);
+                    LabelDisplay3Tittle = "";
+                    LabelDisplay3XAxis = "";
+                    LabelDisplay3YAxis = "";
+
+                    OpenGLDispatcher.disableDisplay(4);
+                    LabelDisplay4Tittle = "";
+                    LabelDisplay4XAxis = "";
+                    LabelDisplay4YAxis = "";
+
+                    OpenGLDispatcher.disableDisplay(5);
+                    LabelDisplay5Tittle = "";
+                    LabelDisplay5XAxis = "";
+                    LabelDisplay5YAxis = "";
+
+                    OpenGLDispatcher.disableDisplay(6);
+                    LabelDisplay6Tittle = "";
+                    LabelDisplay6XAxis = "";
+                    LabelDisplay6YAxis = "";
+
+
+                }
+                OnPropertyChanged("DebugToggleButtonIsChecked");
+            }
+        }
         private bool _toogleButtonUserIsChecked = true;
         public bool ToogleButtonUserIsChecked
         {
@@ -774,6 +918,10 @@ namespace Policardiograph_App.ViewModel
                     ToogleButtonECG2IsChecked = false;
                     ToogleButtonACCIsChecked = false;
                     ToogleButtonPPGIsChecked = false;
+                    DebugToggleButtonIsChecked = false;
+
+                    DebugRichTextBoxIsVisible = false;
+                    DebugStartStopButtonIsVisible = false;
 
                     OpenGLDispatcher.enableDisplay(1);
                     int chNo = SettingWindowData.UserTabSelectedDisplays.ElementAt(0).ChannelNumber;
@@ -792,7 +940,23 @@ namespace Policardiograph_App.ViewModel
                         LabelDisplay1XAxis = "Time (s)";
                         LabelDisplay1YAxis = "mV";
                     }
-                    OpenGLDispatcher.linkDisplay(1, chName, chNo);
+                    if (String.Compare(chName, "ACC")==0) {
+                        if(String.Compare(chAxis,"x")==0)
+                            OpenGLDispatcher.linkDisplay(1, chName, (chNo - 1) * 3 + 1);
+                        else if(String.Compare(chAxis, "y") == 0)                        
+                            OpenGLDispatcher.linkDisplay(1, chName, (chNo - 1) * 3 + 2);
+                        else if (String.Compare(chAxis, "z") == 0)
+                            OpenGLDispatcher.linkDisplay(1, chName, (chNo - 1) * 3 + 3);
+                    }
+                    else if(String.Compare(chName, "PPG") == 0){
+                        if (String.Compare(chAxis, "g") == 0)
+                            OpenGLDispatcher.linkDisplay(1, chName, (chNo - 1) * 2 + 1);
+                        else if (String.Compare(chAxis, "r") == 0)
+                            OpenGLDispatcher.linkDisplay(1, chName, (chNo - 1) * 2 + 2);
+                    }
+                    else{
+                        OpenGLDispatcher.linkDisplay(1, chName, chNo);
+                    }
 
                     OpenGLDispatcher.enableDisplay(2);
                     chNo = SettingWindowData.UserTabSelectedDisplays.ElementAt(1).ChannelNumber;
@@ -810,7 +974,26 @@ namespace Policardiograph_App.ViewModel
                         LabelDisplay2XAxis = "Time (s)";
                         LabelDisplay2YAxis = "mV";
                     }
-                    OpenGLDispatcher.linkDisplay(2, chName, chNo);
+                    if (String.Compare(chName, "ACC") == 0)
+                    {
+                        if (String.Compare(chAxis, "x") == 0)
+                            OpenGLDispatcher.linkDisplay(2, chName, (chNo - 1) * 3 + 1);
+                        else if (String.Compare(chAxis, "y") == 0)
+                            OpenGLDispatcher.linkDisplay(2, chName, (chNo - 1) * 3 + 2);
+                        else if (String.Compare(chAxis, "z") == 0)
+                            OpenGLDispatcher.linkDisplay(2, chName, (chNo - 1) * 3 + 3);
+                    }
+                    else if (String.Compare(chName, "PPG") == 0)
+                    {
+                        if (String.Compare(chAxis, "g") == 0)
+                            OpenGLDispatcher.linkDisplay(2, chName, (chNo - 1) * 2 + 1);
+                        else if (String.Compare(chAxis, "r") == 0)
+                            OpenGLDispatcher.linkDisplay(2, chName, (chNo - 1) * 2 + 2);
+                    }
+                    else
+                    {
+                        OpenGLDispatcher.linkDisplay(2, chName, chNo);
+                    }
 
                     OpenGLDispatcher.enableDisplay(3);
                     chNo = SettingWindowData.UserTabSelectedDisplays.ElementAt(2).ChannelNumber;
@@ -828,7 +1011,26 @@ namespace Policardiograph_App.ViewModel
                         LabelDisplay3XAxis = "Time (s)";
                         LabelDisplay3YAxis = "mV";
                     }
-                    OpenGLDispatcher.linkDisplay(3, chName, chNo);
+                    if (String.Compare(chName, "ACC") == 0)
+                    {
+                        if (String.Compare(chAxis, "x") == 0)
+                            OpenGLDispatcher.linkDisplay(3, chName, (chNo - 1) * 3 + 1);
+                        else if (String.Compare(chAxis, "y") == 0)
+                            OpenGLDispatcher.linkDisplay(3, chName, (chNo - 1) * 3 + 2);
+                        else if (String.Compare(chAxis, "z") == 0)
+                            OpenGLDispatcher.linkDisplay(3, chName, (chNo - 1) * 3 + 3);
+                    }
+                    else if (String.Compare(chName, "PPG") == 0)
+                    {
+                        if (String.Compare(chAxis, "g") == 0)
+                            OpenGLDispatcher.linkDisplay(3, chName, (chNo - 1) * 2 + 1);
+                        else if (String.Compare(chAxis, "r") == 0)
+                            OpenGLDispatcher.linkDisplay(3, chName, (chNo - 1) * 2 + 2);
+                    }
+                    else
+                    {
+                        OpenGLDispatcher.linkDisplay(3, chName, chNo);
+                    }
 
                     OpenGLDispatcher.enableDisplay(4);
                     chNo = SettingWindowData.UserTabSelectedDisplays.ElementAt(3).ChannelNumber;
@@ -846,7 +1048,26 @@ namespace Policardiograph_App.ViewModel
                         LabelDisplay4XAxis = "Time (s)";
                         LabelDisplay4YAxis = "mV";
                     }
-                    OpenGLDispatcher.linkDisplay(4, chName, chNo);
+                    if (String.Compare(chName, "ACC") == 0)
+                    {
+                        if (String.Compare(chAxis, "x") == 0)
+                            OpenGLDispatcher.linkDisplay(4, chName, (chNo - 1) * 3 + 1);
+                        else if (String.Compare(chAxis, "y") == 0)
+                            OpenGLDispatcher.linkDisplay(4, chName, (chNo - 1) * 3 + 2);
+                        else if (String.Compare(chAxis, "z") == 0)
+                            OpenGLDispatcher.linkDisplay(4, chName, (chNo - 1) * 3 + 3);                 
+                    }
+                    else if (String.Compare(chName, "PPG") == 0)
+                    {
+                        if (String.Compare(chAxis, "g") == 0)
+                            OpenGLDispatcher.linkDisplay(4, chName, (chNo - 1) * 2 + 1);
+                        else if (String.Compare(chAxis, "r") == 0)
+                            OpenGLDispatcher.linkDisplay(4, chName, (chNo - 1) * 2 + 2);
+                    }
+                    else
+                    {
+                        OpenGLDispatcher.linkDisplay(4, chName, chNo);
+                    }
 
                     OpenGLDispatcher.enableDisplay(5);
                     chNo = SettingWindowData.UserTabSelectedDisplays.ElementAt(4).ChannelNumber;
@@ -864,7 +1085,26 @@ namespace Policardiograph_App.ViewModel
                         LabelDisplay5XAxis = "Time (s)";
                         LabelDisplay5YAxis = "mV";
                     }
-                    OpenGLDispatcher.linkDisplay(5, chName, chNo);
+                    if (String.Compare(chName, "ACC") == 0)
+                    {
+                        if (String.Compare(chAxis, "x") == 0)
+                            OpenGLDispatcher.linkDisplay(5, chName, (chNo - 1) * 3 + 1);
+                        else if (String.Compare(chAxis, "y") == 0)
+                            OpenGLDispatcher.linkDisplay(5, chName, (chNo - 1) * 3 + 2);
+                        else if (String.Compare(chAxis, "z") == 0)
+                            OpenGLDispatcher.linkDisplay(5, chName, (chNo - 1) * 3 + 3);                  
+                    }
+                    else if (String.Compare(chName, "PPG") == 0)
+                    {
+                        if (String.Compare(chAxis, "g") == 0)
+                            OpenGLDispatcher.linkDisplay(5, chName, (chNo - 1) * 2 + 1);
+                        else if (String.Compare(chAxis, "r") == 0)
+                            OpenGLDispatcher.linkDisplay(5, chName, (chNo - 1) * 2 + 2);
+                    }
+                    else
+                    {
+                        OpenGLDispatcher.linkDisplay(5, chName, chNo);
+                    }
 
                     OpenGLDispatcher.enableDisplay(6);
                     chNo = SettingWindowData.UserTabSelectedDisplays.ElementAt(5).ChannelNumber;
@@ -882,7 +1122,26 @@ namespace Policardiograph_App.ViewModel
                         LabelDisplay6XAxis = "Time (s)";
                         LabelDisplay6YAxis = "mV";
                     }
-                    OpenGLDispatcher.linkDisplay(6, chName, chNo);
+                    if (String.Compare(chName, "ACC") == 0)
+                    {
+                        if (String.Compare(chAxis, "x") == 0)
+                            OpenGLDispatcher.linkDisplay(6, chName, (chNo - 1) * 3 + 1);
+                        else if (String.Compare(chAxis, "y") == 0)
+                            OpenGLDispatcher.linkDisplay(6, chName, (chNo - 1) * 3 + 2);
+                        else if (String.Compare(chAxis, "z") == 0)
+                            OpenGLDispatcher.linkDisplay(6, chName, (chNo - 1) * 3 + 3);                       
+                    }
+                    else if (String.Compare(chName, "PPG") == 0)
+                    {
+                        if (String.Compare(chAxis, "g") == 0)
+                            OpenGLDispatcher.linkDisplay(6, chName, (chNo - 1) * 2 + 1);
+                        else if (String.Compare(chAxis, "r") == 0)
+                            OpenGLDispatcher.linkDisplay(6, chName, (chNo - 1) * 2 + 2);
+                    }
+                    else
+                    {
+                        OpenGLDispatcher.linkDisplay(6, chName, chNo);
+                    }
                 }
                 OnPropertyChanged("ToogleButtonUserIsChecked");
             }
@@ -905,6 +1164,10 @@ namespace Policardiograph_App.ViewModel
                     ToogleButtonECG2IsChecked = false;
                     ToogleButtonACCIsChecked = false;
                     ToogleButtonPPGIsChecked = false;
+                    DebugToggleButtonIsChecked = false;
+
+                    DebugRichTextBoxIsVisible = false;
+                    DebugStartStopButtonIsVisible = false;
 
                     for (int i = 0; i < 6; i++) {
                         
@@ -1058,6 +1321,10 @@ namespace Policardiograph_App.ViewModel
                     ToogleButtonECG2IsChecked = false;
                     ToogleButtonACCIsChecked = false;
                     ToogleButtonPPGIsChecked = false;
+                    DebugToggleButtonIsChecked = false;
+
+                    DebugRichTextBoxIsVisible = false;
+                    DebugStartStopButtonIsVisible = false;
 
                     for (int i = 0; i < 6; i++)
                     {
@@ -1215,6 +1482,10 @@ namespace Policardiograph_App.ViewModel
                     ToogleButtonECG2IsChecked = false;
                     ToogleButtonACCIsChecked = false;
                     ToogleButtonPPGIsChecked = false;
+                    DebugToggleButtonIsChecked = false;
+
+                    DebugRichTextBoxIsVisible = false;
+                    DebugStartStopButtonIsVisible = false;
 
                     for (int i = 0; i < 6; i++)
                     {
@@ -1372,6 +1643,10 @@ namespace Policardiograph_App.ViewModel
                     ToogleButtonECG1IsChecked = false;
                     ToogleButtonACCIsChecked = false;
                     ToogleButtonPPGIsChecked = false;
+                    DebugToggleButtonIsChecked = false;
+
+                    DebugRichTextBoxIsVisible = false;
+                    DebugStartStopButtonIsVisible = false;
 
                     for (int i = 6; i < 12; i++)
                     {
@@ -1529,8 +1804,12 @@ namespace Policardiograph_App.ViewModel
                     ToogleButtonECG1IsChecked = false;
                     ToogleButtonECG2IsChecked = false;
                     ToogleButtonPPGIsChecked = false;
+                    DebugToggleButtonIsChecked = false;
 
-                    for (int i = 0; i < 6; i++)
+                    DebugRichTextBoxIsVisible = false;
+                    DebugStartStopButtonIsVisible = false;
+
+                    for(int i=0;i< 6; i++) 
                     {
 
                         switch (i + 1)
@@ -1546,7 +1825,12 @@ namespace Policardiograph_App.ViewModel
                                     LabelDisplay1Tittle = SettingACCData.SelectedDisplays.ElementAt(i).ModuleName + "_CH" + SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber + SettingACCData.SelectedDisplays.ElementAt(i).Axis + tempDescription;
                                     LabelDisplay1XAxis = "Time (s)";
                                     LabelDisplay1YAxis = "mV";
-                                    OpenGLDispatcher.linkDisplay(1, "ACC", SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber, SettingACCData.SelectedDisplays.ElementAt(i).Axis);
+                                    if (String.Compare(SettingACCData.SelectedDisplays.ElementAt(i).Axis, "x") == 0)
+                                        OpenGLDispatcher.linkDisplay(1, "ACC", (SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 3 + 1);
+                                    else if (String.Compare(SettingACCData.SelectedDisplays.ElementAt(i).Axis, "y") == 0)
+                                        OpenGLDispatcher.linkDisplay(1, "ACC", (SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 3 + 2);
+                                    else if (String.Compare(SettingACCData.SelectedDisplays.ElementAt(i).Axis, "z") == 0)
+                                        OpenGLDispatcher.linkDisplay(1, "ACC", (SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 3 + 3);                                    
                                 }
                                 else
                                 {
@@ -1567,7 +1851,12 @@ namespace Policardiograph_App.ViewModel
                                     LabelDisplay2Tittle = SettingACCData.SelectedDisplays.ElementAt(i).ModuleName + "_CH" + SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber + SettingACCData.SelectedDisplays.ElementAt(i).Axis + tempDescription;
                                     LabelDisplay2XAxis = "Time (s)";
                                     LabelDisplay2YAxis = "mV";
-                                    OpenGLDispatcher.linkDisplay(2, "ACC", SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber, SettingACCData.SelectedDisplays.ElementAt(i).Axis);
+                                    if (String.Compare(SettingACCData.SelectedDisplays.ElementAt(i).Axis, "x") == 0)
+                                        OpenGLDispatcher.linkDisplay(2, "ACC", (SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 3 + 1);
+                                    else if (String.Compare(SettingACCData.SelectedDisplays.ElementAt(i).Axis, "y") == 0)
+                                        OpenGLDispatcher.linkDisplay(2, "ACC", (SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 3 + 2);
+                                    else if (String.Compare(SettingACCData.SelectedDisplays.ElementAt(i).Axis, "z") == 0)
+                                        OpenGLDispatcher.linkDisplay(2, "ACC", (SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 3 + 3);                                    
                                 }
                                 else
                                 {
@@ -1588,7 +1877,12 @@ namespace Policardiograph_App.ViewModel
                                     LabelDisplay3Tittle = SettingACCData.SelectedDisplays.ElementAt(i).ModuleName + "_CH" + SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber + SettingACCData.SelectedDisplays.ElementAt(i).Axis + tempDescription;
                                     LabelDisplay3XAxis = "Time (s)";
                                     LabelDisplay3YAxis = "mV";
-                                    OpenGLDispatcher.linkDisplay(3, "ACC", SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber, SettingACCData.SelectedDisplays.ElementAt(i).Axis);
+                                    if (String.Compare(SettingACCData.SelectedDisplays.ElementAt(i).Axis, "x") == 0)
+                                        OpenGLDispatcher.linkDisplay(3, "ACC", (SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 3 + 1);
+                                    else if (String.Compare(SettingACCData.SelectedDisplays.ElementAt(i).Axis, "y") == 0)
+                                        OpenGLDispatcher.linkDisplay(3, "ACC", (SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 3 + 2);
+                                    else if (String.Compare(SettingACCData.SelectedDisplays.ElementAt(i).Axis, "z") == 0)
+                                        OpenGLDispatcher.linkDisplay(3, "ACC", (SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 3 + 3);                                    
                                 }
                                 else
                                 {
@@ -1609,7 +1903,12 @@ namespace Policardiograph_App.ViewModel
                                     LabelDisplay4Tittle = SettingACCData.SelectedDisplays.ElementAt(i).ModuleName + "_CH" + SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber + SettingACCData.SelectedDisplays.ElementAt(i).Axis + tempDescription;
                                     LabelDisplay4XAxis = "Time (s)";
                                     LabelDisplay4YAxis = "mV";
-                                    OpenGLDispatcher.linkDisplay(4, "ACC", SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber, SettingACCData.SelectedDisplays.ElementAt(i).Axis);
+                                    if (String.Compare(SettingACCData.SelectedDisplays.ElementAt(i).Axis, "x") == 0)
+                                        OpenGLDispatcher.linkDisplay(4, "ACC", (SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 3 + 1);
+                                    else if (String.Compare(SettingACCData.SelectedDisplays.ElementAt(i).Axis, "y") == 0)
+                                        OpenGLDispatcher.linkDisplay(4, "ACC", (SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 3 + 2);
+                                    else if (String.Compare(SettingACCData.SelectedDisplays.ElementAt(i).Axis, "z") == 0)
+                                        OpenGLDispatcher.linkDisplay(4, "ACC", (SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 3 + 3);                                    
                                 }
                                 else
                                 {
@@ -1630,7 +1929,12 @@ namespace Policardiograph_App.ViewModel
                                     LabelDisplay5Tittle = SettingACCData.SelectedDisplays.ElementAt(i).ModuleName + "_CH" + SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber + SettingACCData.SelectedDisplays.ElementAt(i).Axis + tempDescription;
                                     LabelDisplay5XAxis = "Time (s)";
                                     LabelDisplay5YAxis = "mV";
-                                    OpenGLDispatcher.linkDisplay(5, "ACC", SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber, SettingACCData.SelectedDisplays.ElementAt(i).Axis);
+                                    if (String.Compare(SettingACCData.SelectedDisplays.ElementAt(i).Axis, "x") == 0)
+                                        OpenGLDispatcher.linkDisplay(5, "ACC", (SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 3 + 1);
+                                    else if (String.Compare(SettingACCData.SelectedDisplays.ElementAt(i).Axis, "y") == 0)
+                                        OpenGLDispatcher.linkDisplay(5, "ACC", (SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 3 + 2);
+                                    else if (String.Compare(SettingACCData.SelectedDisplays.ElementAt(i).Axis, "z") == 0)
+                                        OpenGLDispatcher.linkDisplay(5, "ACC", (SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 3 + 3);                                    
                                 }
                                 else
                                 {
@@ -1651,7 +1955,12 @@ namespace Policardiograph_App.ViewModel
                                     LabelDisplay6Tittle = SettingACCData.SelectedDisplays.ElementAt(i).ModuleName + "_CH" + SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber + SettingACCData.SelectedDisplays.ElementAt(i).Axis + tempDescription;
                                     LabelDisplay6XAxis = "Time (s)";
                                     LabelDisplay6YAxis = "mV";
-                                    OpenGLDispatcher.linkDisplay(6, "ACC", SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber, SettingACCData.SelectedDisplays.ElementAt(i).Axis);
+                                    if (String.Compare(SettingACCData.SelectedDisplays.ElementAt(i).Axis, "x") == 0)
+                                        OpenGLDispatcher.linkDisplay(6, "ACC", (SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 3 + 1);
+                                    else if (String.Compare(SettingACCData.SelectedDisplays.ElementAt(i).Axis, "y") == 0)
+                                        OpenGLDispatcher.linkDisplay(6, "ACC", (SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 3 + 2);
+                                    else if (String.Compare(SettingACCData.SelectedDisplays.ElementAt(i).Axis, "z") == 0)
+                                        OpenGLDispatcher.linkDisplay(6, "ACC", (SettingACCData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 3 + 3);                                    
                                 }
                                 else
                                 {
@@ -1687,6 +1996,10 @@ namespace Policardiograph_App.ViewModel
                     ToogleButtonECG1IsChecked = false;
                     ToogleButtonECG2IsChecked = false;
                     ToogleButtonACCIsChecked = false;
+                    DebugToggleButtonIsChecked = false;
+
+                    DebugRichTextBoxIsVisible = false;
+                    DebugStartStopButtonIsVisible = false;
 
                     for (int i = 0; i < 6; i++)
                     {
@@ -1704,7 +2017,10 @@ namespace Policardiograph_App.ViewModel
                                     LabelDisplay1Tittle = SettingPPGData.SelectedDisplays.ElementAt(i).ModuleName + "_CH" + SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber + SettingPPGData.SelectedDisplays.ElementAt(i).Axis + tempDescription;
                                     LabelDisplay1XAxis = "Time (s)";
                                     LabelDisplay1YAxis = "mV";
-                                    OpenGLDispatcher.linkDisplay(1, "PPG", SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber);
+                                    if (String.Compare(SettingPPGData.SelectedDisplays.ElementAt(i).Axis, "g") == 0)
+                                        OpenGLDispatcher.linkDisplay(1, "PPG", (SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 2 + 1);
+                                    else if (String.Compare(SettingPPGData.SelectedDisplays.ElementAt(i).Axis, "r") == 0)
+                                        OpenGLDispatcher.linkDisplay(1, "PPG", (SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 2 + 2);                                                                       
                                 }
                                 else
                                 {
@@ -1725,7 +2041,10 @@ namespace Policardiograph_App.ViewModel
                                     LabelDisplay2Tittle = SettingPPGData.SelectedDisplays.ElementAt(i).ModuleName + "_CH" + SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber + SettingPPGData.SelectedDisplays.ElementAt(i).Axis + tempDescription;
                                     LabelDisplay2XAxis = "Time (s)";
                                     LabelDisplay2YAxis = "mV";
-                                    OpenGLDispatcher.linkDisplay(2, "PPG", SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber);
+                                    if (String.Compare(SettingPPGData.SelectedDisplays.ElementAt(i).Axis, "g") == 0)
+                                        OpenGLDispatcher.linkDisplay(2, "PPG", (SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 2 + 1);
+                                    else if (String.Compare(SettingPPGData.SelectedDisplays.ElementAt(i).Axis, "r") == 0)
+                                        OpenGLDispatcher.linkDisplay(2, "PPG", (SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 2 + 2);                                    
                                 }
                                 else
                                 {
@@ -1746,7 +2065,10 @@ namespace Policardiograph_App.ViewModel
                                     LabelDisplay3Tittle = SettingPPGData.SelectedDisplays.ElementAt(i).ModuleName + "_CH" + SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber + SettingPPGData.SelectedDisplays.ElementAt(i).Axis + tempDescription;
                                     LabelDisplay3XAxis = "Time (s)";
                                     LabelDisplay3YAxis = "mV";
-                                    OpenGLDispatcher.linkDisplay(3, "PPG", SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber);
+                                    if (String.Compare(SettingPPGData.SelectedDisplays.ElementAt(i).Axis, "g") == 0)
+                                        OpenGLDispatcher.linkDisplay(3, "PPG", (SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 2 + 1);
+                                    else if (String.Compare(SettingPPGData.SelectedDisplays.ElementAt(i).Axis, "r") == 0)
+                                        OpenGLDispatcher.linkDisplay(3, "PPG", (SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 2 + 2);                                    
                                 }
                                 else
                                 {
@@ -1767,7 +2089,10 @@ namespace Policardiograph_App.ViewModel
                                     LabelDisplay4Tittle = SettingPPGData.SelectedDisplays.ElementAt(i).ModuleName + "_CH" + SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber + SettingPPGData.SelectedDisplays.ElementAt(i).Axis + tempDescription;
                                     LabelDisplay4XAxis = "Time (s)";
                                     LabelDisplay4YAxis = "mV";
-                                    OpenGLDispatcher.linkDisplay(4, "PPG", SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber);
+                                    if (String.Compare(SettingPPGData.SelectedDisplays.ElementAt(i).Axis, "g") == 0)
+                                        OpenGLDispatcher.linkDisplay(4, "PPG", (SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 2 + 1);
+                                    else if (String.Compare(SettingPPGData.SelectedDisplays.ElementAt(i).Axis, "r") == 0)
+                                        OpenGLDispatcher.linkDisplay(4, "PPG", (SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 2 + 2);                                    
                                 }
                                 else
                                 {
@@ -1788,7 +2113,10 @@ namespace Policardiograph_App.ViewModel
                                     LabelDisplay5Tittle = SettingPPGData.SelectedDisplays.ElementAt(i).ModuleName + "_CH" + SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber + SettingPPGData.SelectedDisplays.ElementAt(i).Axis + tempDescription;
                                     LabelDisplay5XAxis = "Time (s)";
                                     LabelDisplay5YAxis = "mV";
-                                    OpenGLDispatcher.linkDisplay(5, "PPG", SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber);
+                                    if (String.Compare(SettingPPGData.SelectedDisplays.ElementAt(i).Axis, "g") == 0)
+                                        OpenGLDispatcher.linkDisplay(5, "PPG", (SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 2 + 1);
+                                    else if (String.Compare(SettingPPGData.SelectedDisplays.ElementAt(i).Axis, "r") == 0)
+                                        OpenGLDispatcher.linkDisplay(5, "PPG", (SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 2 + 2);                                    
                                 }
                                 else
                                 {
@@ -1809,7 +2137,10 @@ namespace Policardiograph_App.ViewModel
                                     LabelDisplay6Tittle = SettingPPGData.SelectedDisplays.ElementAt(i).ModuleName + "_CH" + SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber + SettingPPGData.SelectedDisplays.ElementAt(i).Axis + tempDescription;
                                     LabelDisplay6XAxis = "Time (s)";
                                     LabelDisplay6YAxis = "mV";
-                                    OpenGLDispatcher.linkDisplay(6, "PPG", SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber);
+                                    if (String.Compare(SettingPPGData.SelectedDisplays.ElementAt(i).Axis, "g") == 0)
+                                        OpenGLDispatcher.linkDisplay(6, "PPG", (SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 2 + 1);
+                                    else if (String.Compare(SettingPPGData.SelectedDisplays.ElementAt(i).Axis, "r") == 0)
+                                        OpenGLDispatcher.linkDisplay(6, "PPG", (SettingPPGData.SelectedDisplays.ElementAt(i).ChannelNumber - 1) * 2 + 2);                                    
                                 }
                                 else
                                 {
@@ -2184,6 +2515,7 @@ namespace Policardiograph_App.ViewModel
                 OnPropertyChanged("BatteryVoltageLabelIsVisible");
             }
         }
+        
         
 
         #endregion

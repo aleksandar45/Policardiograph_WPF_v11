@@ -10,7 +10,7 @@ namespace Policardiograph_App.Settings
         public SettingPPG(int noOfChannels, List<ModuleChannel> selectedDisplays)
         {
             SelectedDisplays = selectedDisplays;
-            NumberOfChannels = noOfChannels;
+            NumberOfChannels = noOfChannels*2;
         }
         public int NumberOfChannels
         {

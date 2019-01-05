@@ -46,6 +46,7 @@ namespace Policardiograph_App.DeviceModel.Modules
         public virtual void sendMessage(TCPMessage tcpMessage) {
             BinaryWriter writer = new BinaryWriter(clientSocket.GetStream());
             writer.Write(tcpMessage.Message.ToCharArray());
+            writer.Flush();
         }
         public virtual bool isConnected()
         {

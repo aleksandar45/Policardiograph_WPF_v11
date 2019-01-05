@@ -414,10 +414,10 @@ namespace Policardiograph_App.Settings
                 string line;
                 if (!File.Exists(path + "Settings.dat"))
                 {
-                    selectedPPGDisplays.Add(new ModuleChannel("PPG", 1, "", "P1-green"));
-                    selectedPPGDisplays.Add(new ModuleChannel("PPG", 2, "", "P1-red"));
-                    selectedPPGDisplays.Add(new ModuleChannel("PPG", 3, "", "P2-green"));
-                    selectedPPGDisplays.Add(new ModuleChannel("PPG", 4, "", "P2-red"));
+                    selectedPPGDisplays.Add(new ModuleChannel("PPG", 1, "", "g"));
+                    selectedPPGDisplays.Add(new ModuleChannel("PPG", 1, "", "r"));
+                    selectedPPGDisplays.Add(new ModuleChannel("PPG", 2, "", "g"));
+                    selectedPPGDisplays.Add(new ModuleChannel("PPG", 2, "", "r"));
                     return new SettingPPG(4, selectedPPGDisplays);
                 }
                 StreamReader sr = File.OpenText(path + "Settings.dat");
@@ -708,7 +708,7 @@ namespace Policardiograph_App.Settings
                 }
                 if (settingPPG.NumberOfChannels > 0)
                 {
-                    line = String.Format("PPGSetting_NoChannel={0}", settingPPG.NumberOfChannels);
+                    line = String.Format("PPGSetting_NoChannel={0}", settingPPG.NumberOfChannels/2);
                     sw.WriteLine(line + newline);
                 }
                 sw.Close();

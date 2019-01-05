@@ -25,7 +25,7 @@ namespace Policardiograph_App.Dialogs.DialogSetting
             int ecgNoChannels = settingWindow.UserTabDisplays.ElementAt(2);
             int accNoChannels = settingWindow.UserTabDisplays.ElementAt(3);
             int ppgNoChannels = settingWindow.UserTabDisplays.ElementAt(4);
-            string[] items = new string[micNoChannels + fbgaNoChannels + ecgNoChannels + 3*accNoChannels + ppgNoChannels];
+            string[] items = new string[micNoChannels + fbgaNoChannels + ecgNoChannels + 3*accNoChannels + ppgNoChannels*2];
             int index = 0;
             for (int i = 0; i < micNoChannels; i++) {
                 items[index++] = "MIC_CH" + (i + 1).ToString();
@@ -41,18 +41,13 @@ namespace Policardiograph_App.Dialogs.DialogSetting
             for (int i = 0; i < accNoChannels; i++)
             {
                 items[index++] = "ACC_CH" + (i + 1).ToString() + "x";
-            }
-            for (int i = 0; i < accNoChannels; i++)
-            {
                 items[index++] = "ACC_CH" + (i + 1).ToString() + "y";
-            }
-            for (int i = 0; i < accNoChannels; i++)
-            {
                 items[index++] = "ACC_CH" + (i + 1).ToString() + "z";
             }
             for (int i = 0; i < ppgNoChannels; i++)
             {
-                items[index++] = "PPG_CH" + (i + 1).ToString();
+                items[index++] = "PPG_CH" + (i + 1).ToString() + "g";
+                items[index++] = "PPG_CH" + (i + 1).ToString() + "r";
             }
             UserTabDisplay1 = new List<string>(items);
             UserTabDisplay2 = new List<string>(items);
@@ -265,8 +260,8 @@ namespace Policardiograph_App.Dialogs.DialogSetting
                 if (String.Compare(__userTabDisplay1selectedItem, 0, "PPG_CH", 0, 6) == 0)
                 {
                     display1Selection.ModuleName = "PPG";
-                    display1Selection.ChannelNumber = Int32.Parse(__userTabDisplay1selectedItem.Substring(6));
-                    display1Selection.Axis = "";
+                    display1Selection.ChannelNumber = Int32.Parse(__userTabDisplay1selectedItem.Substring(6,1));
+                    display1Selection.Axis = __userTabDisplay1selectedItem.Substring(7, 1); ;
                     display1Selection.Description = "";
                 }
                 OnPropertyChanged("UserTabDisplay1SelectedItem");
@@ -330,8 +325,8 @@ namespace Policardiograph_App.Dialogs.DialogSetting
                 if (String.Compare(__userTabDisplay2selectedItem, 0, "PPG_CH", 0, 6) == 0)
                 {
                     display2Selection.ModuleName = "PPG";
-                    display2Selection.ChannelNumber = Int32.Parse(__userTabDisplay2selectedItem.Substring(6));
-                    display2Selection.Axis = "";
+                    display2Selection.ChannelNumber = Int32.Parse(__userTabDisplay2selectedItem.Substring(6,1));
+                    display2Selection.Axis = __userTabDisplay2selectedItem.Substring(7, 1); ;
                     display2Selection.Description = "";
                 }
                 OnPropertyChanged("UserTabDisplay2SelectedItem");
@@ -395,8 +390,8 @@ namespace Policardiograph_App.Dialogs.DialogSetting
                 if (String.Compare(__userTabDisplay3selectedItem, 0, "PPG_CH", 0, 6) == 0)
                 {
                     display3Selection.ModuleName = "PPG";
-                    display3Selection.ChannelNumber = Int32.Parse(__userTabDisplay3selectedItem.Substring(6));
-                    display3Selection.Axis = "";
+                    display3Selection.ChannelNumber = Int32.Parse(__userTabDisplay3selectedItem.Substring(6,1));
+                    display3Selection.Axis = __userTabDisplay3selectedItem.Substring(7, 1); ;
                     display3Selection.Description = "";
                 }
                 OnPropertyChanged("UserTabDisplay3SelectedItem");
@@ -460,8 +455,8 @@ namespace Policardiograph_App.Dialogs.DialogSetting
                 if (String.Compare(__userTabDisplay4selectedItem, 0, "PPG_CH", 0, 6) == 0)
                 {
                     display4Selection.ModuleName = "PPG";
-                    display4Selection.ChannelNumber = Int32.Parse(__userTabDisplay4selectedItem.Substring(6));
-                    display4Selection.Axis = "";
+                    display4Selection.ChannelNumber = Int32.Parse(__userTabDisplay4selectedItem.Substring(6,1));
+                    display4Selection.Axis = __userTabDisplay4selectedItem.Substring(7, 1); ;
                     display4Selection.Description = "";
                 }
                 OnPropertyChanged("UserTabDisplay4SelectedItem");
@@ -525,8 +520,8 @@ namespace Policardiograph_App.Dialogs.DialogSetting
                 if (String.Compare(__userTabDisplay5selectedItem, 0, "PPG_CH", 0, 6) == 0)
                 {
                     display5Selection.ModuleName = "PPG";
-                    display5Selection.ChannelNumber = Int32.Parse(__userTabDisplay5selectedItem.Substring(6));
-                    display5Selection.Axis = "";
+                    display5Selection.ChannelNumber = Int32.Parse(__userTabDisplay5selectedItem.Substring(6,1));
+                    display5Selection.Axis = __userTabDisplay5selectedItem.Substring(7, 1);
                     display5Selection.Description = "";
                 }
                 OnPropertyChanged("UserTabDisplay5SelectedItem");
@@ -590,8 +585,8 @@ namespace Policardiograph_App.Dialogs.DialogSetting
                 if (String.Compare(__userTabDisplay6selectedItem, 0, "PPG_CH", 0, 6) == 0)
                 {
                     display6Selection.ModuleName = "PPG";
-                    display6Selection.ChannelNumber = Int32.Parse(__userTabDisplay6selectedItem.Substring(6));
-                    display6Selection.Axis = "";
+                    display6Selection.ChannelNumber = Int32.Parse(__userTabDisplay6selectedItem.Substring(6,1));
+                    display6Selection.Axis = __userTabDisplay6selectedItem.Substring(7, 1); ;
                     display6Selection.Description = "";
                 }
                 OnPropertyChanged("UserTabDisplay6SelectedItem");

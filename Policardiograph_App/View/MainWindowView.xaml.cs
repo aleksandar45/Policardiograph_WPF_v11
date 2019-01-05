@@ -262,7 +262,10 @@ namespace Policardiograph_App
             //  Set the modelview matrix.
             gl.MatrixMode(OpenGL.GL_MODELVIEW);
         }
-                
-       
+
+        private void textBlockYAxisDisplay2_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+        {
+
+        }
     }
 }

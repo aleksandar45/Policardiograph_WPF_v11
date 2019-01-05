@@ -46,7 +46,8 @@ namespace Policardiograph_App.DeviceModel
         string directoryName;
 
         const int MIC_BUFFER_LENGTH = 4000;
-        const int ECG_BUFFER_LENGTH = 2000; 
+        const int ECG_BUFFER_LENGTH = 2000;
+        const int TOTAL_TIME_MS = 30000;
         double fist_sector_start = 0, second_sector_start = MIC_BUFFER_LENGTH / 4, third_sector_start = 2 * MIC_BUFFER_LENGTH / 4, fourth_sector_start = 3 * MIC_BUFFER_LENGTH / 4;
         uint current_block_sector_index;  //0-3
         uint mic_no_data, mic_block_num, mic_previous_block_number = 0, mic_seq_num;
@@ -309,8 +310,8 @@ namespace Policardiograph_App.DeviceModel
                     if (String.Compare(profile, "ALL DEVICES") == 0) {
                         //if (ecgState != TCPDeviceState.IDLE) throw new MException("It is not possible to start sync recording due to some modules are not connected");
                         //if (acc_ppgState != TCPDeviceState.IDLE) throw new MException("It is not possible to start sync recording due to some modules are not connected");
-                        if (micState != TCPDeviceState.IDLE) throw new MException("It is not possible to start sync recording due MIC/Master module is not connected");
-                        else
+                        //if (micState != TCPDeviceState.IDLE) throw new MException("It is not possible to start sync recording due MIC/Master module is not connected");
+                        if ((micModule != null) && (mainWindowVeiwModel.MicModuleStatus == TCPModuleStatusEnumType.CONNECTED_IDLE))
                         {
                             if (fbgaModule.fbgaMwlsStatus == USBDeviceStateEnum.INITIALIZED)
                             {
@@ -319,10 +320,16 @@ namespace Policardiograph_App.DeviceModel
                                 fbgaModule.startAcquisition(true);
                                 Thread.Sleep(500);
                             }
-                            if (micState == TCPDeviceState.IDLE) micModule.startSyncPlaying();
-                            if (ecgState == TCPDeviceState.IDLE) ecgModule.startSyncPlaying();
-                            if (acc_ppgState == TCPDeviceState.IDLE) acc_ppgModule.startSyncPlaying();
-                           
+                            micModule.startSyncPlaying();
+                            if ((ecgModule != null) && (mainWindowVeiwModel.ECGModuleStatus == TCPModuleStatusEnumType.CONNECTED_IDLE))
+                                ecgModule.startSyncPlaying();
+                            if ((acc_ppgModule != null) && (mainWindowVeiwModel.ACCModuleStatus == TCPModuleStatusEnumType.CONNECTED_IDLE) && (mainWindowVeiwModel.PPGModuleStatus == TCPModuleStatusEnumType.CONNECTED_IDLE))
+                                acc_ppgModule.startSyncPlaying();
+                        }
+                            
+                        else
+                        {
+                            throw new MException("It is not possible to start sync recording due MIC/Master module is not connected");
                         }
                     }
                     if (String.Compare(profile, "MIC") == 0) {
@@ -397,16 +404,20 @@ namespace Policardiograph_App.DeviceModel
                     {
                        // if (ecgState != TCPDeviceState.TRANSFERING) throw new MException("It is not possible to start sync recording due to some modules are not connected");
                        // if (acc_ppgState != TCPDeviceState.TRANSFERING) throw new MException("It is not possible to start sync recording due to some modules are not connected");
-                        if (micState != TCPDeviceState.TRANSFERING) throw new MException("It is not possible to start sync recording due to some modules are not connected");
-                        else 
+                       // if (micState != TCPDeviceState.TRANSFERING) throw new MException("It is not possible to start sync recording due to some modules are not connected");
+                        if((micModule != null) && (mainWindowVeiwModel.MicModuleStatus == TCPModuleStatusEnumType.CONNECTED_TRANSFERING))
                         {
                             fbgaModule.stopAcquisition();
-                            
+
                             Thread.Sleep(500);
                             syncRecording = false;
                             syncRecordingStatus = 0;
                             micModule.startSyncRecording();
                             syncRecordingTimer.Start();
+                        }
+                        else 
+                        {
+                            throw new MException("It is not possible to start sync recording due to some modules are not connected");
                         }
                     }
                     if (String.Compare(profile,"MIC")==0){
@@ -871,7 +882,7 @@ namespace Policardiograph_App.DeviceModel
             int[] acc_ppg_block_lengths = new int[70];
             int[] acc_ppg_block_numbers = new int[70];
             int[] acc_ppg_data = new int[10000];
-            int[] acc_ppg_previousData = new int[40];
+            int[] acc_ppg_previousData = new int[100];
             int acc_ppg_error = 0;
             double sync_acc_ppgTime = 0;
             bool acc_ppg_data_read_started = false;
@@ -954,12 +965,15 @@ namespace Policardiograph_App.DeviceModel
 
                                 for (int i = 0; i < 20; i = i + 2)
                                 {
-                                    line = System.String.Format("{0}", (mic_data_counter * 10 + i / 2 + 1));
-                                    int16_temp = (Int16)(byte_array[i + 26] * 256 + byte_array[i + 27]);
-                                    line = line + "\t" + int16_temp.ToString();
-                                    int16_temp = (Int16)(byte_array[i + 46] * 256 + byte_array[i + 47]);
-                                    line = line + "\t" + int16_temp.ToString();
-                                    streamWriter.WriteLine(line);
+                                    if ((mic_data_counter * 10 + i / 2 + 1) <= TOTAL_TIME_MS)
+                                    {
+                                        line = System.String.Format("{0}", (mic_data_counter * 10 + i / 2 + 1));
+                                        int16_temp = (Int16)(byte_array[i + 26] * 256 + byte_array[i + 27]);
+                                        line = line + "\t" + int16_temp.ToString();
+                                        int16_temp = (Int16)(byte_array[i + 46] * 256 + byte_array[i + 47]);
+                                        line = line + "\t" + int16_temp.ToString();
+                                        streamWriter.WriteLine(line);
+                                    }
                                 }
                                 mic_data_counter++;
                             }
@@ -989,6 +1003,7 @@ namespace Policardiograph_App.DeviceModel
                 {
                     bool sync = false;
                     float ecgTime = 0.0f;
+                    int[] tempECGTime = new int[70];
                     if ((syncRecordingStatus & 0x01) != 0x01) sync = true;
                     binaryReader = File.OpenRead(path + "ECG.dat");
                     using (StreamWriter streamWriter = File.AppendText(savePath + saveFileName + ".poli"))
@@ -1040,23 +1055,27 @@ namespace Policardiograph_App.DeviceModel
 
                                         if (current_block_samples_num!=0)
                                         {
-                                            dt = (double)((mic_block_lengths[ecg_i] + 1) * 10.0) / (double)((seq_num * 5 + current_block_samples_num + previous_block_samples_num) * 2.0);                                            
+                                            tempECGTime[ecg_i] = ((seq_num * 5 + current_block_samples_num - 1 + previous_block_samples_num) * 2);
+                                            dt = (double)((mic_block_lengths[ecg_i] + 1) * 10.0) / (double)((seq_num * 5 + current_block_samples_num - 1 + previous_block_samples_num) * 2.0);                                            
                                             for (int i = 0; i < previous_block_samples_num; i++)
                                             {
                                                 syncEcgTime = syncEcgTime + 2.0 * dt;
-                                                line = System.String.Format(CultureInfo.CreateSpecificCulture("en-GB"), "{0:0.00}", syncEcgTime);
-                                                line = line + "\t\t\t" + ecg_previousData[i * 8].ToString();
-                                                line = line + "\t\t\t" + ecg_previousData[i * 8 + 1].ToString();
-                                                line = line + "\t\t\t" + ecg_previousData[i * 8 + 2].ToString();
-                                                line = line + "\t\t\t" + ecg_previousData[i * 8 + 3].ToString();
-                                                line = line + "\t\t\t" + ecg_previousData[i * 8 + 4].ToString();
-                                                line = line + "\t\t\t" + ecg_previousData[i * 8 + 5].ToString();
-                                                line = line + "\t\t\t" + ecg_previousData[i * 8 + 6].ToString();
-                                                line = line + "\t\t\t" + ecg_previousData[i * 8 + 7].ToString();
-                                                streamWriter.WriteLine(line);
+                                                if (syncEcgTime <= TOTAL_TIME_MS)
+                                                {
+                                                    line = System.String.Format(CultureInfo.CreateSpecificCulture("en-GB"), "{0:0.00}", syncEcgTime);
+                                                    line = line + "\t\t\t" + ecg_previousData[i * 8].ToString();
+                                                    line = line + "\t\t\t" + ecg_previousData[i * 8 + 1].ToString();
+                                                    line = line + "\t\t\t" + ecg_previousData[i * 8 + 2].ToString();
+                                                    line = line + "\t\t\t" + ecg_previousData[i * 8 + 3].ToString();
+                                                    line = line + "\t\t\t" + ecg_previousData[i * 8 + 4].ToString();
+                                                    line = line + "\t\t\t" + ecg_previousData[i * 8 + 5].ToString();
+                                                    line = line + "\t\t\t" + ecg_previousData[i * 8 + 6].ToString();
+                                                    line = line + "\t\t\t" + ecg_previousData[i * 8 + 7].ToString();
+                                                    streamWriter.WriteLine(line);
+                                                }
                                             }
 
-                                            previous_block_samples_num = 5 - current_block_samples_num;
+                                            previous_block_samples_num = 5 - (current_block_samples_num-1);
                                             ecg_data_index = ecg_data_index - 8 * previous_block_samples_num;
                                             for(int i=0;i< previous_block_samples_num * 8; i++)
                                             {
@@ -1072,16 +1091,19 @@ namespace Policardiograph_App.DeviceModel
                                         for (int i = 0; i < ecg_data_index / 8; i++)
                                         {
                                             syncEcgTime = syncEcgTime + 2.0 * dt;
-                                            line = System.String.Format(CultureInfo.CreateSpecificCulture("en-GB"), "{0:0.00}", syncEcgTime);
-                                            line = line + "\t\t\t" + ecg_data[i * 8].ToString();
-                                            line = line + "\t\t\t" + ecg_data[i * 8 + 1].ToString();
-                                            line = line + "\t\t\t" + ecg_data[i * 8 + 2].ToString();
-                                            line = line + "\t\t\t" + ecg_data[i * 8 + 3].ToString();
-                                            line = line + "\t\t\t" + ecg_data[i * 8 + 4].ToString();
-                                            line = line + "\t\t\t" + ecg_data[i * 8 + 5].ToString();
-                                            line = line + "\t\t\t" + ecg_data[i * 8 + 6].ToString();
-                                            line = line + "\t\t\t" + ecg_data[i * 8 + 7].ToString();
-                                            streamWriter.WriteLine(line);
+                                            if (syncEcgTime<=TOTAL_TIME_MS)
+                                            {
+                                                line = System.String.Format(CultureInfo.CreateSpecificCulture("en-GB"), "{0:0.00}", syncEcgTime);
+                                                line = line + "\t\t\t" + ecg_data[i * 8].ToString();
+                                                line = line + "\t\t\t" + ecg_data[i * 8 + 1].ToString();
+                                                line = line + "\t\t\t" + ecg_data[i * 8 + 2].ToString();
+                                                line = line + "\t\t\t" + ecg_data[i * 8 + 3].ToString();
+                                                line = line + "\t\t\t" + ecg_data[i * 8 + 4].ToString();
+                                                line = line + "\t\t\t" + ecg_data[i * 8 + 5].ToString();
+                                                line = line + "\t\t\t" + ecg_data[i * 8 + 6].ToString();
+                                                line = line + "\t\t\t" + ecg_data[i * 8 + 7].ToString();
+                                                streamWriter.WriteLine(line);
+                                            }
                                         }
                                     }
                                     else
@@ -1137,7 +1159,10 @@ namespace Policardiograph_App.DeviceModel
                                     }
                                     if (!sync)
                                     {
-                                        streamWriter.WriteLine(line);
+                                        if (ecgTime <= TOTAL_TIME_MS)
+                                        {
+                                            streamWriter.WriteLine(line);
+                                        }
                                         ecgTime = ecgTime + 2.0f;
                                     }
                                     //try
@@ -1148,20 +1173,40 @@ namespace Policardiograph_App.DeviceModel
                         }
                         if (previous_block_num == mic_block_numbers[ecg_i])
                         {
-                            double dt = (double)((mic_block_lengths[ecg_i] + 1) * 10.0) / (double)(((seq_num + 1) * 5 + previous_block_samples_num) * 2.0);                            
+                            double dt = (double)((mic_block_lengths[ecg_i] + 1) * 10.0) / (double)(((seq_num + 1) * 5 + previous_block_samples_num) * 2.0);
+                            for (int i = 0; i < previous_block_samples_num; i++)
+                            {
+                                syncEcgTime = syncEcgTime + 2.0 * dt;
+                                if (syncEcgTime <= TOTAL_TIME_MS)
+                                {
+                                    line = System.String.Format(CultureInfo.CreateSpecificCulture("en-GB"), "{0:0.00}", syncEcgTime);
+                                    line = line + "\t\t\t" + ecg_previousData[i * 8].ToString();
+                                    line = line + "\t\t\t" + ecg_previousData[i * 8 + 1].ToString();
+                                    line = line + "\t\t\t" + ecg_previousData[i * 8 + 2].ToString();
+                                    line = line + "\t\t\t" + ecg_previousData[i * 8 + 3].ToString();
+                                    line = line + "\t\t\t" + ecg_previousData[i * 8 + 4].ToString();
+                                    line = line + "\t\t\t" + ecg_previousData[i * 8 + 5].ToString();
+                                    line = line + "\t\t\t" + ecg_previousData[i * 8 + 6].ToString();
+                                    line = line + "\t\t\t" + ecg_previousData[i * 8 + 7].ToString();
+                                    streamWriter.WriteLine(line);
+                                }
+                            }
                             for (int i = 0; i < ecg_data_index / 8; i++)
                             {
                                 syncEcgTime = syncEcgTime + 2.0 * dt;
-                                line = System.String.Format(CultureInfo.CreateSpecificCulture("en-GB"), "{0:0.00}", syncEcgTime);
-                                line = line + "\t\t\t" + ecg_data[i * 8].ToString();
-                                line = line + "\t\t\t" + ecg_data[i * 8 + 1].ToString();
-                                line = line + "\t\t\t" + ecg_data[i * 8 + 2].ToString();
-                                line = line + "\t\t\t" + ecg_data[i * 8 + 3].ToString();
-                                line = line + "\t\t\t" + ecg_data[i * 8 + 4].ToString();
-                                line = line + "\t\t\t" + ecg_data[i * 8 + 5].ToString();
-                                line = line + "\t\t\t" + ecg_data[i * 8 + 6].ToString();
-                                line = line + "\t\t\t" + ecg_data[i * 8 + 7].ToString();
-                                streamWriter.WriteLine(line);
+                                if (syncEcgTime <= TOTAL_TIME_MS)
+                                {
+                                    line = System.String.Format(CultureInfo.CreateSpecificCulture("en-GB"), "{0:0.00}", syncEcgTime);
+                                    line = line + "\t\t\t" + ecg_data[i * 8].ToString();
+                                    line = line + "\t\t\t" + ecg_data[i * 8 + 1].ToString();
+                                    line = line + "\t\t\t" + ecg_data[i * 8 + 2].ToString();
+                                    line = line + "\t\t\t" + ecg_data[i * 8 + 3].ToString();
+                                    line = line + "\t\t\t" + ecg_data[i * 8 + 4].ToString();
+                                    line = line + "\t\t\t" + ecg_data[i * 8 + 5].ToString();
+                                    line = line + "\t\t\t" + ecg_data[i * 8 + 6].ToString();
+                                    line = line + "\t\t\t" + ecg_data[i * 8 + 7].ToString();
+                                    streamWriter.WriteLine(line);
+                                }
                             }
                         }
                         else
@@ -1195,6 +1240,7 @@ namespace Policardiograph_App.DeviceModel
                 {
                     bool sync = false;
                     float acc_ppgTime = 0.0f;
+                    int[] tempAccTime = new int[70];
                     if ((syncRecordingStatus & 0x01) != 0x01) sync = true;
                     binaryReader = File.OpenRead(path + "ACC_PPG.dat");                    
                     using (StreamWriter streamWriter = File.AppendText(savePath + saveFileName + ".poli"))
@@ -1208,7 +1254,7 @@ namespace Policardiograph_App.DeviceModel
 
                         line = "ACC_PPG";
                         streamWriter.WriteLine(line);
-                        line = "Tm\tA1z\tA2z\tP1g\tP1r\tP2g\tP2r";
+                        line = "Tm\tA1x\tA1y\tA1z\tA2x\tA2y\tA2z\tP1g\tP1r\tP2g\tP2r";
                         streamWriter.WriteLine(line);
 
                         line = "";
@@ -1248,23 +1294,25 @@ namespace Policardiograph_App.DeviceModel
 
                                         if (current_block_samples_num != 0)
                                         {
-                                            dt = (double)((mic_block_lengths[acc_ppg_i] + 1) * 10.0) / (double)((seq_num * 5 + current_block_samples_num + previous_block_samples_num) * 2.0);
-                                            for (int i = 0; i < previous_block_samples_num; i++)
+                                            tempAccTime[acc_ppg_i] = ((seq_num * 5 + current_block_samples_num - 1 + previous_block_samples_num) * 2);
+                                            dt = (double)((mic_block_lengths[acc_ppg_i] + 1) * 10.0) / (double)((seq_num * 5 + current_block_samples_num - 1 + previous_block_samples_num) * 2.0);
+                                            for (int i = 0; i < previous_block_samples_num; i++) 
                                             {
                                                 sync_acc_ppgTime = sync_acc_ppgTime + 2.0 * dt;
-                                                line = System.String.Format(CultureInfo.CreateSpecificCulture("en-GB"), "{0:0.00}", sync_acc_ppgTime);
-                                                line = line + "\t\t\t" + acc_ppg_previousData[i * 6].ToString();
-                                                line = line + "\t\t\t" + acc_ppg_previousData[i * 6 + 1].ToString();
-                                                line = line + "\t\t\t" + acc_ppg_previousData[i * 6 + 2].ToString();
-                                                line = line + "\t\t\t" + acc_ppg_previousData[i * 6 + 3].ToString();
-                                                line = line + "\t\t\t" + acc_ppg_previousData[i * 6 + 4].ToString();
-                                                line = line + "\t\t\t" + acc_ppg_previousData[i * 6 + 5].ToString();
-                                                streamWriter.WriteLine(line);
+                                                if (sync_acc_ppgTime <= TOTAL_TIME_MS)
+                                                {
+                                                    line = System.String.Format(CultureInfo.CreateSpecificCulture("en-GB"), "{0:0.00}", sync_acc_ppgTime);
+                                                    for(int j = 0;j < 13; j++)
+                                                    {
+                                                        line = line + "\t\t\t" + acc_ppg_previousData[i * 13 + j].ToString();
+                                                    }                                               
+                                                    streamWriter.WriteLine(line);
+                                                }
                                             }
 
-                                            previous_block_samples_num = 5 - current_block_samples_num;
-                                            acc_ppg_data_index = acc_ppg_data_index - 6 * previous_block_samples_num;
-                                            for (int i = 0; i < previous_block_samples_num * 6; i++)
+                                            previous_block_samples_num = 5 - (current_block_samples_num-1);
+                                            acc_ppg_data_index = acc_ppg_data_index - 13 * previous_block_samples_num;
+                                            for (int i = 0; i < previous_block_samples_num * 13; i++)
                                             {
                                                 acc_ppg_previousData[i] = acc_ppg_data[acc_ppg_data_index + i];
                                             }
@@ -1274,17 +1322,18 @@ namespace Policardiograph_App.DeviceModel
                                             dt = (double)((mic_block_lengths[acc_ppg_i] + 1) * 10.0) / (double)(((seq_num + 1) * 5 + previous_block_samples_num) * 2.0);
                                             previous_block_samples_num = 0;
                                         }
-                                        for (int i = 0; i < acc_ppg_data_index / 6; i++)
+                                        for (int i = 0; i < acc_ppg_data_index / 13; i++)
                                         {
                                             sync_acc_ppgTime = sync_acc_ppgTime + 2.0 * dt;
-                                            line = System.String.Format(CultureInfo.CreateSpecificCulture("en-GB"), "{0:0.00}", sync_acc_ppgTime);
-                                            line = line + "\t\t\t" + acc_ppg_data[i * 6].ToString();
-                                            line = line + "\t\t\t" + acc_ppg_data[i * 6 + 1].ToString();
-                                            line = line + "\t\t\t" + acc_ppg_data[i * 6 + 2].ToString();
-                                            line = line + "\t\t\t" + acc_ppg_data[i * 6 + 3].ToString();
-                                            line = line + "\t\t\t" + acc_ppg_data[i * 6 + 4].ToString();
-                                            line = line + "\t\t\t" + acc_ppg_data[i * 6 + 5].ToString();
-                                            streamWriter.WriteLine(line);
+                                            if (sync_acc_ppgTime <= TOTAL_TIME_MS)
+                                            {
+                                                line = System.String.Format(CultureInfo.CreateSpecificCulture("en-GB"), "{0:0.00}", sync_acc_ppgTime);
+                                                for (int j = 0; j < 13; j++)
+                                                {
+                                                    line = line + "\t\t\t" + acc_ppg_data[i * 13 + j].ToString();
+                                                }
+                                                streamWriter.WriteLine(line);
+                                            }
 
                                         }
                                     }
@@ -1327,7 +1376,7 @@ namespace Policardiograph_App.DeviceModel
                                         int16_temp = (Int16)(byte_array[i + 26 + 10 * k] * 256 + byte_array[i + 27 + 10 * k]);
                                         if (sync)
                                         {
-                                            if ((k == 2) || (k == 5))
+                                            if (k < 9)
                                             {
                                                 acc_ppg_data[acc_ppg_data_index++] = int16_temp;
                                             }
@@ -1367,7 +1416,10 @@ namespace Policardiograph_App.DeviceModel
                                     }
                                     if (!sync)
                                     {
-                                        streamWriter.WriteLine(line);
+                                        if (acc_ppgTime <= TOTAL_TIME_MS)
+                                        {
+                                            streamWriter.WriteLine(line);
+                                        }
                                         acc_ppgTime = acc_ppgTime + 2.0f;
                                     }
                                     //try
@@ -1379,18 +1431,33 @@ namespace Policardiograph_App.DeviceModel
 
                         if (previous_block_num == mic_block_numbers[acc_ppg_i])
                         {
-                            double dt = (double)((mic_block_lengths[acc_ppg_i] + 1) * 10.0) / (double)(((seq_num + 1) * 5 + previous_block_samples_num) * 2.0);                            
-                            for (int i = 0; i < acc_ppg_data_index / 6; i++)
+                            double dt = (double)((mic_block_lengths[acc_ppg_i] + 1) * 10.0) / (double)(((seq_num + 1) * 5 + previous_block_samples_num) * 2.0);
+                            for (int i = 0; i < previous_block_samples_num; i++)
                             {
                                 sync_acc_ppgTime = sync_acc_ppgTime + 2.0 * dt;
-                                line = System.String.Format(CultureInfo.CreateSpecificCulture("en-GB"), "{0:0.00}", sync_acc_ppgTime);
-                                line = line + "\t\t\t" + acc_ppg_data[i * 6].ToString();
-                                line = line + "\t\t\t" + acc_ppg_data[i * 6 + 1].ToString();
-                                line = line + "\t\t\t" + acc_ppg_data[i * 6 + 2].ToString();
-                                line = line + "\t\t\t" + acc_ppg_data[i * 6 + 3].ToString();
-                                line = line + "\t\t\t" + acc_ppg_data[i * 6 + 4].ToString();
-                                line = line + "\t\t\t" + acc_ppg_data[i * 6 + 5].ToString();
-                                streamWriter.WriteLine(line);
+                                if (sync_acc_ppgTime <= TOTAL_TIME_MS)
+                                {
+                                    line = System.String.Format(CultureInfo.CreateSpecificCulture("en-GB"), "{0:0.00}", sync_acc_ppgTime);
+                                    for (int j = 0; j < 13; j++)
+                                    {
+                                        line = line + "\t\t\t" + acc_ppg_previousData[i * 13 + j].ToString();
+                                    }
+                                    streamWriter.WriteLine(line);
+                                }
+                            }
+                            
+                            for (int i = 0; i < acc_ppg_data_index / 13; i++)
+                            {
+                                sync_acc_ppgTime = sync_acc_ppgTime + 2.0 * dt;
+                                if (sync_acc_ppgTime <= TOTAL_TIME_MS)
+                                {
+                                    line = System.String.Format(CultureInfo.CreateSpecificCulture("en-GB"), "{0:0.00}", sync_acc_ppgTime);
+                                    for (int j = 0; j < 13; j++)
+                                    {
+                                        line = line + "\t\t\t" + acc_ppg_data[i * 13 + j].ToString();
+                                    }
+                                    streamWriter.WriteLine(line);
+                                }
 
                             }
                         }
@@ -1457,7 +1524,8 @@ namespace Policardiograph_App.DeviceModel
                                 micSample = Int32.Parse(words.ElementAt(1));
                                 if(micSample == 32767)
                                 {
-                                    timeAxisTriggersMIC[timeAxisTriggersIndex++] = timeAxis;
+                                    if (timeAxisTriggersIndex < 500)
+                                        timeAxisTriggersMIC[timeAxisTriggersIndex++] = timeAxis;
                                     timeAxisTriggersSizeMIC = timeAxisTriggersIndex;
                                 }
                             }
@@ -1466,7 +1534,8 @@ namespace Policardiograph_App.DeviceModel
                                 ecgSample = Int32.Parse(words.ElementAt(3));
                                 if (ecgSample == 8388607)
                                 {
-                                    timeAxisTriggersECG[timeAxisTriggersIndex++] = timeAxis;
+                                    if (timeAxisTriggersIndex < 500)
+                                        timeAxisTriggersECG[timeAxisTriggersIndex++] = timeAxis;
                                     timeAxisTriggersSizeECG = timeAxisTriggersIndex;
                                 }
                             }
@@ -1475,7 +1544,8 @@ namespace Policardiograph_App.DeviceModel
                                 accSample = Int32.Parse(words.ElementAt(3));
                                 if (accSample == 32767)
                                 {
-                                    timeAxisTriggersACC[timeAxisTriggersIndex++] = timeAxis;
+                                    if (timeAxisTriggersIndex < 500)
+                                        timeAxisTriggersACC[timeAxisTriggersIndex++] = timeAxis;
                                     timeAxisTriggersSizeACC = timeAxisTriggersIndex;
                                 }
                             }
@@ -1484,6 +1554,12 @@ namespace Policardiograph_App.DeviceModel
 
                     }
 
+                    if ((timeAxisTriggersSizeECG + 1) == timeAxisTriggersSizeMIC)
+                         timeAxisTriggersSizeMIC = timeAxisTriggersSizeECG;
+
+                    if ((timeAxisTriggersSizeACC + 1) == timeAxisTriggersSizeMIC)                                           
+                        timeAxisTriggersSizeMIC = timeAxisTriggersSizeACC; 
+                    
                     using (StreamWriter streamWriter = File.CreateText(savePath + "Report" + ".txt"))
                     {
                         streamWriter.WriteLine("MIC - ECG\n");
@@ -1772,6 +1848,7 @@ namespace Policardiograph_App.DeviceModel
                                 fbgaRingBuffer.Reset();
                             }
                         }
+
                     }
                     else
                     {
@@ -1890,6 +1967,27 @@ namespace Policardiograph_App.DeviceModel
                                 ecgState = TCPDeviceState.IDLE;
                                 ecgStateUpdated = true;
                             }
+                        }
+                        else if (compareByteArrayAndString(tmpBuffer, "DEBUG_PACKETxx", 14))
+                        {
+                            ecgRingBuffer.Read(tmpBuffer, 6);
+                            ecgRingBuffer.Read(dataBuffer, 120);
+                            ecgRingBuffer.Read(tmpBuffer, 1);
+                            ecgRingBuffer.Read(tmpBuffer, 5);
+                            if (compareByteArrayAndString(tmpBuffer, "|END|", 5))
+                            {
+                                StringBuilder sb = new StringBuilder();
+                                sb.Append("ECG_Debug:" + Environment.NewLine);
+                                int32_temp = (int)(((uint)dataBuffer[0]) * 256 + (uint)dataBuffer[1]);
+                                sb.Append("\t").Append("FIFOHandleECG.available: " + int32_temp.ToString() + Environment.NewLine);                                
+                                if (mainWindowVeiwModel.DebugTextBlockText.Length > 1000)
+                                    mainWindowVeiwModel.DebugTextBlockText = "";
+                                if (mainWindowVeiwModel.DebugStartStopButtonContent == "Stop")
+                                {
+                                    mainWindowVeiwModel.DebugTextBlockText += sb.ToString();
+                                }
+                            }
+
                         }
                     }
 
@@ -2030,6 +2128,34 @@ namespace Policardiograph_App.DeviceModel
                                 acc_ppgStateUpdated = true;
                             }
                         }
+                        else if (compareByteArrayAndString(tmpBuffer, "DEBUG_PACKETxx", 14))
+                        {
+                            acc_ppgRingBuffer.Read(tmpBuffer, 6);
+                            acc_ppgRingBuffer.Read(dataBuffer, 120);
+                            acc_ppgRingBuffer.Read(tmpBuffer, 1);
+                            acc_ppgRingBuffer.Read(tmpBuffer, 5);
+                            if (compareByteArrayAndString(tmpBuffer, "|END|", 5))
+                            {
+                                StringBuilder sb = new StringBuilder();
+                                sb.Append("ACC_PPG_Debug:" + Environment.NewLine);
+                                int32_temp = (int) (((uint)dataBuffer[0]) * 256 + (uint)dataBuffer[1]);
+                                sb.Append("\t").Append("FIFOHandleACC.available: " + int32_temp.ToString() + Environment.NewLine);
+                                int32_temp = (int)(((uint)dataBuffer[2]) * 256 + (uint)dataBuffer[3]);
+                                sb.Append("\t").Append("FIFOHandlePPG.available: " + int32_temp.ToString() + Environment.NewLine);
+                                int32_temp = (int) dataBuffer[4];
+                                sb.Append("\t").Append("ppg_error: " + int32_temp.ToString() + Environment.NewLine);
+                                int32_temp = (int) dataBuffer[5];
+                                sb.Append("\t").Append("all_acc_error: " + int32_temp.ToString() + Environment.NewLine);
+                                if (mainWindowVeiwModel.DebugTextBlockText.Length > 1000)
+                                    mainWindowVeiwModel.DebugTextBlockText = "";
+                                if (mainWindowVeiwModel.DebugStartStopButtonContent == "Stop")
+                                {
+                                    mainWindowVeiwModel.DebugTextBlockText += sb.ToString();
+                                }
+                            }                             
+                           
+                        }
+                    
                     }
                     else
                     {
