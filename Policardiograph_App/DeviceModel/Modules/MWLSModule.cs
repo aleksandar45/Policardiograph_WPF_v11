@@ -11,7 +11,7 @@ namespace Policardiograph_App.DeviceModel.Modules
     public class MWLSModule: USBModule
     {
         #region DLL_Import
-        const string dllRelativePath = "..\\..\\Dependencies\\Sense2020Dll.dll";
+        const string dllRelativePath = "Sense2020Dll.dll";
         [DllImport(dllRelativePath, CallingConvention = CallingConvention.StdCall)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool DLL_Init_SLED();

@@ -264,7 +264,11 @@ namespace Policardiograph_App.DeviceModel
                 }
                 else{
                     fbgaModule.Initialize(mainWindowVeiwModel.SettingFBGAData);
-                    fbgaModule.TurnOnOffSLED(mainWindowVeiwModel.SettingFBGAData, true);
+                    if(fbgaModule.fbgaMwlsStatus == USBDeviceStateEnum.INITIALIZED)
+                    {
+                        fbgaModule.TurnOnOffSLED(mainWindowVeiwModel.SettingFBGAData, true);
+                    }
+                    
                 }
                 return true;
             }
