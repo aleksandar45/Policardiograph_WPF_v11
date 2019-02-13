@@ -1258,7 +1258,7 @@ namespace Policardiograph_App.DeviceModel
 
                         line = "ACC_PPG";
                         streamWriter.WriteLine(line);
-                        line = "Tm\tA1x\tA1y\tA1z\tA2x\tA2y\tA2z\tP1g\tP1r\tP2g\tP2r";
+                        line = "Tm\tA1x\tA1y\tA1z\tA2x\tA2y\tA2z\tA3x\tA3y\tA3z\tP1g\tP1r\tP2g\tP2r";
                         streamWriter.WriteLine(line);
 
                         line = "";
@@ -1400,7 +1400,7 @@ namespace Policardiograph_App.DeviceModel
                                         }
                                         else
                                         {
-                                            if ((k == 2) || (k == 5))
+                                            if (k < 9)
                                             {
                                                 line = line + "\t\t\t" + int16_temp.ToString();
                                             }

@@ -83,8 +83,8 @@ namespace Policardiograph_App.Settings
                     selectedUserDisplays.Add(new ModuleChannel("ECG", 1, "", ""));
                     selectedUserDisplays.Add(new ModuleChannel("FBGA", 1, "", ""));
                     selectedUserDisplays.Add(new ModuleChannel("ACC", 1, "", "z"));
-                    selectedUserDisplays.Add(new ModuleChannel("PPG", 1, "", ""));
-                    selectedUserDisplays.Add(new ModuleChannel("PPG", 2, "", ""));
+                    selectedUserDisplays.Add(new ModuleChannel("PPG", 1, "", "g"));
+                    selectedUserDisplays.Add(new ModuleChannel("PPG", 1, "", "r"));
                     return new SettingWindow(4, channelNumbers, selectedUserDisplays, true);
                 }
                 StreamReader sr = File.OpenText(path + "Settings.dat");
@@ -143,7 +143,7 @@ namespace Policardiograph_App.Settings
                 string line;
                 if (!File.Exists(path + "Settings.dat"))
                 {
-                    selectedFBGADisplays.Add(new ModuleChannel("MIC", 1, "", ""));
+                    selectedFBGADisplays.Add(new ModuleChannel("FBGA", 1, "", ""));
                     return new SettingFBGA(1, 500, 2.0, true, selectedFBGADisplays);
                 }
                 StreamReader sr = File.OpenText(path + "Settings.dat");
@@ -213,7 +213,7 @@ namespace Policardiograph_App.Settings
                 {
                     selectedMICDisplays.Add(new ModuleChannel("MIC", 1, "", ""));
                     selectedMICDisplays.Add(new ModuleChannel("MIC", 2, "", ""));
-                    return new SettingMIC(2, false, false, true, false, false, false, selectedMICDisplays);
+                    return new SettingMIC(2, false, false, true, true, false, false, selectedMICDisplays);
                 }
                 System.IO.StreamReader sr = System.IO.File.OpenText(path + "Settings.dat");
                
@@ -355,7 +355,11 @@ namespace Policardiograph_App.Settings
                 string line;
                 if (!File.Exists(path + "Settings.dat"))
                 {
+                    selectedACCDisplays.Add(new ModuleChannel("ACC", 1, "", "x"));
+                    selectedACCDisplays.Add(new ModuleChannel("ACC", 1, "", "y"));
                     selectedACCDisplays.Add(new ModuleChannel("ACC", 1, "", "z"));
+                    selectedACCDisplays.Add(new ModuleChannel("ACC", 2, "", "x"));
+                    selectedACCDisplays.Add(new ModuleChannel("ACC", 2, "", "y"));
                     selectedACCDisplays.Add(new ModuleChannel("ACC", 2, "", "z"));
                     return new SettingACC(2, selectedACCDisplays);
                 }
@@ -418,7 +422,7 @@ namespace Policardiograph_App.Settings
                     selectedPPGDisplays.Add(new ModuleChannel("PPG", 1, "", "r"));
                     selectedPPGDisplays.Add(new ModuleChannel("PPG", 2, "", "g"));
                     selectedPPGDisplays.Add(new ModuleChannel("PPG", 2, "", "r"));
-                    return new SettingPPG(4, selectedPPGDisplays);
+                    return new SettingPPG(2, selectedPPGDisplays);
                 }
                 StreamReader sr = File.OpenText(path + "Settings.dat");
                

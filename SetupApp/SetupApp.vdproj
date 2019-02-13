@@ -15,14 +15,20 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_0421AF99CBFE42ACAC494F4DC3B86411"
+        "MsmKey" = "8:_1504BCACDD8B47338FCBD870F976DDDA"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_1504BCACDD8B47338FCBD870F976DDDA"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_1D75F00DCC563E2980F440B2336C5F3A"
+        "OwnerKey" = "8:_386A61FBEB4D48F485F1B6457D136113"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_1D75F00DCC563E2980F440B2336C5F3A"
+        "OwnerKey" = "8:_DCCC6638BBD515F676B9978FFD9F1367"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -33,7 +39,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_2425C109FCDF71A7013F0E9909C399BE"
+        "MsmKey" = "8:_330979E2EA7A5CB2F741724700D242C4"
         "OwnerKey" = "8:_386A61FBEB4D48F485F1B6457D136113"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -57,8 +63,8 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_463441E8698B419BA7B5DA1377338DC0"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_4456DF9A72094F3837114F6BB6768B2F"
+        "OwnerKey" = "8:_386A61FBEB4D48F485F1B6457D136113"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -70,12 +76,6 @@
         "Entry"
         {
         "MsmKey" = "8:_4E809CC16ACC4E4C99AFB277C82B1E94"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_541A8B6DF51344E5A9D47C2B3A5404FB"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -93,37 +93,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_670A89B75644ACA299FC00C538BFF1B7"
-        "OwnerKey" = "8:_386A61FBEB4D48F485F1B6457D136113"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_680A47393A194BBFB2866E14A9132217"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_6A4B466221DA4AC18D443B57742EA8F1"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_6B97234DD3F69D4369254FE5EE9C7401"
-        "OwnerKey" = "8:_386A61FBEB4D48F485F1B6457D136113"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_6B97234DD3F69D4369254FE5EE9C7401"
-        "OwnerKey" = "8:_EF9EFE9F0460C06B37BC2D35DBF0D994"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_6C8FF71322DA479283DB9C7B6E564267"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -141,26 +111,20 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_7D887E5FAA3E23E4F29078025A54352F"
+        "MsmKey" = "8:_7BF84618DC40E017EE330B0D997E5966"
         "OwnerKey" = "8:_386A61FBEB4D48F485F1B6457D136113"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_7D887E5FAA3E23E4F29078025A54352F"
-        "OwnerKey" = "8:_EF9EFE9F0460C06B37BC2D35DBF0D994"
+        "MsmKey" = "8:_7BF84618DC40E017EE330B0D997E5966"
+        "OwnerKey" = "8:_DCCC6638BBD515F676B9978FFD9F1367"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_7D887E5FAA3E23E4F29078025A54352F"
-        "OwnerKey" = "8:_6B97234DD3F69D4369254FE5EE9C7401"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_81D8A3D596424259869BD5BF57C4DA74"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_7BF84618DC40E017EE330B0D997E5966"
+        "OwnerKey" = "8:_1D75F00DCC563E2980F440B2336C5F3A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -178,18 +142,6 @@
         "Entry"
         {
         "MsmKey" = "8:_9AB8660DD184410A87D3919F221E1AD3"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_AD96B3C4A58644FF80393799691FFC2C"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_BFEB2B9A924740529CA7BEE71CC48384"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -213,25 +165,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_E2A17A027EC54EE0BCF4B8D4ECCE5EF5"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E5FAF18A0F1148B9A98030A0AE8578BF"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_EF9EFE9F0460C06B37BC2D35DBF0D994"
+        "MsmKey" = "8:_DCCC6638BBD515F676B9978FFD9F1367"
         "OwnerKey" = "8:_386A61FBEB4D48F485F1B6457D136113"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_F4EF6D7211ED40D281B8C9A5CC3D296C"
+        "MsmKey" = "8:_E2A17A027EC54EE0BCF4B8D4ECCE5EF5"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -244,12 +184,6 @@
         "Entry"
         {
         "MsmKey" = "8:_F60ACEE859194C16AE00933748443468"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_F8B51483B25C4C469B65C6B432FDB400"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -268,31 +202,31 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_EF9EFE9F0460C06B37BC2D35DBF0D994"
+        "OwnerKey" = "8:_DCCC6638BBD515F676B9978FFD9F1367"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_6B97234DD3F69D4369254FE5EE9C7401"
+        "OwnerKey" = "8:_1D75F00DCC563E2980F440B2336C5F3A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7D887E5FAA3E23E4F29078025A54352F"
+        "OwnerKey" = "8:_7BF84618DC40E017EE330B0D997E5966"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2425C109FCDF71A7013F0E9909C399BE"
+        "OwnerKey" = "8:_330979E2EA7A5CB2F741724700D242C4"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_670A89B75644ACA299FC00C538BFF1B7"
+        "OwnerKey" = "8:_4456DF9A72094F3837114F6BB6768B2F"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -352,6 +286,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
             }
         }
     }
@@ -359,20 +301,6 @@
     {
         "CustomAction"
         {
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_7DF66D8BC62444D2BCD38CC2864CC861"
-            {
-            "Name" = "8:CP210xVCPInstaller.exe"
-            "Condition" = "8:"
-            "Object" = "8:_F8B51483B25C4C469B65C6B432FDB400"
-            "FileType" = "3:2"
-            "InstallAction" = "3:1"
-            "Arguments" = "8:"
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_D052F569_5F1E_49F4_895E_CD572A190850"
-            "InstallerClass" = "11:FALSE"
-            "CustomActionData" = "8:"
-            }
         }
         "DefaultFeature"
         {
@@ -388,7 +316,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:.NETFramework,Version=v4.6.1"
+                "FrameworkVersion" = "8:.NETFramework,Version=v4.0"
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=671728"
                 }
@@ -396,26 +324,6 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0421AF99CBFE42ACAC494F4DC3B86411"
-            {
-            "SourcePath" = "8:C:\\SiLabs\\MCU\\CP210x\\Windows_XP_S2K3_Vista_7\\x86\\silabser.sys"
-            "TargetName" = "8:silabser.sys"
-            "Tag" = "8:"
-            "Folder" = "8:_F433D4CAB11B40FDA1B84086537354E4"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1504BCACDD8B47338FCBD870F976DDDA"
             {
             "SourcePath" = "8:..\\..\\..\\..\\..\\Desktop\\PolicardiographApp\\USB Drivers\\USB20BS Drivers\\32 bits\\SU256LDB.iic"
@@ -434,6 +342,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1D75F00DCC563E2980F440B2336C5F3A"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:SharpGL.SceneGraph, Version=2.4.0.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_1D75F00DCC563E2980F440B2336C5F3A"
+                    {
+                    "Name" = "8:SharpGL.SceneGraph.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:SharpGL.SceneGraph.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_176BA899A5C7401C863357554C50334F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_21B83449D4644106850A68AD137DC5FF"
@@ -456,14 +395,14 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2425C109FCDF71A7013F0E9909C399BE"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_330979E2EA7A5CB2F741724700D242C4"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:MvvmDialogs, Version=4.1.1.0, Culture=neutral, PublicKeyToken=3d3b9708589bc73e, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_2425C109FCDF71A7013F0E9909C399BE"
+                    "_330979E2EA7A5CB2F741724700D242C4"
                     {
                     "Name" = "8:MvvmDialogs.dll"
                     "Attributes" = "3:512"
@@ -527,12 +466,23 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_463441E8698B419BA7B5DA1377338DC0"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4456DF9A72094F3837114F6BB6768B2F"
             {
-            "SourcePath" = "8:C:\\SiLabs\\MCU\\CP210x\\Windows_XP_S2K3_Vista_7\\x86\\silabenm.sys"
-            "TargetName" = "8:silabenm.sys"
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_4456DF9A72094F3837114F6BB6768B2F"
+                    {
+                    "Name" = "8:System.Windows.Interactivity.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Windows.Interactivity.dll"
+            "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_F433D4CAB11B40FDA1B84086537354E4"
+            "Folder" = "8:_176BA899A5C7401C863357554C50334F"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -544,7 +494,7 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4E35C233A3124AF4AA4F6CB241B2A4CC"
@@ -573,26 +523,6 @@
             "TargetName" = "8:Sense2020Dll.dll"
             "Tag" = "8:"
             "Folder" = "8:_176BA899A5C7401C863357554C50334F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_541A8B6DF51344E5A9D47C2B3A5404FB"
-            {
-            "SourcePath" = "8:C:\\SiLabs\\MCU\\CP210x\\Windows_XP_S2K3_Vista_7\\slabvcp.inf"
-            "TargetName" = "8:slabvcp.inf"
-            "Tag" = "8:"
-            "Folder" = "8:_49F9D838E930456A8F34F9A8292DC50C"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -647,114 +577,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_670A89B75644ACA299FC00C538BFF1B7"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_670A89B75644ACA299FC00C538BFF1B7"
-                    {
-                    "Name" = "8:System.Windows.Interactivity.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:System.Windows.Interactivity.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_176BA899A5C7401C863357554C50334F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_680A47393A194BBFB2866E14A9132217"
-            {
-            "SourcePath" = "8:C:\\SiLabs\\MCU\\CP210x\\Windows_XP_S2K3_Vista_7\\slabvcp.cat"
-            "TargetName" = "8:slabvcp.cat"
-            "Tag" = "8:"
-            "Folder" = "8:_49F9D838E930456A8F34F9A8292DC50C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6A4B466221DA4AC18D443B57742EA8F1"
             {
             "SourcePath" = "8:..\\Policardiograph_App\\Dependencies\\BS_System_F14N0729.ini"
             "TargetName" = "8:BS_System_F14N0729.ini"
             "Tag" = "8:"
             "Folder" = "8:_176BA899A5C7401C863357554C50334F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6B97234DD3F69D4369254FE5EE9C7401"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SharpGL.SceneGraph, Version=2.4.0.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_6B97234DD3F69D4369254FE5EE9C7401"
-                    {
-                    "Name" = "8:SharpGL.SceneGraph.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:SharpGL.SceneGraph.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_176BA899A5C7401C863357554C50334F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6C8FF71322DA479283DB9C7B6E564267"
-            {
-            "SourcePath" = "8:C:\\SiLabs\\MCU\\CP210x\\Windows_XP_S2K3_Vista_7\\x64\\silabenm.sys"
-            "TargetName" = "8:silabenm.sys"
-            "Tag" = "8:"
-            "Folder" = "8:_2BF3C19028A04037B9C2555DF34AD043"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -809,14 +637,14 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7D887E5FAA3E23E4F29078025A54352F"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7BF84618DC40E017EE330B0D997E5966"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:SharpGL, Version=2.4.0.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_7D887E5FAA3E23E4F29078025A54352F"
+                    "_7BF84618DC40E017EE330B0D997E5966"
                     {
                     "Name" = "8:SharpGL.dll"
                     "Attributes" = "3:512"
@@ -838,26 +666,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_81D8A3D596424259869BD5BF57C4DA74"
-            {
-            "SourcePath" = "8:C:\\SiLabs\\MCU\\CP210x\\Windows_XP_S2K3_Vista_7\\x64\\WdfCoInstaller01009.dll"
-            "TargetName" = "8:WdfCoInstaller01009.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_2BF3C19028A04037B9C2555DF34AD043"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_841ADD5C016F43F4AE3863FA4C889565"
@@ -906,46 +714,6 @@
             "TargetName" = "8:bayu2L.inf"
             "Tag" = "8:"
             "Folder" = "8:_E3EC3525646E4E71811A6CEAF7020106"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AD96B3C4A58644FF80393799691FFC2C"
-            {
-            "SourcePath" = "8:C:\\SiLabs\\MCU\\CP210x\\Windows_XP_S2K3_Vista_7\\setup.ini"
-            "TargetName" = "8:setup.ini"
-            "Tag" = "8:"
-            "Folder" = "8:_49F9D838E930456A8F34F9A8292DC50C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BFEB2B9A924740529CA7BEE71CC48384"
-            {
-            "SourcePath" = "8:C:\\SiLabs\\MCU\\CP210x\\Windows_XP_S2K3_Vista_7\\x86\\WdfCoInstaller01009.dll"
-            "TargetName" = "8:WdfCoInstaller01009.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_F433D4CAB11B40FDA1B84086537354E4"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1020,54 +788,14 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E2A17A027EC54EE0BCF4B8D4ECCE5EF5"
-            {
-            "SourcePath" = "8:..\\..\\..\\..\\..\\Desktop\\PolicardiographApp\\USB Drivers\\USB20BS Drivers\\64 bits\\BSUSBVistaWin7x64.inf"
-            "TargetName" = "8:BSUSBVistaWin7x64.inf"
-            "Tag" = "8:"
-            "Folder" = "8:_A6A02E712CA8485FA8EFFA7842424DEF"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E5FAF18A0F1148B9A98030A0AE8578BF"
-            {
-            "SourcePath" = "8:C:\\SiLabs\\MCU\\CP210x\\Windows_XP_S2K3_Vista_7\\ReleaseNotes.txt"
-            "TargetName" = "8:ReleaseNotes.txt"
-            "Tag" = "8:"
-            "Folder" = "8:_49F9D838E930456A8F34F9A8292DC50C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EF9EFE9F0460C06B37BC2D35DBF0D994"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DCCC6638BBD515F676B9978FFD9F1367"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:SharpGL.WPF, Version=2.3.0.1, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_EF9EFE9F0460C06B37BC2D35DBF0D994"
+                    "_DCCC6638BBD515F676B9978FFD9F1367"
                     {
                     "Name" = "8:SharpGL.WPF.dll"
                     "Attributes" = "3:512"
@@ -1091,12 +819,12 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F4EF6D7211ED40D281B8C9A5CC3D296C"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E2A17A027EC54EE0BCF4B8D4ECCE5EF5"
             {
-            "SourcePath" = "8:C:\\SiLabs\\MCU\\CP210x\\Windows_XP_S2K3_Vista_7\\x64\\silabser.sys"
-            "TargetName" = "8:silabser.sys"
+            "SourcePath" = "8:..\\..\\..\\..\\..\\Desktop\\PolicardiographApp\\USB Drivers\\USB20BS Drivers\\64 bits\\BSUSBVistaWin7x64.inf"
+            "TargetName" = "8:BSUSBVistaWin7x64.inf"
             "Tag" = "8:"
-            "Folder" = "8:_2BF3C19028A04037B9C2555DF34AD043"
+            "Folder" = "8:_A6A02E712CA8485FA8EFFA7842424DEF"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1137,26 +865,6 @@
             "TargetName" = "8:bayu2L.sys"
             "Tag" = "8:"
             "Folder" = "8:_E3EC3525646E4E71811A6CEAF7020106"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F8B51483B25C4C469B65C6B432FDB400"
-            {
-            "SourcePath" = "8:C:\\SiLabs\\MCU\\CP210x\\Windows_XP_S2K3_Vista_7\\CP210xVCPInstaller.exe"
-            "TargetName" = "8:CP210xVCPInstaller.exe"
-            "Tag" = "8:"
-            "Folder" = "8:_49F9D838E930456A8F34F9A8292DC50C"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1280,28 +988,6 @@
                             "Property" = "8:_AD55E68F276541B4B2D6AAC36898D47D"
                                 "Folders"
                                 {
-                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_2BF3C19028A04037B9C2555DF34AD043"
-                                    {
-                                    "Name" = "8:x64"
-                                    "AlwaysCreate" = "11:FALSE"
-                                    "Condition" = "8:"
-                                    "Transitive" = "11:FALSE"
-                                    "Property" = "8:_D30215CDEAC241D8842EB2592EBA3254"
-                                        "Folders"
-                                        {
-                                        }
-                                    }
-                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_F433D4CAB11B40FDA1B84086537354E4"
-                                    {
-                                    "Name" = "8:x86"
-                                    "AlwaysCreate" = "11:FALSE"
-                                    "Condition" = "8:"
-                                    "Transitive" = "11:FALSE"
-                                    "Property" = "8:_FCB12DD82C6548719929EF081F9FBB30"
-                                        "Folders"
-                                        {
-                                        }
-                                    }
                                 }
                             }
                         }
@@ -1336,7 +1022,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:PolicardiographApp"
         "ProductCode" = "8:{4C503A7E-7AC8-4289-9242-5C9666942B18}"
-        "PackageCode" = "8:{F00E2EC8-E4C7-43B7-9BE7-A864E9AB5A3A}"
+        "PackageCode" = "8:{F48CDC4B-9116-4673-9732-E4031A0C245D}"
         "UpgradeCode" = "8:{88CBC577-74ED-4B14-822F-A15842DDD29A}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
