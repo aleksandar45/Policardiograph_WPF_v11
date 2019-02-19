@@ -17,6 +17,26 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Window.Resources>
+        <Image x:Key="Person" Height="40" Width="40" Opacity="{Binding PersonImageOpacity}" Name="imageButtonPreson" >
+            <Image.Style>
+                <Style TargetType="{x:Type Image}">
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding ElementName= buttonPerson_toolbar, Path=IsMouseOver}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/Person1Hovered.png" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding ElementName= buttonPerson_toolbar, Path=IsMouseOver}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/Person1.png" />
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
         <Image x:Key="Play" Height="40" Width="40" Opacity="{Binding PlayImageOpacity}" Name="imageButtonPlay" >
             <Image.Style>
                 <Style TargetType="{x:Type Image}">                    
@@ -232,6 +252,11 @@
                         </Style.Triggers>
                     </Style>
                 </ToolBar.Resources>
+                <Button Height="45" Name="buttonPerson_toolbar" Command="{Binding PersonCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Width="45" ToolTip="Add or choose patient" IsEnabled="{Binding ButtonPersonIsEnabled}">
+                    <Button.Content>
+                        <DynamicResource ResourceKey="Person"/>
+                    </Button.Content>
+                </Button>
                 <Button  Height="45" Name="buttonPlay_toolbar" Command="{Binding PlayCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Width="45" ToolTip="{Binding ButtonPlayTooltip}" IsEnabled="{Binding ButtonPlayIsEnabled}"  >
                     <Button.Content>
                         <DynamicResource ResourceKey="Play"/>

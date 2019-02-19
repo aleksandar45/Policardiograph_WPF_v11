@@ -139,6 +139,23 @@
     </Compile>
     <Compile Include="Dialogs\DialogMessage\DialogMessageViewModel.cs" />
     <Compile Include="Dialogs\DialogMessage\DialogResultMessage.cs" />
+    <Compile Include="Dialogs\DialogPerson\DialogPersonChangeView.xaml.cs">
+      <DependentUpon>DialogPersonChangeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DialogPerson\DialogPersonChangeViewModel.cs" />
+    <Compile Include="Dialogs\DialogPerson\DialogPersonEditView.xaml.cs">
+      <DependentUpon>DialogPersonEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DialogPerson\DialogPersonEditViewModel.cs" />
+    <Compile Include="Dialogs\DialogPerson\DialogPersonNewView.xaml.cs">
+      <DependentUpon>DialogPersonNewView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DialogPerson\DialogPersonNewViewModel.cs" />
+    <Compile Include="Dialogs\DialogPerson\DialogPersonView.xaml.cs">
+      <DependentUpon>DialogPersonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DialogPerson\DialogPersonViewModel.cs" />
+    <Compile Include="Dialogs\DialogPerson\DialogResultPerson.cs" />
     <Compile Include="Dialogs\DialogService\DialogResult.cs" />
     <Compile Include="Dialogs\DialogService\DialogService.cs" />
     <Compile Include="Dialogs\DialogService\DialogViewModelBase .cs" />
@@ -162,6 +179,8 @@
     <Compile Include="Exceptions\MWLSException.cs" />
     <Compile Include="Exceptions\TurnOnMWLSException.cs" />
     <Compile Include="Log.cs" />
+    <Compile Include="Patients\PatientBase.cs" />
+    <Compile Include="Patients\Patient.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -186,6 +205,22 @@
       <DependentUpon>TreeView.xaml</DependentUpon>
     </Compile>
     <Page Include="Dialogs\DialogMessage\DialogMessageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\DialogPerson\DialogPersonChangeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\DialogPerson\DialogPersonEditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\DialogPerson\DialogPersonNewView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\DialogPerson\DialogPersonView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -331,6 +366,13 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Person1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Person1Hovered.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

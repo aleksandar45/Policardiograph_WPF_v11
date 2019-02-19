@@ -5,6 +5,7 @@
              xmlns:dialogYesNo="clr-namespace:Policardiograph_App.Dialogs.DialogYesNo"
              xmlns:dialogMessage="clr-namespace:Policardiograph_App.Dialogs.DialogMessage" 
              xmlns:dialogSetting="clr-namespace:Policardiograph_App.Dialogs.DialogSetting" 
+             xmlns:dialogPerson="clr-namespace:Policardiograph_App.Dialogs.DialogPerson"
              StartupUri="View/MainWindowView.xaml">
     <Application.Resources>
         <DataTemplate DataType="{x:Type dialogYesNo:DialogYesNoViewModel}">
@@ -16,6 +17,9 @@
         <DataTemplate DataType="{x:Type dialogSetting:DialogSettingViewModel}">
             <dialogSetting:DialogSettingView>
             </dialogSetting:DialogSettingView>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type dialogPerson:DialogPersonViewModel}">
+            <dialogPerson:DialogPersonView></dialogPerson:DialogPersonView>
         </DataTemplate>
     </Application.Resources>
 </Application>

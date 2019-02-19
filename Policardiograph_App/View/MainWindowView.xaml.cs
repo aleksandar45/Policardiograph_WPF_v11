@@ -63,7 +63,7 @@ namespace Policardiograph_App
                     new OpenGLDispatcher(openGLDisplay1, openGLDisplay2, openGLDisplay3, openGLDisplay4, openGLDisplay5, openGLDisplay6,
                         settingMICDataHandler.NumberOfChannels, settingFBGADataHandler.NumberOfChannels, settingECGDataHandler.NumberOfChannels, settingACCDataHandler.NumberOfChannels, settingPPGDataHandler.NumberOfChannels);
 
-                MainWindowViewModel mainWindowHandler = new MainWindowViewModel(treeViewHandler, openGLDispatcherHandler,settingProgramDataHandler, settingWindowDataHandler, settingFBGADataHandler, settingMICDataHandler, settingECGDataHandler, settingACCDataHandler, settingPPGDataHandler);
+                MainWindowViewModel mainWindowHandler = new MainWindowViewModel(treeViewHandler, openGLDispatcherHandler,settingProgramDataHandler, settingWindowDataHandler, settingFBGADataHandler, settingMICDataHandler, settingECGDataHandler, settingACCDataHandler, settingPPGDataHandler,null,null);
                 treeViewHandler.addParent(mainWindowHandler);
                 DataContext = mainWindowHandler;
 

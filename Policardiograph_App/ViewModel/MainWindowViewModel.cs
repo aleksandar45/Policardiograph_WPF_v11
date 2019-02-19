@@ -14,8 +14,9 @@ using SharpGL;
 using System.Collections.ObjectModel;
 using Policardiograph_App.View;
 using Policardiograph_App.Settings;
+using Policardiograph_App.Patients;
 using Policardiograph_App.Dialogs.DialogService;
-using Policardiograph_App.Dialogs.DialogMessage;
+using Policardiograph_App.Dialogs.DialogPerson;
 using Policardiograph_App.Dialogs.DialogSetting;
 using Policardiograph_App.ViewModel.OpenGLRender;
 
@@ -41,13 +42,15 @@ namespace Policardiograph_App.ViewModel
 
     {
         private TreeViewViewModel treeViewViewModel;
-        public MainWindowViewModel(TreeViewViewModel treeViewViewModel, OpenGLDispatcher openGLDispatcher,SettingProgram settingProgramData, SettingWindow settingWindowData, SettingFBGA settingFBGAData, SettingMIC settingMICData,SettingECG settingECGData, SettingACC settingACCData, SettingPPG settingPPGData)
+        public MainWindowViewModel(TreeViewViewModel treeViewViewModel, OpenGLDispatcher openGLDispatcher,SettingProgram settingProgramData, SettingWindow settingWindowData, SettingFBGA settingFBGAData, SettingMIC settingMICData,SettingECG settingECGData, SettingACC settingACCData, SettingPPG settingPPGData,List<Patient> patients, Patient selectedPatient)
         {
             this.treeViewViewModel = treeViewViewModel;
             this.OpenGLDispatcher = openGLDispatcher;
+
             DebugEnableCommand = new DelegateCommand(DebugEnableExecute, CanDebugEnableExecute);
             DebugStartStopCommand = new DelegateCommand(DebugStartStopExecute);
             SaveFileTestCommand = new DelegateCommand(SaveFileTestExecute, CanSaveFileTestExecute);
+            PersonCommand = new DelegateCommand(PersonExecute);
             PlayCommand = new DelegateCommand(PlayExecute,CanPlayExecute);            
             RecordCommand = new DelegateCommand(RecordExecute,CanRecordExecute);
             RefreshConnectionCommand = new DelegateCommand(RefreshConnectionExecute);
@@ -67,6 +70,9 @@ namespace Policardiograph_App.ViewModel
             SettingECGData = settingECGData;
             SettingACCData = settingACCData;
             SettingPPGData = settingPPGData;
+
+            Patients = patients;
+            SelectedPatient = selectedPatient;            
 
             progressBarTimer = new DispatcherTimer();
             progressBarTimer.Interval = new TimeSpan(0, 0, 1);
@@ -215,8 +221,78 @@ namespace Policardiograph_App.ViewModel
         }
         #endregion
 
+        #region BUTTON_PERSON
+
+        private bool _buttonPersonIsEnabled = true;
+        public bool ButtonPersonIsEnabled
+        {
+            get
+            {
+                return _buttonPersonIsEnabled;
+            }
+            set
+            {
+                _buttonPersonIsEnabled = value;
+                if (_buttonPersonIsEnabled == true)
+                {
+                    PersonImageOpacity = 1.0f;
+                }
+                else
+                {
+                    PersonImageOpacity = 0.5f;
+                }
+                OnPropertyChanged("ButtonPersonIsEnabled");
+            }
+        }
+
+        private float _personImageOpacity = 1.0F;
+        public float PersonImageOpacity
+        {
+            get
+            {
+                return _personImageOpacity;
+            }
+            set
+            {
+                _personImageOpacity = value;
+                OnPropertyChanged("PersonImageOpacity");
+            }
+        }
+
+        public ICommand PersonCommand { get; set; }
+        private void PersonExecute(object obj)
+        {
+           /* Patient patientTemp = new Patient();
+                          
+            patientTemp.Name = "Aleksandar";
+            patientTemp.Surname = "Lazovic";
+            patientTemp.ParentName = "Nenad";
+            patientTemp.JMBG = "0410992710148";
+            Patients.Add(patientTemp);
+
+            patientTemp = new Patient();
+
+            patientTemp.Name = "Teodora";
+            patientTemp.Surname = "Djuric-Lazovic";
+            patientTemp.ParentName = "Zoran";
+            patientTemp.JMBG = "2011996710148";
+            Patients.Add(patientTemp);*/
+
+
+            DialogViewModelBase vm = new DialogPersonViewModel(Patients, SelectedPatient);
+            DialogResult result = DialogService.OpenDialog(vm, obj as Window);
+            if((result as DialogResultPerson).ApplyResult)
+            {
+                Patients = (result as DialogResultPerson).Patients;
+                SelectedPatient = (result as DialogResultPerson).SelectedPatient;
+
+            }
+        }
+
+        #endregion
+
         #region BUTTON_PLAY
-        
+
         private bool _playing = false;
         public bool Playing
         {
@@ -2937,6 +3013,13 @@ namespace Policardiograph_App.ViewModel
                 ppgNoChannels = _settingPPGData.NumberOfChannels;
             }
         }
+        #endregion
+
+        #region PATIENT_DATA
+
+        public List<Patient> Patients { get; set; }
+        public Patient SelectedPatient { get; set; }
+
         #endregion
 
         #region WINDOW_CLOSING
