@@ -12,6 +12,14 @@ namespace Policardiograph_App.Patients
 
         }
 
+        public Patient(Patient patient)
+        {
+            this.Name = patient.Name;
+            this.Surname = patient.Surname;
+            this.ParentName = patient.ParentName;
+            this.JMBG = patient.JMBG;
+        }
+
         public int CompareTo(object obj)
         {
             if (obj == null) return 1;
@@ -30,5 +38,7 @@ namespace Policardiograph_App.Patients
         public string Surname { get; set; } = "";
         public string ParentName { get; set; } = "";
         public string JMBG { get; set; } = "";
+        [System.Xml.Serialization.XmlIgnore]
+        public string Comment { get; set; } = "";
     }
 }

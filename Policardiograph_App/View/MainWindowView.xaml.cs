@@ -15,6 +15,7 @@ using SharpGL.SceneGraph;
 using SharpGL;
 using Policardiograph_App.ViewModel;
 using Policardiograph_App.Settings;
+using Policardiograph_App.Patients;
 using Policardiograph_App.ViewModel.OpenGLRender;
 using Policardiograph_App.DeviceModel;
 
@@ -39,6 +40,7 @@ namespace Policardiograph_App
                 Log log = new Log();
                 log.LogMessageToFile("Program started!!!");
                 InitializeComponent();
+                
 
                 OpenGlDisplay openGLDisplay1 = new OpenGlDisplay(openGLControl1, false, 1f, 0f, 0f);
                 OpenGlDisplay openGLDisplay2 = new OpenGlDisplay(openGLControl2, false, 1f, 0f, 0f);
@@ -56,15 +58,23 @@ namespace Policardiograph_App
                 SettingACC settingACCDataHandler = SettingService.LoadSettingACC();
                 SettingPPG settingPPGDataHandler = SettingService.LoadSettingPPG();
 
-                TreeViewViewModel treeViewHandler = new TreeViewViewModel();
-                Tree.DataContext = treeViewHandler;
+                List<Patient> patients = null;
+                Patient selectedPatient = null;
+                PatientService.LoadPatients(ref patients,ref selectedPatient);
+
+                TreeViewViewModel treeViewModelHandler = new TreeViewViewModel();
+                Tree.DataContext = treeViewModelHandler;
+
+                PatientViewModel patientViewModelHandler = new PatientViewModel();
+                PatientControl.DataContext = patientViewModelHandler;
 
                 OpenGLDispatcher openGLDispatcherHandler =
                     new OpenGLDispatcher(openGLDisplay1, openGLDisplay2, openGLDisplay3, openGLDisplay4, openGLDisplay5, openGLDisplay6,
                         settingMICDataHandler.NumberOfChannels, settingFBGADataHandler.NumberOfChannels, settingECGDataHandler.NumberOfChannels, settingACCDataHandler.NumberOfChannels, settingPPGDataHandler.NumberOfChannels);
 
-                MainWindowViewModel mainWindowHandler = new MainWindowViewModel(treeViewHandler, openGLDispatcherHandler,settingProgramDataHandler, settingWindowDataHandler, settingFBGADataHandler, settingMICDataHandler, settingECGDataHandler, settingACCDataHandler, settingPPGDataHandler,null,null);
-                treeViewHandler.addParent(mainWindowHandler);
+                MainWindowViewModel mainWindowHandler = new MainWindowViewModel(treeViewModelHandler, patientViewModelHandler, openGLDispatcherHandler,settingProgramDataHandler, settingWindowDataHandler, settingFBGADataHandler, settingMICDataHandler, settingECGDataHandler, settingACCDataHandler, settingPPGDataHandler,
+                                                                                patients, selectedPatient);
+                treeViewModelHandler.addParent(mainWindowHandler);
                 DataContext = mainWindowHandler;
 
                 device = new Device(mainWindowHandler);

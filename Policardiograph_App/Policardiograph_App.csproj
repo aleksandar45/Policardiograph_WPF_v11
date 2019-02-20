@@ -139,6 +139,11 @@
     </Compile>
     <Compile Include="Dialogs\DialogMessage\DialogMessageViewModel.cs" />
     <Compile Include="Dialogs\DialogMessage\DialogResultMessage.cs" />
+    <Compile Include="Dialogs\DialogPersonComment\DialogPersonCommentView.xaml.cs">
+      <DependentUpon>DialogPersonCommentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DialogPersonComment\DialogPersonCommentViewModel.cs" />
+    <Compile Include="Dialogs\DialogPersonComment\DialogResultPersonComment.cs" />
     <Compile Include="Dialogs\DialogPerson\DialogPersonChangeView.xaml.cs">
       <DependentUpon>DialogPersonChangeView.xaml</DependentUpon>
     </Compile>
@@ -181,6 +186,7 @@
     <Compile Include="Log.cs" />
     <Compile Include="Patients\PatientBase.cs" />
     <Compile Include="Patients\Patient.cs" />
+    <Compile Include="Patients\PatientService.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -199,12 +205,20 @@
     <Compile Include="ViewModel\OpenGLRender\IntArray.cs" />
     <Compile Include="ViewModel\OpenGLRender\OpenGLDispatcher.cs" />
     <Compile Include="ViewModel\OpenGLRender\OpenGlDisplay.cs" />
+    <Compile Include="ViewModel\PatientViewModel.cs" />
     <Compile Include="ViewModel\TreeViewViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="View\PatientView.xaml.cs">
+      <DependentUpon>PatientView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\TreeView.xaml.cs">
       <DependentUpon>TreeView.xaml</DependentUpon>
     </Compile>
     <Page Include="Dialogs\DialogMessage\DialogMessageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\DialogPersonComment\DialogPersonCommentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -249,6 +263,10 @@
       <DependentUpon>MainWindowView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\PatientView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\TreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

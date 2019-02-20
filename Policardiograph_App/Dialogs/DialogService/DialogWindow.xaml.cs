@@ -17,9 +17,10 @@ namespace Policardiograph_App.Dialogs.DialogService
     /// <summary>
     /// Interaction logic for DialogWindow.xaml
     /// </summary>
+    
     public partial class DialogWindow : Window
-    {
-        public DialogWindow()
+    {        
+        public   DialogWindow()
         {
             try
             {

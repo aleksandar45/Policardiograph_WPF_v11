@@ -1,15 +1,15 @@
 ﻿<Window x:Class="Policardiograph_App.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="SharpGL WPF Application" Height="939" Width="1152" 
+        Title="PolicardiographApp" Height="939" Width="1152" 
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:viewModel="clr-namespace:Policardiograph_App.ViewModel"
-        xmlns:views="clr-namespace:Policardiograph_App.View"
+        xmlns:views="clr-namespace:Policardiograph_App.View"        
         xmlns:sharpGL="clr-namespace:SharpGL.WPF;assembly=SharpGL.WPF" WindowState="Maximized"  Name="mainWindow" 
         Icon="/Policardiograph_App;component/Images/Policardiograph_icon.ico">
-        
+
     <Window.InputBindings>
-        <KeyBinding Key="D" Modifiers="Control" Command="{Binding DebugEnableCommand}"/>               
+        <KeyBinding Key="D" Modifiers="Control" Command="{Binding DebugEnableCommand}"/>
     </Window.InputBindings>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
@@ -39,14 +39,14 @@
         </Image>
         <Image x:Key="Play" Height="40" Width="40" Opacity="{Binding PlayImageOpacity}" Name="imageButtonPlay" >
             <Image.Style>
-                <Style TargetType="{x:Type Image}">                    
+                <Style TargetType="{x:Type Image}">
                     <Style.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding Playing}" Value="False"/>
-                                <Condition Binding="{Binding ElementName= buttonPlay_toolbar, Path=IsMouseOver}" Value="True" />                                           
+                                <Condition Binding="{Binding ElementName= buttonPlay_toolbar, Path=IsMouseOver}" Value="True" />
                             </MultiDataTrigger.Conditions>
-                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/PlayHovered.png" />                            
+                            <Setter Property="Source" Value="/Policardiograph_App;component/Images/PlayHovered.png" />
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
@@ -142,17 +142,17 @@
                 <Style TargetType="{x:Type Image}">
                     <Style.Triggers>
                         <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>                                
+                            <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding ElementName= buttonRefreshConnection_toolbar, Path=IsMouseOver}" Value="True" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Source" Value="/Policardiograph_App;component/Images/RefreshConnectionHovered.png" />
                         </MultiDataTrigger>
                         <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>                                
+                            <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding ElementName= buttonRefreshConnection_toolbar, Path=IsMouseOver}" Value="False" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Source" Value="/Policardiograph_App;component/Images/RefreshConnection.png" />
-                        </MultiDataTrigger>                                                                      
+                        </MultiDataTrigger>
                     </Style.Triggers>
                 </Style>
             </Image.Style>
@@ -228,10 +228,16 @@
             </Image.Style>
         </Image>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+
+        
     </Window.Resources>
-    
+
     <Grid>
-        <StackPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="131*"/>
+            <ColumnDefinition Width="1015*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.ColumnSpan="2" Margin="0,0,-0.4,-0.4">
             <!-- The OpenGL control provides a OpenGL drawing surface. -->
 
             <!--Menu HorizontalAlignment="Stretch" Name="menu1" VerticalAlignment="Top" Height="23">
@@ -241,7 +247,8 @@
                 <MenuItem Header="Settings" />
             </Menu-->
             <ToolBar Height="Auto" Name="mtoolBar" IsEnabled="True">
-                <ToolBar.Resources>
+                
+                <!--<ToolBar.Resources>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Foreground" Value="Red"/>
                         <Setter Property="IsEnabled" Value="True"/>
@@ -251,49 +258,70 @@
                             </Trigger>
                         </Style.Triggers>
                     </Style>
-                </ToolBar.Resources>
-                <Button Height="45" Name="buttonPerson_toolbar" Command="{Binding PersonCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Width="45" ToolTip="Add or choose patient" IsEnabled="{Binding ButtonPersonIsEnabled}">
-                    <Button.Content>
-                        <DynamicResource ResourceKey="Person"/>
-                    </Button.Content>
-                </Button>
-                <Button  Height="45" Name="buttonPlay_toolbar" Command="{Binding PlayCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Width="45" ToolTip="{Binding ButtonPlayTooltip}" IsEnabled="{Binding ButtonPlayIsEnabled}"  >
-                    <Button.Content>
-                        <DynamicResource ResourceKey="Play"/>
-                    </Button.Content>                    
-                </Button>
-                <Button  Height="45" Name="buttonRecord_toolbar" Width="45" ToolTip="{Binding ButtonRecordTooltip}" IsEnabled="{Binding ButtonRecordIsEnabled}" Command="{Binding RecordCommand}">
-                    <Button.Content>
-                        <DynamicResource ResourceKey="Record"/>
-                    </Button.Content>
-                </Button>
-                <Separator></Separator>
-                <Button  Height="45" Name="buttonRefreshConnection_toolbar" Width="45" ToolTip="Refresh Connection" Command="{Binding RefreshConnectionCommand}" IsEnabled="{Binding ButtonRefreshConnectionIsEnabled}" >
-                    <DynamicResource ResourceKey="RefreshConnection"/>
-                </Button>
-                <Button  Height="45" Name="buttonSettings_toolbar" Width="45"  SnapsToDevicePixels="True" ToolTip="Settings" Command="{Binding SettingCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" IsEnabled="{Binding ButtonSettingIsEnabled}">
-                    <DynamicResource ResourceKey="Settings"/>
-                </Button>
-                
-                <Button  Height="45" Name="buttonMWLSTurnOn_toolbar" Width="45" ToolTip="{Binding ButtonMWLSTurnOnTooltip}" IsEnabled="{Binding ButtonMWLSTurnOnIsEnabled}" Command="{Binding MWLSTurnOnCommand}">
-                    <Button.Content>
-                        <DynamicResource ResourceKey="MWLSTurnOn"/>
-                    </Button.Content>
-                </Button>
-                <Separator></Separator>
-                <ComboBox  ItemsSource="{Binding ComboBoxProfiles}" SelectedItem="{Binding ComboboxSelectedItem}" IsSynchronizedWithCurrentItem="True" Name="comboboxProfile_toolbar" Height="10" Width="150" BorderThickness="1" BorderBrush="Black"  ToolTip="Device profile" >
-                   
+                </ToolBar.Resources>-->
+                <DockPanel Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type ToolBarPanel}}}" >
+                    <DockPanel.Resources>
+                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Foreground" Value="#FFADADAD"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DockPanel.Resources>
+                    <Button Height="45" Name="buttonPerson_toolbar" Command="{Binding PersonCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Width="45" ToolTip="Add or choose patient" IsEnabled="{Binding ButtonPersonIsEnabled}">
+                        <Button.Content>
+                            <DynamicResource ResourceKey="Person"/>
+                        </Button.Content>
+                    </Button>
+                    <Button  Height="45" Name="buttonPlay_toolbar" Command="{Binding PlayCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Width="45" ToolTip="{Binding ButtonPlayTooltip}" IsEnabled="{Binding ButtonPlayIsEnabled}"  >
+                        <Button.Content>
+                            <DynamicResource ResourceKey="Play"/>
+                        </Button.Content>
+                    </Button>
+                    <Button  Height="45" Name="buttonRecord_toolbar" Width="45" ToolTip="{Binding ButtonRecordTooltip}" IsEnabled="{Binding ButtonRecordIsEnabled}" Command="{Binding RecordCommand}">
+                        <Button.Content>
+                            <DynamicResource ResourceKey="Record"/>
+                        </Button.Content>
+                    </Button>
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+                    <Button  Height="45" Name="buttonRefreshConnection_toolbar" Width="45" ToolTip="Refresh Connection" Command="{Binding RefreshConnectionCommand}" IsEnabled="{Binding ButtonRefreshConnectionIsEnabled}" >
+                        <DynamicResource ResourceKey="RefreshConnection"/>
+                    </Button>
+                    <Button  Height="45" Name="buttonSettings_toolbar" Width="45"  SnapsToDevicePixels="True" ToolTip="Settings" Command="{Binding SettingCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" IsEnabled="{Binding ButtonSettingIsEnabled}">
+                        <DynamicResource ResourceKey="Settings"/>
+                    </Button>
 
-                </ComboBox>
-                <Separator></Separator>
-                <Label  Visibility="{Binding Path=RecordingTimerLabelIsVisible, Converter={StaticResource BoolToVisConverter}}" Width="40" Height="40" Content="{Binding RecordingTimerLabelText}" FontSize="20" HorizontalContentAlignment="Center" Foreground="#FFFF4E00" VerticalContentAlignment="Center" FontWeight="Bold" FontStretch="Normal" Background="#FFFEFF0A" />
-                <ProgressBar Width="150"  Height="20" Value="{Binding ProgressBarValue}" Visibility="{Binding Path=ProgressBarIsVisible, Converter={StaticResource BoolToVisConverter}}"/>
-                <Button Name="buttonSaveFileTest"  Height="45" Width="55" IsEnabled="True" Command="{Binding SaveFileTestCommand}" Visibility="{Binding Path=SaveFileButtonIsVisible, Converter={StaticResource BoolToVisConverter}}">
-                    <Button.Content>
-                        SaveFile
-                    </Button.Content>
-                </Button>
-                
+                    <Button  Height="45" Name="buttonMWLSTurnOn_toolbar" Width="45" ToolTip="{Binding ButtonMWLSTurnOnTooltip}" IsEnabled="{Binding ButtonMWLSTurnOnIsEnabled}" Command="{Binding MWLSTurnOnCommand}">
+                        <Button.Content>
+                            <DynamicResource ResourceKey="MWLSTurnOn"/>
+                        </Button.Content>
+                    </Button>
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+                    <ComboBox  ItemsSource="{Binding ComboBoxProfiles}" SelectedItem="{Binding ComboboxSelectedItem}" IsSynchronizedWithCurrentItem="True" Name="comboboxProfile_toolbar" Height="20" Width="150" BorderThickness="1" BorderBrush="Black"  ToolTip="Device profile" >
+
+
+                    </ComboBox>
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+                    <Label  Visibility="{Binding Path=RecordingTimerLabelIsVisible, Converter={StaticResource BoolToVisConverter}}" Width="40" Height="40" Content="{Binding RecordingTimerLabelText}" FontSize="20" HorizontalContentAlignment="Center" Foreground="#FFFF4E00" VerticalContentAlignment="Center" FontWeight="Bold" FontStretch="Normal" Background="#FFFEFF0A" />
+                    <ProgressBar Width="150"  Height="20" Value="{Binding ProgressBarValue}" Visibility="{Binding Path=ProgressBarIsVisible, Converter={StaticResource BoolToVisConverter}}"/>
+                    <Button Name="buttonSaveFileTest"  Height="45" Width="55" IsEnabled="True" Command="{Binding SaveFileTestCommand}" Visibility="{Binding Path=SaveFileButtonIsVisible, Converter={StaticResource BoolToVisConverter}}">
+                        <Button.Content>
+                            SaveFile
+                        </Button.Content>
+                    </Button>
+
+
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Content="{Binding LabelPatientFullName}" FontSize="15" HorizontalAlignment="Right"/>
+                        <Label Grid.Row="1" Content="{Binding LabelPatientJMBG}" HorizontalAlignment="Right"/>
+                    </Grid>
+                </DockPanel>
+
             </ToolBar>
 
             <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -307,11 +335,22 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <ContentControl Grid.Column="0" >
-                    <views:TreeView x:Name="Tree"/>
-                </ContentControl>
+                <TabControl Grid.Column="0" TabStripPlacement="Bottom" >
+                    <TabItem Header="Device">
+                        <ContentControl Grid.Row="0" >
+                            <views:TreeView x:Name="Tree"/>
+                        </ContentControl>
+                    </TabItem>
+                    <TabItem Header="Patient" IsEnabled="{Binding TabItemPatientIsEnabled}">
+                        <ContentControl Grid.Row="0" >
+                            <views:PatientView x:Name="PatientControl"/>
+                        </ContentControl>
+                    </TabItem>
+
+                </TabControl>
+
                 <StatusBar Grid.Row="1" Grid.ColumnSpan="2" >
-                    
+
                     <StatusBar.ItemsPanel>
                         <ItemsPanelTemplate>
                             <Grid>
@@ -333,9 +372,9 @@
                     <StatusBarItem Grid.Column="3" Background="{Binding Path=BatteryPercentageLabelColor}">
                         <TextBlock Width="100" Text="{Binding BatteryPercentageLabelText}" Foreground="White" Visibility="{Binding Path=BatteryPercentageLabelIsVisible, Converter={StaticResource BoolToVisConverter}}"/>
                     </StatusBarItem>
-                    
-                    
-                    
+
+
+
                 </StatusBar>
                 <DataGrid ItemsSource="{Binding ModuleDescriptions}" Visibility="{Binding Path=DataGridIsVisible, Converter={StaticResource BoolToVisConverter}}" CanUserResizeColumns="False" AutoGenerateColumns="False" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">
                     <DataGrid.Columns>
@@ -364,7 +403,7 @@
 
                     <ScrollViewer Grid.Row="1">
                         <Grid>
-                            <Grid.RowDefinitions>                                
+                            <Grid.RowDefinitions>
                                 <RowDefinition Height="20"/>
                                 <RowDefinition Height="150"/>
                                 <RowDefinition Height="20"/>
@@ -384,9 +423,9 @@
 
                             <TextBlock HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" Height="Auto" FontWeight="Bold" FontFamily="Segoe UI" Name="textBlockTittleDisplay1" Text="{Binding LabelDisplay1Tittle}"/>
                             <TextBlock Text="{Binding LabelDisplay1YAxis}" VerticalAlignment="Center" Grid.Row="1" Width="Auto" Name="textBlockYAxisDisplay1">
-                                    <TextBlock.LayoutTransform>
-                                        <RotateTransform Angle="-90"></RotateTransform>
-                                    </TextBlock.LayoutTransform>
+                                <TextBlock.LayoutTransform>
+                                    <RotateTransform Angle="-90"></RotateTransform>
+                                </TextBlock.LayoutTransform>
                             </TextBlock>
                             <TextBlock HorizontalAlignment="Center" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Height="Auto" Name="textBlockXAxisDisplay1" Text="{Binding LabelDisplay1XAxis}" />
                             <sharpGL:OpenGLControl  Grid.Column="1" Grid.Row="1"  HorizontalAlignment="Stretch" Name="openGLControl1"  Resized="openGLControl1_Resized" OpenGLInitialized="openGLControl1_Initialized" IsEnabled="True" Visibility="Visible" />
@@ -394,30 +433,30 @@
                                 <TextBlock ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True" Background="WhiteSmoke" Text="{Binding DebugTextBlockText}" IsEnabled="True" Visibility="{Binding Path=DebugRichTextBoxIsVisible, Converter={StaticResource BoolToVisConverter}}"/>
                             </ScrollViewer>
                             <Button Grid.Column="1" Grid.Row="7" Width="80" Height="30" Content="{Binding DebugStartStopButtonContent}" Visibility="{Binding Path=DebugStartStopButtonIsVisible,Converter={StaticResource BoolToVisConverter}}" Command="{Binding DebugStartStopCommand}"></Button>
-                            
+
                             <TextBlock HorizontalAlignment="Center" Grid.Row="0" Grid.Column="3" VerticalAlignment="Top" Height="Auto" FontWeight="Bold" FontFamily="Segoe UI" Name="textBlockTittleDisplay2" Text="{Binding LabelDisplay2Tittle}"/>
                             <TextBlock Text="{Binding LabelDisplay2YAxis}"  VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" Width="Auto" Name="textBlockYAxisDisplay2">
-                                    <TextBlock.LayoutTransform>
-                                        <RotateTransform Angle="-90"></RotateTransform>
-                                    </TextBlock.LayoutTransform>
+                                <TextBlock.LayoutTransform>
+                                    <RotateTransform Angle="-90"></RotateTransform>
+                                </TextBlock.LayoutTransform>
                             </TextBlock>
                             <TextBlock HorizontalAlignment="Center" Grid.Column="3" Grid.Row="2" VerticalAlignment="Top" Height="Auto" Name="textBlockXAxisDisplay2" Text="{Binding LabelDisplay2XAxis}"/>
                             <sharpGL:OpenGLControl Grid.Column="3" Grid.Row="1"  HorizontalAlignment="Stretch" Name="openGLControl2"  Resized="openGLControl2_Resized" OpenGLInitialized="openGLControl2_Initialized"/>
 
                             <TextBlock HorizontalAlignment="Center" Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" Height="Auto" FontWeight="Bold" FontFamily="Segoe UI" Name="textBlockTittleDisplay3" Text="{Binding LabelDisplay3Tittle}"/>
                             <TextBlock Text="{Binding LabelDisplay3YAxis}" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0" Width="Auto" Name="textBlockYAxisDisplay3">
-                                    <TextBlock.LayoutTransform>
-                                        <RotateTransform Angle="-90"></RotateTransform>
-                                    </TextBlock.LayoutTransform>
+                                <TextBlock.LayoutTransform>
+                                    <RotateTransform Angle="-90"></RotateTransform>
+                                </TextBlock.LayoutTransform>
                             </TextBlock>
                             <TextBlock HorizontalAlignment="Center" Grid.Column="1" Grid.Row="5" VerticalAlignment="Top" Height="Auto" Name="textBlockXAxisDisplay3" Text="{Binding LabelDisplay3XAxis}"/>
                             <sharpGL:OpenGLControl Grid.Column="1" Grid.Row="4"  HorizontalAlignment="Stretch" Name="openGLControl3"  Resized="openGLControl3_Resized" OpenGLInitialized="openGLControl3_Initialized"/>
 
                             <TextBlock HorizontalAlignment="Center" Grid.Row="3" Grid.Column="3" VerticalAlignment="Top" Height="Auto" FontWeight="Bold" FontFamily="Segoe UI" Name="textBlockTittleDisplay4" Text="{Binding LabelDisplay4Tittle}"/>
                             <TextBlock Text="{Binding LabelDisplay4YAxis}" VerticalAlignment="Center" Grid.Row="4" Grid.Column="2" Width="Auto" Name="textBlockYAxisDisplay4">
-                                    <TextBlock.LayoutTransform>
-                                        <RotateTransform Angle="-90"></RotateTransform>
-                                    </TextBlock.LayoutTransform>
+                                <TextBlock.LayoutTransform>
+                                    <RotateTransform Angle="-90"></RotateTransform>
+                                </TextBlock.LayoutTransform>
                             </TextBlock>
                             <TextBlock HorizontalAlignment="Center" Grid.Column="3" Grid.Row="5" VerticalAlignment="Top" Height="Auto" Name="textBlockXAxisDisplay4" Text="{Binding LabelDisplay4XAxis}"/>
                             <sharpGL:OpenGLControl Grid.Column="3" Grid.Row="4"  HorizontalAlignment="Stretch" Name="openGLControl4"  Resized="openGLControl4_Resized" OpenGLInitialized="openGLControl4_Initialized"/>
@@ -425,18 +464,18 @@
 
                             <TextBlock HorizontalAlignment="Center" Grid.Row="6" Grid.Column="1" VerticalAlignment="Top" Height="Auto" FontWeight="Bold" FontFamily="Segoe UI" Name="textBlockTittleDisplay5" Text="{Binding LabelDisplay5Tittle}"/>
                             <TextBlock Text="{Binding LabelDisplay5YAxis}" VerticalAlignment="Center" Grid.Row="7" Grid.Column="0" Width="Auto" Name="textBlockYAxisDisplay5">
-                                    <TextBlock.LayoutTransform>
-                                        <RotateTransform Angle="-90"></RotateTransform>
-                                    </TextBlock.LayoutTransform>
+                                <TextBlock.LayoutTransform>
+                                    <RotateTransform Angle="-90"></RotateTransform>
+                                </TextBlock.LayoutTransform>
                             </TextBlock>
                             <TextBlock HorizontalAlignment="Center" Grid.Column="1" Grid.Row="8" VerticalAlignment="Top" Height="Auto" Name="textBlockXAxisDisplay5" Text="{Binding LabelDisplay5XAxis}"/>
                             <sharpGL:OpenGLControl Grid.Column="1" Grid.Row="7"  HorizontalAlignment="Stretch" Name="openGLControl5"  Resized="openGLControl5_Resized" OpenGLInitialized="openGLControl5_Initialized"/>
 
                             <TextBlock HorizontalAlignment="Center" Grid.Row="6" Grid.Column="3" VerticalAlignment="Top" Height="Auto" FontWeight="Bold" FontFamily="Segoe UI" Name="textBlockTittleDisplay6" Text="{Binding LabelDisplay6Tittle}"/>
                             <TextBlock Text="{Binding LabelDisplay6YAxis}" VerticalAlignment="Center" Grid.Row="7" Grid.Column="2" Width="Auto" Name="textBlockYAxisDisplay6">
-                                    <TextBlock.LayoutTransform>
-                                        <RotateTransform Angle="-90"></RotateTransform>
-                                    </TextBlock.LayoutTransform>
+                                <TextBlock.LayoutTransform>
+                                    <RotateTransform Angle="-90"></RotateTransform>
+                                </TextBlock.LayoutTransform>
                             </TextBlock>
                             <TextBlock HorizontalAlignment="Center" Grid.Column="3" Grid.Row="8" 
                                        VerticalAlignment="Top" Height="Auto" Name="textBlockXAxisDisplay6" Text="{Binding LabelDisplay6XAxis}" />
@@ -446,9 +485,9 @@
 
                     </ScrollViewer>
                 </Grid>
-                
-                    
-                    
+
+
+
 
 
 
@@ -459,6 +498,6 @@
             Name="openGLControl" OpenGLDraw="openGLControl_OpenGLDraw" 
             OpenGLInitialized="openGLControl_OpenGLInitialized" Resized="openGLControl_Resized"
             DrawFPS="True" RenderContextType="FBO" FrameRate="20"-->
-        
+
     </Grid>
 </Window>

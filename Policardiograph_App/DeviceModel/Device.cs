@@ -17,6 +17,7 @@ using Policardiograph_App.ViewModel.OpenGLRender;
 using Policardiograph_App.DeviceModel.Services;
 using Policardiograph_App.DeviceModel.RingBuffers;
 using Policardiograph_App.Exceptions;
+using Policardiograph_App.Patients;
 
 
 namespace Policardiograph_App.DeviceModel
@@ -403,7 +404,8 @@ namespace Policardiograph_App.DeviceModel
                 }
                 else
                 {
-                    saveFileName = string.Format("{0:yyyy-MM-dd_HH-mm-ss}", DateTime.Now);
+                    //saveFileName = string.Format("{0:yyyy-MM-dd_HH-mm-ss}", DateTime.Now);
+                    saveFileName = string.Format("{0:HH-mm-ss}", DateTime.Now);
                     if (String.Compare(profile, "ALL DEVICES") == 0)
                     {
                        // if (ecgState != TCPDeviceState.TRANSFERING) throw new MException("It is not possible to start sync recording due to some modules are not connected");
@@ -850,10 +852,11 @@ namespace Policardiograph_App.DeviceModel
                 
             }
         }
-        private int SaveFiles()
+        private int SaveFiles(Patient patient)
         {
             FileStream binaryReader;
-           
+
+            saveFileName = patient.Name + "_" + patient.Surname + "_" + saveFileName;
 
             byte[] byte_array = new byte[500];         
             string data_string = "|HEAD|DATA_PACKETxxx";
@@ -898,6 +901,47 @@ namespace Policardiograph_App.DeviceModel
             Int16 int16_temp;
             Int32 int32_temp;
 
+            using (StreamWriter streamWriter = File.CreateText(savePath + saveFileName + ".poli"))
+            {
+                line = "<Patient>";
+                streamWriter.WriteLine(line);
+
+                line = "\t<Name>";
+                streamWriter.WriteLine(line);
+                line = "\t\t" + patient.Name;
+                streamWriter.WriteLine(line);
+                line = "\t</Name>";
+                streamWriter.WriteLine(line);
+
+                line = "\t<Surname>";
+                streamWriter.WriteLine(line);
+                line = "\t\t" + patient.Surname;
+                streamWriter.WriteLine(line);
+                line = "\t</Surname>";
+                streamWriter.WriteLine(line);
+
+                line = "\t<ParentName>";
+                streamWriter.WriteLine(line);
+                line = "\t\t" + patient.ParentName;
+                streamWriter.WriteLine(line);
+                line = "\t</ParentName>";
+                streamWriter.WriteLine(line);
+
+                line = "\t<JMBG>";
+                streamWriter.WriteLine(line);
+                line = "\t\t" + patient.JMBG;
+                streamWriter.WriteLine(line);
+                line = "\t</JMBG>";
+                streamWriter.WriteLine(line);
+
+                line = "\t<Comment>";
+                streamWriter.WriteLine(line);
+                line = "\t\t" + patient.Comment;
+                streamWriter.WriteLine(line);
+                line = "\t</Comment>";
+                streamWriter.WriteLine(line);
+            }
+
             try
             {
 
@@ -905,7 +949,7 @@ namespace Policardiograph_App.DeviceModel
                 {
                     binaryReader = File.OpenRead(path + "MIC.dat");
 
-                    using (StreamWriter streamWriter = File.CreateText(savePath + saveFileName + ".poli"))
+                    using (StreamWriter streamWriter = File.AppendText(savePath + saveFileName + ".poli"))
                     {
                         line = "";
                         for (int i = 0; i < 512; i++)

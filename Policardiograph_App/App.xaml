@@ -1,11 +1,11 @@
 ﻿<Application x:Class="Policardiograph_App.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="clr-namespace:Policardiograph_App.ViewModel"
              xmlns:dialogYesNo="clr-namespace:Policardiograph_App.Dialogs.DialogYesNo"
              xmlns:dialogMessage="clr-namespace:Policardiograph_App.Dialogs.DialogMessage" 
              xmlns:dialogSetting="clr-namespace:Policardiograph_App.Dialogs.DialogSetting" 
              xmlns:dialogPerson="clr-namespace:Policardiograph_App.Dialogs.DialogPerson"
+             xmlns:dialogPersonComment="clr-namespace:Policardiograph_App.Dialogs.DialogPersonComment"
              StartupUri="View/MainWindowView.xaml">
     <Application.Resources>
         <DataTemplate DataType="{x:Type dialogYesNo:DialogYesNoViewModel}">
@@ -20,6 +20,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type dialogPerson:DialogPersonViewModel}">
             <dialogPerson:DialogPersonView></dialogPerson:DialogPersonView>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type dialogPersonComment:DialogPersonCommentViewModel}">
+            <dialogPersonComment:DialogPersonCommentView></dialogPersonComment:DialogPersonCommentView>
         </DataTemplate>
     </Application.Resources>
 </Application>

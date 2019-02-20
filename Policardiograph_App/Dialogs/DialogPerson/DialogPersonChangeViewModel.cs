@@ -32,6 +32,7 @@ namespace Policardiograph_App.Dialogs.DialogPerson
                                     if (dialogPersonViewModel.patients.ElementAt(i).JMBG.CompareTo(dialogPersonViewModel.selectedPatient.JMBG) == 0)
                                     {
                                         ComboboxSelectedIndex= i;
+                                        LabelJMBG = dialogPersonViewModel.patients.ElementAt(i).JMBG;
                                     }
                                 }
                             }
@@ -48,7 +49,7 @@ namespace Policardiograph_App.Dialogs.DialogPerson
 
         private readonly DialogPersonViewModel dialogPersonViewModel;
 
-        #region COMBOBOX_PROFILE
+        #region COMBOBOX
         private List<string> _comboBoxPatientCredentials;
         public List<string> ComboBoxPatientCredentials
         {
@@ -84,9 +85,28 @@ namespace Policardiograph_App.Dialogs.DialogPerson
             set
             {
                 _comboboxSelectedIndex = value;
+                dialogPersonViewModel.selectedPatient = dialogPersonViewModel.patients.ElementAt(_comboboxSelectedIndex);
+                LabelJMBG = dialogPersonViewModel.selectedPatient.JMBG;
                 OnPropertyChanged("ComboboxSelectedIndex");
             }
-        }     
+        }
+        #endregion
+
+        #region LABEL
+        private string _labelJMBG;
+        public string LabelJMBG
+        {
+            get
+            {
+                return _labelJMBG;
+            }
+            set
+            {
+                _labelJMBG = value;
+                OnPropertyChanged("LabelJMBG");
+            }
+        }
+
         #endregion
     }
 }

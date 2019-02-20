@@ -17,10 +17,24 @@
 
         </ComboBox>
 
-        <DockPanel Grid.Row="1" Background="Red">
-            <TextBlock Grid.Row="0" HorizontalAlignment="Center">
-            Aca Lazovic
-            </TextBlock>
+        <DockPanel Grid.Row="1" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.Column="4" Content="JMBG:" HorizontalAlignment="Right"/>
+                <Label Grid.Row="0" Grid.Column="6" Content="{Binding LabelJMBG}" HorizontalAlignment="Left"/>
+            </Grid>
+           
         </DockPanel>
         
             

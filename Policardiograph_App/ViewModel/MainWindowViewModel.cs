@@ -42,9 +42,11 @@ namespace Policardiograph_App.ViewModel
 
     {
         private TreeViewViewModel treeViewViewModel;
-        public MainWindowViewModel(TreeViewViewModel treeViewViewModel, OpenGLDispatcher openGLDispatcher,SettingProgram settingProgramData, SettingWindow settingWindowData, SettingFBGA settingFBGAData, SettingMIC settingMICData,SettingECG settingECGData, SettingACC settingACCData, SettingPPG settingPPGData,List<Patient> patients, Patient selectedPatient)
+        private PatientViewModel patientViewModel;
+        public MainWindowViewModel(TreeViewViewModel treeViewViewModel, PatientViewModel patientViewModel,  OpenGLDispatcher openGLDispatcher,SettingProgram settingProgramData, SettingWindow settingWindowData, SettingFBGA settingFBGAData, SettingMIC settingMICData,SettingECG settingECGData, SettingACC settingACCData, SettingPPG settingPPGData,List<Patient> patients, Patient selectedPatient)
         {
             this.treeViewViewModel = treeViewViewModel;
+            this.patientViewModel = patientViewModel;
             this.OpenGLDispatcher = openGLDispatcher;
 
             DebugEnableCommand = new DelegateCommand(DebugEnableExecute, CanDebugEnableExecute);
@@ -72,7 +74,8 @@ namespace Policardiograph_App.ViewModel
             SettingPPGData = settingPPGData;
 
             Patients = patients;
-            SelectedPatient = selectedPatient;            
+            SelectedPatient = selectedPatient;
+            ChoosenPatient = null;
 
             progressBarTimer = new DispatcherTimer();
             progressBarTimer.Interval = new TimeSpan(0, 0, 1);
@@ -207,7 +210,7 @@ namespace Policardiograph_App.ViewModel
         public ICommand SaveFileTestCommand { get; set; }
         private void SaveFileTestExecute(object obj)
         {
-            if (deviceSaveFile() != 0)
+            if (deviceSaveFile(ChoosenPatient) != 0)
             {
                 string warningMessage = "Data NOT recorded successfuly";
                 Dialogs.DialogMessage.DialogMessageViewModel dvm = new Dialogs.DialogMessage.DialogMessageViewModel(Dialogs.DialogMessage.DialogImageTypeEnum.Warning, warningMessage);
@@ -262,7 +265,8 @@ namespace Policardiograph_App.ViewModel
         public ICommand PersonCommand { get; set; }
         private void PersonExecute(object obj)
         {
-           /* Patient patientTemp = new Patient();
+            /*Patient patientTemp = new Patient();
+            Patients = new List<Patient>();
                           
             patientTemp.Name = "Aleksandar";
             patientTemp.Surname = "Lazovic";
@@ -285,7 +289,16 @@ namespace Policardiograph_App.ViewModel
             {
                 Patients = (result as DialogResultPerson).Patients;
                 SelectedPatient = (result as DialogResultPerson).SelectedPatient;
+                ChoosenPatient = SelectedPatient;
+                LabelPatientFullName = SelectedPatient.Name + " "+ SelectedPatient.Surname;
+                LabelPatientJMBG = SelectedPatient.JMBG;
 
+                patientViewModel.PatientName = SelectedPatient.Name;
+                patientViewModel.PatientSurname = SelectedPatient.Surname;
+
+                TabItemPatientIsEnabled = true;
+                ButtonPlayIsEnabled = true;
+                PlayImageOpacity = 1.0F;
             }
         }
 
@@ -320,7 +333,7 @@ namespace Policardiograph_App.ViewModel
             }
         }
 
-        private bool _buttonPlayIsEnabled = true;
+        private bool _buttonPlayIsEnabled = false;
         public bool ButtonPlayIsEnabled { 
             get 
             {
@@ -341,7 +354,7 @@ namespace Policardiograph_App.ViewModel
             }
         }
 
-        private float _playImageOpacity = 1.0F;
+        private float _playImageOpacity = 0.5F;
         public float PlayImageOpacity
         {
             get
@@ -359,7 +372,7 @@ namespace Policardiograph_App.ViewModel
         public event DevicePlayExecute devicePlayExecute;
         public ICommand PlayCommand { get; set; }
         private void PlayExecute(object obj) {
-
+           
             if (devicePlayExecute(ComboboxSelectedItem, Playing))
             {
                 if (Playing)
@@ -444,13 +457,19 @@ namespace Policardiograph_App.ViewModel
 
         public delegate int DeviceRecordExecute(string ComboboxSelectedItem, bool recording);
         public event DeviceRecordExecute deviceRecordExecute;
-        public delegate int DeviceSaveFile();
+        public delegate int DeviceSaveFile(Patient patient);
         public event DeviceSaveFile deviceSaveFile;
         public ICommand RecordCommand { get; set; }
         private void RecordExecute(object obj)
         {
             string syncWarningMessage = "";
             int deviceRecordStatus = deviceRecordExecute(ComboboxSelectedItem, Recording);
+
+            ChoosenPatient.Comment = patientViewModel.MeasurementComment;
+            Dialogs.DialogPersonComment.DialogPersonCommentViewModel dvmX = new Dialogs.DialogPersonComment.DialogPersonCommentViewModel(ChoosenPatient);
+            DialogResult resultX = DialogService.OpenDialog(dvmX);
+            ChoosenPatient.Comment = (resultX as Dialogs.DialogPersonComment.DialogResultPersonComment).MeasurementComment;
+
             if ((deviceRecordStatus & 0x80) == 0x80)          //check if procedure is executed properly
             {
                 if (Recording)
@@ -462,7 +481,7 @@ namespace Policardiograph_App.ViewModel
                     ProgressBarTimerStart(4, true, false, false, false, true);
                     if (deviceRecordStatus != 0)
                     {
-                        if (deviceSaveFile() != 0) {
+                        if (deviceSaveFile(ChoosenPatient) != 0) {
                             syncWarningMessage = "Data NOT recorded successfuly";
                             Dialogs.DialogMessage.DialogMessageViewModel dvm = new Dialogs.DialogMessage.DialogMessageViewModel(Dialogs.DialogMessage.DialogImageTypeEnum.Warning, syncWarningMessage);
                             Dialogs.DialogService.DialogResult result = Dialogs.DialogService.DialogService.OpenDialog(dvm);
@@ -759,7 +778,14 @@ namespace Policardiograph_App.ViewModel
                 recordingTimer.Stop();
                 RecordingTimerLabelIsVisible = false;
                 string syncWarningMessage = "";
+                
                 int deviceRecordStatus = deviceRecordExecute(ComboboxSelectedItem, Recording);
+
+                ChoosenPatient.Comment = patientViewModel.MeasurementComment;
+                Dialogs.DialogPersonComment.DialogPersonCommentViewModel dvmX = new Dialogs.DialogPersonComment.DialogPersonCommentViewModel(ChoosenPatient);
+                DialogResult resultX = DialogService.OpenDialog(dvmX);
+                ChoosenPatient.Comment = (resultX as Dialogs.DialogPersonComment.DialogResultPersonComment).MeasurementComment;
+
                 if ((deviceRecordStatus & 0x80) == 0x80)          //check if procedure is executed properly
                 {
                     if (Recording)
@@ -769,7 +795,7 @@ namespace Policardiograph_App.ViewModel
                         ProgressBarTimerStart(4, true, false, false, false, true);
 
                         if (deviceRecordStatus != 0) {
-                            if (deviceSaveFile() != 0)
+                            if (deviceSaveFile(ChoosenPatient) != 0)
                             {
                                 syncWarningMessage = "Data NOT recorded successfuly";
                                 Dialogs.DialogMessage.DialogMessageViewModel dvm = new Dialogs.DialogMessage.DialogMessageViewModel(Dialogs.DialogMessage.DialogImageTypeEnum.Warning, syncWarningMessage);
@@ -905,6 +931,50 @@ namespace Policardiograph_App.ViewModel
             }
         }
         #endregion
+
+        #region PATIENT_UI
+
+        private string _labelPatientFullName = "";
+        public string LabelPatientFullName
+        {
+            get
+            {
+                return _labelPatientFullName;
+            }
+            set
+            {
+                _labelPatientFullName = value;
+                OnPropertyChanged("LabelPatientFullName");
+            }
+        }
+        private string _labelPatientJMBG = "";
+        public string LabelPatientJMBG
+        {
+            get
+            {
+                return _labelPatientJMBG;
+            }
+            set
+            {
+                _labelPatientJMBG = value;
+                OnPropertyChanged("LabelPatientJMBG");
+            }
+        }
+
+        private bool _tabItemPatientIsEnabled = false;
+        public bool TabItemPatientIsEnabled
+        {
+            get
+            {
+                return _tabItemPatientIsEnabled;
+            }
+            set
+            {
+                _tabItemPatientIsEnabled = value;
+                OnPropertyChanged("TabItemPatientIsEnabled");
+            }
+        }
+        #endregion        
 
         #region TOGGLE_BUTTONS
         private bool debugToggleButtonIsVisible = false;
@@ -3019,6 +3089,7 @@ namespace Policardiograph_App.ViewModel
 
         public List<Patient> Patients { get; set; }
         public Patient SelectedPatient { get; set; }
+        public Patient ChoosenPatient { get; set; }
 
         #endregion
 
@@ -3027,6 +3098,7 @@ namespace Policardiograph_App.ViewModel
         public ICommand WindowClosing { get; private set; }
         private void WindowClosingExecute(object obj) {
             SettingService.StoreSetting(SettingProgramData, SettingWindowData, SettingFBGAData, SettingMICData, SettingECGData, SettingACCData, SettingPPGData);
+            PatientService.StorePatients(Patients, SelectedPatient);
             WindowClosingEventHandler(null, null);
             OpenGLDispatcher.dispose();
             Log log = new Log();

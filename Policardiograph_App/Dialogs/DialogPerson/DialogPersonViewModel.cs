@@ -16,8 +16,30 @@ namespace Policardiograph_App.Dialogs.DialogPerson
 
         public DialogPersonViewModel(List<Patient>  patients, Patient selectedPatient) : base("Add or choose patient")
         {
-            this.patients = patients;
-            this.selectedPatient = selectedPatient;
+            if (patients == null)
+            {
+                this.patients = null;
+            }
+            else
+            {
+                if (patients.Count > 0)
+                {
+                    this.patients = new List<Patient>();
+                    for(int i = 0; i < patients.Count; i++)
+                    {
+                        this.patients.Add(new Patient(patients.ElementAt(i)));
+                    }                    
+                }
+                else
+                {
+                    this.patients = null;
+                }
+            }
+            if (selectedPatient != null)
+            {
+                this.selectedPatient = new Patient(selectedPatient);
+            }
+            
 
             SelectedViewModel = new DialogPersonChangeViewModel(this);
 
